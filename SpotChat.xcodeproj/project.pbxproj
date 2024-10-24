@@ -1,0 +1,606 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		8B7424D32CCA5A9600E198C3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7424D22CCA5A9600E198C3 /* AppDelegate.swift */; };
+		8B7424D52CCA5A9600E198C3 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7424D42CCA5A9600E198C3 /* SceneDelegate.swift */; };
+		8B7424D72CCA5A9600E198C3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7424D62CCA5A9600E198C3 /* ViewController.swift */; };
+		8B7424DC2CCA5A9800E198C3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8B7424DB2CCA5A9800E198C3 /* Assets.xcassets */; };
+		8B7424DF2CCA5A9800E198C3 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 8B7424DE2CCA5A9800E198C3 /* Base */; };
+		8B7424EA2CCA5A9800E198C3 /* SpotChatTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7424E92CCA5A9800E198C3 /* SpotChatTests.swift */; };
+		8B7424F42CCA5A9800E198C3 /* SpotChatUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7424F32CCA5A9800E198C3 /* SpotChatUITests.swift */; };
+		8B7424F62CCA5A9800E198C3 /* SpotChatUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7424F52CCA5A9800E198C3 /* SpotChatUITestsLaunchTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		8B7424E62CCA5A9800E198C3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B7424C72CCA5A9600E198C3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8B7424CE2CCA5A9600E198C3;
+			remoteInfo = SpotChat;
+		};
+		8B7424F02CCA5A9800E198C3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8B7424C72CCA5A9600E198C3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8B7424CE2CCA5A9600E198C3;
+			remoteInfo = SpotChat;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		8B7424CF2CCA5A9600E198C3 /* SpotChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpotChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8B7424D22CCA5A9600E198C3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		8B7424D42CCA5A9600E198C3 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		8B7424D62CCA5A9600E198C3 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		8B7424DB2CCA5A9800E198C3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		8B7424DE2CCA5A9800E198C3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		8B7424E02CCA5A9800E198C3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8B7424E52CCA5A9800E198C3 /* SpotChatTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SpotChatTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8B7424E92CCA5A9800E198C3 /* SpotChatTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotChatTests.swift; sourceTree = "<group>"; };
+		8B7424EF2CCA5A9800E198C3 /* SpotChatUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SpotChatUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8B7424F32CCA5A9800E198C3 /* SpotChatUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotChatUITests.swift; sourceTree = "<group>"; };
+		8B7424F52CCA5A9800E198C3 /* SpotChatUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotChatUITestsLaunchTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8B7424CC2CCA5A9600E198C3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8B7424E22CCA5A9800E198C3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8B7424EC2CCA5A9800E198C3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		8B7424C62CCA5A9600E198C3 = {
+			isa = PBXGroup;
+			children = (
+				8B7424D12CCA5A9600E198C3 /* SpotChat */,
+				8B7424E82CCA5A9800E198C3 /* SpotChatTests */,
+				8B7424F22CCA5A9800E198C3 /* SpotChatUITests */,
+				8B7424D02CCA5A9600E198C3 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		8B7424D02CCA5A9600E198C3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8B7424CF2CCA5A9600E198C3 /* SpotChat.app */,
+				8B7424E52CCA5A9800E198C3 /* SpotChatTests.xctest */,
+				8B7424EF2CCA5A9800E198C3 /* SpotChatUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8B7424D12CCA5A9600E198C3 /* SpotChat */ = {
+			isa = PBXGroup;
+			children = (
+				8B7424D22CCA5A9600E198C3 /* AppDelegate.swift */,
+				8B7424D42CCA5A9600E198C3 /* SceneDelegate.swift */,
+				8B7424D62CCA5A9600E198C3 /* ViewController.swift */,
+				8B7424DB2CCA5A9800E198C3 /* Assets.xcassets */,
+				8B7424DD2CCA5A9800E198C3 /* LaunchScreen.storyboard */,
+				8B7424E02CCA5A9800E198C3 /* Info.plist */,
+			);
+			path = SpotChat;
+			sourceTree = "<group>";
+		};
+		8B7424E82CCA5A9800E198C3 /* SpotChatTests */ = {
+			isa = PBXGroup;
+			children = (
+				8B7424E92CCA5A9800E198C3 /* SpotChatTests.swift */,
+			);
+			path = SpotChatTests;
+			sourceTree = "<group>";
+		};
+		8B7424F22CCA5A9800E198C3 /* SpotChatUITests */ = {
+			isa = PBXGroup;
+			children = (
+				8B7424F32CCA5A9800E198C3 /* SpotChatUITests.swift */,
+				8B7424F52CCA5A9800E198C3 /* SpotChatUITestsLaunchTests.swift */,
+			);
+			path = SpotChatUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8B7424CE2CCA5A9600E198C3 /* SpotChat */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8B7424F92CCA5A9800E198C3 /* Build configuration list for PBXNativeTarget "SpotChat" */;
+			buildPhases = (
+				8B7424CB2CCA5A9600E198C3 /* Sources */,
+				8B7424CC2CCA5A9600E198C3 /* Frameworks */,
+				8B7424CD2CCA5A9600E198C3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SpotChat;
+			productName = SpotChat;
+			productReference = 8B7424CF2CCA5A9600E198C3 /* SpotChat.app */;
+			productType = "com.apple.product-type.application";
+		};
+		8B7424E42CCA5A9800E198C3 /* SpotChatTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8B7424FC2CCA5A9800E198C3 /* Build configuration list for PBXNativeTarget "SpotChatTests" */;
+			buildPhases = (
+				8B7424E12CCA5A9800E198C3 /* Sources */,
+				8B7424E22CCA5A9800E198C3 /* Frameworks */,
+				8B7424E32CCA5A9800E198C3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8B7424E72CCA5A9800E198C3 /* PBXTargetDependency */,
+			);
+			name = SpotChatTests;
+			productName = SpotChatTests;
+			productReference = 8B7424E52CCA5A9800E198C3 /* SpotChatTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		8B7424EE2CCA5A9800E198C3 /* SpotChatUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8B7424FF2CCA5A9800E198C3 /* Build configuration list for PBXNativeTarget "SpotChatUITests" */;
+			buildPhases = (
+				8B7424EB2CCA5A9800E198C3 /* Sources */,
+				8B7424EC2CCA5A9800E198C3 /* Frameworks */,
+				8B7424ED2CCA5A9800E198C3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8B7424F12CCA5A9800E198C3 /* PBXTargetDependency */,
+			);
+			name = SpotChatUITests;
+			productName = SpotChatUITests;
+			productReference = 8B7424EF2CCA5A9800E198C3 /* SpotChatUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		8B7424C72CCA5A9600E198C3 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1530;
+				LastUpgradeCheck = 1530;
+				TargetAttributes = {
+					8B7424CE2CCA5A9600E198C3 = {
+						CreatedOnToolsVersion = 15.3;
+					};
+					8B7424E42CCA5A9800E198C3 = {
+						CreatedOnToolsVersion = 15.3;
+						TestTargetID = 8B7424CE2CCA5A9600E198C3;
+					};
+					8B7424EE2CCA5A9800E198C3 = {
+						CreatedOnToolsVersion = 15.3;
+						TestTargetID = 8B7424CE2CCA5A9600E198C3;
+					};
+				};
+			};
+			buildConfigurationList = 8B7424CA2CCA5A9600E198C3 /* Build configuration list for PBXProject "SpotChat" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 8B7424C62CCA5A9600E198C3;
+			productRefGroup = 8B7424D02CCA5A9600E198C3 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8B7424CE2CCA5A9600E198C3 /* SpotChat */,
+				8B7424E42CCA5A9800E198C3 /* SpotChatTests */,
+				8B7424EE2CCA5A9800E198C3 /* SpotChatUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8B7424CD2CCA5A9600E198C3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8B7424DC2CCA5A9800E198C3 /* Assets.xcassets in Resources */,
+				8B7424DF2CCA5A9800E198C3 /* Base in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8B7424E32CCA5A9800E198C3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8B7424ED2CCA5A9800E198C3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8B7424CB2CCA5A9600E198C3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8B7424D72CCA5A9600E198C3 /* ViewController.swift in Sources */,
+				8B7424D32CCA5A9600E198C3 /* AppDelegate.swift in Sources */,
+				8B7424D52CCA5A9600E198C3 /* SceneDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8B7424E12CCA5A9800E198C3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8B7424EA2CCA5A9800E198C3 /* SpotChatTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8B7424EB2CCA5A9800E198C3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8B7424F62CCA5A9800E198C3 /* SpotChatUITestsLaunchTests.swift in Sources */,
+				8B7424F42CCA5A9800E198C3 /* SpotChatUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		8B7424E72CCA5A9800E198C3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8B7424CE2CCA5A9600E198C3 /* SpotChat */;
+			targetProxy = 8B7424E62CCA5A9800E198C3 /* PBXContainerItemProxy */;
+		};
+		8B7424F12CCA5A9800E198C3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8B7424CE2CCA5A9600E198C3 /* SpotChat */;
+			targetProxy = 8B7424F02CCA5A9800E198C3 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		8B7424DD2CCA5A9800E198C3 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8B7424DE2CCA5A9800E198C3 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		8B7424F72CCA5A9800E198C3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		8B7424F82CCA5A9800E198C3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		8B7424FA2CCA5A9800E198C3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 83K785968Z;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SpotChat/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Swift.SpotChat;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		8B7424FB2CCA5A9800E198C3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 83K785968Z;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SpotChat/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Swift.SpotChat;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		8B7424FD2CCA5A9800E198C3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 83K785968Z;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Swift.SpotChatTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SpotChat.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/SpotChat";
+			};
+			name = Debug;
+		};
+		8B7424FE2CCA5A9800E198C3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 83K785968Z;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Swift.SpotChatTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SpotChat.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/SpotChat";
+			};
+			name = Release;
+		};
+		8B7425002CCA5A9800E198C3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 83K785968Z;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Swift.SpotChatUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = SpotChat;
+			};
+			name = Debug;
+		};
+		8B7425012CCA5A9800E198C3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 83K785968Z;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Swift.SpotChatUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = SpotChat;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		8B7424CA2CCA5A9600E198C3 /* Build configuration list for PBXProject "SpotChat" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8B7424F72CCA5A9800E198C3 /* Debug */,
+				8B7424F82CCA5A9800E198C3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8B7424F92CCA5A9800E198C3 /* Build configuration list for PBXNativeTarget "SpotChat" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8B7424FA2CCA5A9800E198C3 /* Debug */,
+				8B7424FB2CCA5A9800E198C3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8B7424FC2CCA5A9800E198C3 /* Build configuration list for PBXNativeTarget "SpotChatTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8B7424FD2CCA5A9800E198C3 /* Debug */,
+				8B7424FE2CCA5A9800E198C3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8B7424FF2CCA5A9800E198C3 /* Build configuration list for PBXNativeTarget "SpotChatUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8B7425002CCA5A9800E198C3 /* Debug */,
+				8B7425012CCA5A9800E198C3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 8B7424C72CCA5A9600E198C3 /* Project object */;
+}
