@@ -11,6 +11,7 @@ import Foundation
 
 protocol TargetType { 
     
+    
     var baseURL: String { get }
     var method: String { get }
     var path: String { get }

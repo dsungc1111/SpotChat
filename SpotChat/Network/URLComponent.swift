@@ -16,7 +16,7 @@ import Foundation
 enum Router {
     case emailValidation(query: EmailValidationQuery)
     case signin(query: SigninQuery)
-    case appleLogin
+    case appleLogin(query: AppleLgoinQuery)
 }
 
 
@@ -71,8 +71,8 @@ extension Router: TargetType {
             return try? encoder.encode(query)
         case .signin(query: let query):
             return try? encoder.encode(query)
-        case .appleLogin:
-            return nil
+        case .appleLogin(let query):
+            return try? encoder.encode(query)
         }
     }
     

@@ -32,6 +32,7 @@ final class UserDefaultManager {
         case userNickname
         case userId
         case profile
+        case appleLoginUserId
     }
     
     
@@ -53,4 +54,8 @@ final class UserDefaultManager {
     
     @UserDefault(key: UserDefaultKey.profile.rawValue, defaultValue: "")
     static var profileImage
+    
+    
+    @UserDefault(key: UserDefaultKey.appleLoginUserId.rawValue, defaultValue: "")
+    static var appleLoginUserId
 }

@@ -16,10 +16,6 @@
 		8B7424F42CCA5A9800E198C3 /* SpotChatUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7424F32CCA5A9800E198C3 /* SpotChatUITests.swift */; };
 		8B7424F62CCA5A9800E198C3 /* SpotChatUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7424F52CCA5A9800E198C3 /* SpotChatUITestsLaunchTests.swift */; };
 		8B7F3B562CCE0DED00B6D34C /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 8B7F3B552CCE0DED00B6D34C /* SnapKit */; };
-		8B7F3B592CCE0E0600B6D34C /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 8B7F3B582CCE0E0600B6D34C /* RxCocoa */; };
-		8B7F3B5B2CCE0E0600B6D34C /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 8B7F3B5A2CCE0E0600B6D34C /* RxSwift */; };
-		8B7F3B5E2CCE1D1100B6D34C /* ReactorKit in Frameworks */ = {isa = PBXBuildFile; productRef = 8B7F3B5D2CCE1D1100B6D34C /* ReactorKit */; };
-		8B7F3B602CCE20D200B6D34C /* LoginReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7F3B5F2CCE20D200B6D34C /* LoginReactor.swift */; };
 		8B7F3B622CCF175F00B6D34C /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 8B7F3B612CCF175F00B6D34C /* .gitignore */; };
 		8B7F3B642CCF846A00B6D34C /* APIKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7F3B632CCF846A00B6D34C /* APIKey.swift */; };
 		8B7F3B662CCF9ADE00B6D34C /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7F3B652CCF9ADE00B6D34C /* NetworkManager.swift */; };
@@ -39,6 +35,11 @@
 		8B7F3B942CD0FC6500B6D34C /* SignUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7F3B932CD0FC6500B6D34C /* SignUpVC.swift */; };
 		8B7F3B972CD0FF3900B6D34C /* CustomSignTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7F3B962CD0FF3900B6D34C /* CustomSignTextField.swift */; };
 		8B7F3B9A2CD1130600B6D34C /* MapVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7F3B992CD1130600B6D34C /* MapVC.swift */; };
+		8B7F3B9D2CD2219A00B6D34C /* CombineCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 8B7F3B9C2CD2219A00B6D34C /* CombineCocoa */; };
+		8B7F3B9F2CD336AC00B6D34C /* SignUpVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7F3B9E2CD336AC00B6D34C /* SignUpVM.swift */; };
+		8B7F3BA12CD336CF00B6D34C /* BaseVMProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7F3BA02CD336CF00B6D34C /* BaseVMProtocol.swift */; };
+		8B7F3BA32CD37DE900B6D34C /* AppleLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7F3BA22CD37DE900B6D34C /* AppleLogin.swift */; };
+		8B7F3BA62CD37E6500B6D34C /* KakaoLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7F3BA52CD37E6500B6D34C /* KakaoLogin.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,7 +72,6 @@
 		8B7424EF2CCA5A9800E198C3 /* SpotChatUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SpotChatUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B7424F32CCA5A9800E198C3 /* SpotChatUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotChatUITests.swift; sourceTree = "<group>"; };
 		8B7424F52CCA5A9800E198C3 /* SpotChatUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotChatUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		8B7F3B5F2CCE20D200B6D34C /* LoginReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginReactor.swift; sourceTree = "<group>"; };
 		8B7F3B612CCF175F00B6D34C /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		8B7F3B632CCF846A00B6D34C /* APIKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIKey.swift; sourceTree = "<group>"; };
 		8B7F3B652CCF9ADE00B6D34C /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
@@ -92,6 +92,10 @@
 		8B7F3B962CD0FF3900B6D34C /* CustomSignTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSignTextField.swift; sourceTree = "<group>"; };
 		8B7F3B982CD1098700B6D34C /* SpotChat.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SpotChat.entitlements; sourceTree = "<group>"; };
 		8B7F3B992CD1130600B6D34C /* MapVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapVC.swift; sourceTree = "<group>"; };
+		8B7F3B9E2CD336AC00B6D34C /* SignUpVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpVM.swift; sourceTree = "<group>"; };
+		8B7F3BA02CD336CF00B6D34C /* BaseVMProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseVMProtocol.swift; sourceTree = "<group>"; };
+		8B7F3BA22CD37DE900B6D34C /* AppleLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLogin.swift; sourceTree = "<group>"; };
+		8B7F3BA52CD37E6500B6D34C /* KakaoLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoLogin.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,9 +103,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8B7F3B5B2CCE0E0600B6D34C /* RxSwift in Frameworks */,
-				8B7F3B592CCE0E0600B6D34C /* RxCocoa in Frameworks */,
-				8B7F3B5E2CCE1D1100B6D34C /* ReactorKit in Frameworks */,
+				8B7F3B9D2CD2219A00B6D34C /* CombineCocoa in Frameworks */,
 				8B7F3B562CCE0DED00B6D34C /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -158,7 +160,6 @@
 				8B7F3B7E2CD0CC5700B6D34C /* Screen */,
 				8B7424D62CCA5A9600E198C3 /* ViewController.swift */,
 				8B7424E02CCA5A9800E198C3 /* Info.plist */,
-				8B7F3B5F2CCE20D200B6D34C /* LoginReactor.swift */,
 			);
 			path = SpotChat;
 			sourceTree = "<group>";
@@ -224,8 +225,7 @@
 		8B7F3B7F2CD0CD4E00B6D34C /* OnBoarding */ = {
 			isa = PBXGroup;
 			children = (
-				8B7F3B912CD0EB4D00B6D34C /* AuthView.swift */,
-				8B7F3B8F2CD0D32500B6D34C /* AuthVC.swift */,
+				8B7F3BA42CD37E2600B6D34C /* Auth */,
 				8B7F3B8D2CD0D19700B6D34C /* OnBoardingView.swift */,
 				8B7F3B802CD0CD5E00B6D34C /* OnBoardingVC.swift */,
 			);
@@ -237,6 +237,7 @@
 			children = (
 				8B7F3B852CD0CDBB00B6D34C /* BaseView.swift */,
 				8B7F3B832CD0CD8A00B6D34C /* BaseVC.swift */,
+				8B7F3BA02CD336CF00B6D34C /* BaseVMProtocol.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -254,6 +255,7 @@
 			children = (
 				8B7F3B8A2CD0CF4D00B6D34C /* SignUpView.swift */,
 				8B7F3B932CD0FC6500B6D34C /* SignUpVC.swift */,
+				8B7F3B9E2CD336AC00B6D34C /* SignUpVM.swift */,
 			);
 			path = SignUp;
 			sourceTree = "<group>";
@@ -264,6 +266,17 @@
 				8B7F3B962CD0FF3900B6D34C /* CustomSignTextField.swift */,
 			);
 			path = Custom;
+			sourceTree = "<group>";
+		};
+		8B7F3BA42CD37E2600B6D34C /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				8B7F3B912CD0EB4D00B6D34C /* AuthView.swift */,
+				8B7F3B8F2CD0D32500B6D34C /* AuthVC.swift */,
+				8B7F3BA22CD37DE900B6D34C /* AppleLogin.swift */,
+				8B7F3BA52CD37E6500B6D34C /* KakaoLogin.swift */,
+			);
+			path = Auth;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -284,9 +297,7 @@
 			name = SpotChat;
 			packageProductDependencies = (
 				8B7F3B552CCE0DED00B6D34C /* SnapKit */,
-				8B7F3B582CCE0E0600B6D34C /* RxCocoa */,
-				8B7F3B5A2CCE0E0600B6D34C /* RxSwift */,
-				8B7F3B5D2CCE1D1100B6D34C /* ReactorKit */,
+				8B7F3B9C2CD2219A00B6D34C /* CombineCocoa */,
 			);
 			productName = SpotChat;
 			productReference = 8B7424CF2CCA5A9600E198C3 /* SpotChat.app */;
@@ -362,8 +373,7 @@
 			mainGroup = 8B7424C62CCA5A9600E198C3;
 			packageReferences = (
 				8B7F3B542CCE0DED00B6D34C /* XCRemoteSwiftPackageReference "SnapKit" */,
-				8B7F3B572CCE0E0600B6D34C /* XCRemoteSwiftPackageReference "RxSwift" */,
-				8B7F3B5C2CCE1D1100B6D34C /* XCRemoteSwiftPackageReference "ReactorKit" */,
+				8B7F3B9B2CD2219A00B6D34C /* XCRemoteSwiftPackageReference "CombineCocoa" */,
 			);
 			productRefGroup = 8B7424D02CCA5A9600E198C3 /* Products */;
 			projectDirPath = "";
@@ -408,17 +418,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B7F3B9F2CD336AC00B6D34C /* SignUpVM.swift in Sources */,
 				8B7F3B902CD0D32500B6D34C /* AuthVC.swift in Sources */,
 				8B7F3B662CCF9ADE00B6D34C /* NetworkManager.swift in Sources */,
 				8B7424D72CCA5A9600E198C3 /* ViewController.swift in Sources */,
 				8B7424D32CCA5A9600E198C3 /* AppDelegate.swift in Sources */,
 				8B7F3B6E2CCFA04D00B6D34C /* TargetType.swift in Sources */,
 				8B7F3B702CCFA51400B6D34C /* UserDefaultManager.swift in Sources */,
+				8B7F3BA12CD336CF00B6D34C /* BaseVMProtocol.swift in Sources */,
 				8B7F3B812CD0CD5F00B6D34C /* OnBoardingVC.swift in Sources */,
 				8B7F3B6A2CCF9D1B00B6D34C /* URLComponent.swift in Sources */,
+				8B7F3BA62CD37E6500B6D34C /* KakaoLogin.swift in Sources */,
 				8B7F3B942CD0FC6500B6D34C /* SignUpVC.swift in Sources */,
 				8B7F3B922CD0EB4D00B6D34C /* AuthView.swift in Sources */,
-				8B7F3B602CCE20D200B6D34C /* LoginReactor.swift in Sources */,
 				8B7F3B842CD0CD8A00B6D34C /* BaseVC.swift in Sources */,
 				8B7F3B8E2CD0D19700B6D34C /* OnBoardingView.swift in Sources */,
 				8B7F3B732CCFAA9400B6D34C /* ResponseModel.swift in Sources */,
@@ -429,6 +441,7 @@
 				8B7F3B8B2CD0CF4D00B6D34C /* SignUpView.swift in Sources */,
 				8B7F3B642CCF846A00B6D34C /* APIKey.swift in Sources */,
 				8B7F3B892CD0CE6E00B6D34C /* UIColor+.swift in Sources */,
+				8B7F3BA32CD37DE900B6D34C /* AppleLogin.swift in Sources */,
 				8B7F3B9A2CD1130600B6D34C /* MapVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -786,20 +799,12 @@
 				minimumVersion = 5.7.1;
 			};
 		};
-		8B7F3B572CCE0E0600B6D34C /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+		8B7F3B9B2CD2219A00B6D34C /* XCRemoteSwiftPackageReference "CombineCocoa" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
+			repositoryURL = "https://github.com/CombineCommunity/CombineCocoa.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 6.8.0;
-			};
-		};
-		8B7F3B5C2CCE1D1100B6D34C /* XCRemoteSwiftPackageReference "ReactorKit" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/ReactorKit/ReactorKit.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 3.2.0;
+				minimumVersion = 0.4.1;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -810,20 +815,10 @@
 			package = 8B7F3B542CCE0DED00B6D34C /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
 		};
-		8B7F3B582CCE0E0600B6D34C /* RxCocoa */ = {
+		8B7F3B9C2CD2219A00B6D34C /* CombineCocoa */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 8B7F3B572CCE0E0600B6D34C /* XCRemoteSwiftPackageReference "RxSwift" */;
-			productName = RxCocoa;
-		};
-		8B7F3B5A2CCE0E0600B6D34C /* RxSwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 8B7F3B572CCE0E0600B6D34C /* XCRemoteSwiftPackageReference "RxSwift" */;
-			productName = RxSwift;
-		};
-		8B7F3B5D2CCE1D1100B6D34C /* ReactorKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 8B7F3B5C2CCE1D1100B6D34C /* XCRemoteSwiftPackageReference "ReactorKit" */;
-			productName = ReactorKit;
+			package = 8B7F3B9B2CD2219A00B6D34C /* XCRemoteSwiftPackageReference "CombineCocoa" */;
+			productName = CombineCocoa;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -7,16 +7,11 @@
 
 import UIKit
 import SnapKit
-import RxSwift
-import RxCocoa
-import ReactorKit
+//import RxSwift
+//import RxCocoa
 
-/*
- - View는 프로토콜인데 ReactorKit의 View임
- - bind(reactor: )가 View안에 구현되어있음
-*/
 
-final class ViewController: UIViewController, View {
+final class ViewController: UIViewController {
 
     
     let emailTextField = UITextField()
@@ -24,9 +19,9 @@ final class ViewController: UIViewController, View {
     let loginBtn = UIButton()
     let resultLabel = UILabel()
 //    let aa = NetworkManager()
-    let bb = BehaviorSubject(value: ())
-    
-    var disposeBag = DisposeBag()
+//    let bb = BehaviorSubject(value: ())
+//    
+//    var disposeBag = DisposeBag()
     
     
     override func viewDidLoad() {
@@ -36,59 +31,12 @@ final class ViewController: UIViewController, View {
         configureHierarchy()
         configureLayout()
         
-        self.reactor = LoginReactor()
-        bb.onNext(())
+        
+//        bb.onNext(())
         
     }
     
-    func bind(reactor: LoginReactor) {
-        
-        var email = "sesac@gmail.com"
-        var password = "adf"
-        
-        
-        // email, pw 텍스트 필드 바인딩
-        emailTextField.rx.text.orEmpty
-            .map { Reactor.Action.updateEmail($0) }
-            .bind(to: reactor.action)
-            .disposed(by: disposeBag)
-        passwordTextField.rx.text.orEmpty
-            .map { Reactor.Action.updatePassword($0) }
-            .bind(to: reactor.action)
-            .disposed(by: disposeBag)
-        // 로그인 버튼 클릭
-        loginBtn.rx.tap
-            .map { Reactor.Action.login }
-            .bind(to: reactor.action)
-            .disposed(by: disposeBag)
-        
-        // resultlabel에 email 값 반영
-        reactor.state.map { $0.email }
-            .bind(with: self, onNext: { owner, value in
-                owner.resultLabel.text = value
-                email = value
-            })
-            .disposed(by: disposeBag)
-        reactor.state.map { $0.password }
-            .bind(with: self) { owner, value in
-                password = value
-            }
-            .disposed(by: disposeBag)
-        
-        // 버튼 클릭 시, 버튼 타이틀 바뀌게
-        reactor.state.map { $0.loginResult }
-            .bind(with: self) { owner, btnTitle in
-                owner.loginBtn.setTitle(btnTitle, for: .normal)
-            }
-            .disposed(by: disposeBag)
-        
-        reactor.state.map { $0.btnEnable }
-            .bind(with: self) { owner, btnColor in
-                owner.loginBtn.backgroundColor = btnColor ? .blue : .red
-            }
-            .disposed(by: disposeBag)
-        
-        
+  
 //        aa.requestCall(router: .ValidEmail(query: "111@gmail.com"), type: EmailValidationModel.self)
         
         
@@ -105,13 +53,6 @@ final class ViewController: UIViewController, View {
 //                }
 //        }
         
-      
-       
-        
-    }
-    
-
-    
     func configureHierarchy() {
         view.addSubview(emailTextField)
         view.addSubview(passwordTextField)
@@ -120,6 +61,7 @@ final class ViewController: UIViewController, View {
     }
     
     func configureLayout() {
+        
         emailTextField.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).inset(100)
             make.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)

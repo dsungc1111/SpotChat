@@ -9,10 +9,6 @@ import Foundation
 
 
 
-//struct JoinQuery: Encodable {
-//    let
-//}
-
 struct EmailValidationQuery: Encodable {
     let email: String
 }
@@ -29,14 +25,24 @@ struct SigninQuery: Encodable {
     let info4: String
     let info5: String
 }
+struct AppleLgoinQuery: Encodable {
+    let idToken: String
+    let nick: String
+}
+struct KakaoLoginQuery: Encodable {
+    
+    let oauthToken: String
+    
+}
 
 struct EmailValidationModel: Codable {
     let message: String
 }
-
-struct SigninModel: Codable {
+// 로그인, 회원가입 모델
+struct AuthModel: Codable {
     let user_id: String
     let email: String
+    let profileImage: String
     let nick: String
     let accessToken: String
     let refreshToken: String

@@ -6,15 +6,15 @@
 //
 
 import UIKit
-import RxSwift
-import RxCocoa
+import Combine
+import CombineCocoa
 
 final class OnBoardingVC: BaseVC {
  
     
     private let onBoardingView = OnBoardingView()
+    private var cancellables = Set<AnyCancellable>()
     
-    private let disposeBag = DisposeBag()
     
     override func loadView() {
         view = onBoardingView
@@ -27,15 +27,15 @@ final class OnBoardingVC: BaseVC {
 
     }
     override func bind() {
-        
-        onBoardingView.loginBtn.rx.tap
-            .bind(with: self) { owner, _ in
-                owner.loadSignInView()
+       
+        onBoardingView.loginBtn.tapPublisher
+            .sink { [weak self] _ in
+                guard let self else { return }
+                loadSignInView()
             }
-            .disposed(by: disposeBag)
+            .store(in: &cancellables)
         
     }
-    
     
     private func loadSignInView() {
         

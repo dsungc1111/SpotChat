@@ -6,7 +6,7 @@
 //
 
 import Foundation
-//import RxSwift
+import Combine
 
 
 final class NetworkManager {
@@ -16,7 +16,7 @@ final class NetworkManager {
     func performRequest<T: Codable>(router: Router, responseType: T.Type, completion: @escaping (Result<T, Error>) -> Void) {
         
         guard let request = router.makeRequest() else {
-            print("에러임")
+            print("url 에러임")
             return
         }
         
@@ -27,17 +27,25 @@ final class NetworkManager {
                 return
             }
             
-            guard let data = data, let httpResponse = response as? HTTPURLResponse, 200..<300 ~= httpResponse.statusCode else {
-                print("data 없음")
-                return
+            if let data = data,
+               let httpResponse = response as? HTTPURLResponse {
+                
+                if 200..<300 ~= httpResponse.statusCode {
+                    // 성공적인 응답이므로 원하는 동작 수행
+                    do {
+                        let decodedResponse = try JSONDecoder().decode(responseType, from: data)
+                        completion(.success(decodedResponse))
+                    } catch {
+                        completion(.failure(error))
+                    }
+                } else {
+                    print("data 없음, status code: \(httpResponse.statusCode)")
+                }
+            } else {
+                print("data 또는 response 변환 실패")
             }
             
-            do {
-                let decodedResponse = try JSONDecoder().decode(responseType, from: data)
-                completion(.success(decodedResponse))
-            } catch {
-                completion(.failure(error))
-            }
+          
         }
         task.resume()
     }
