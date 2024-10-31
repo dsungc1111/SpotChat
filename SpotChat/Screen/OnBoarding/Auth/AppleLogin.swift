@@ -14,10 +14,28 @@ extension AuthVC: ASAuthorizationControllerDelegate {
     func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: any Error) {
         print("로그인 실패")
     }
-    
 }
 
 extension AuthVC: ASAuthorizationControllerPresentationContextProviding {
+    
+    
+    func handleAppleSignIn() {
+        
+        let appleIDProvider = ASAuthorizationAppleIDProvider()
+        let request = appleIDProvider.createRequest()
+        
+        
+        request.requestedScopes = [.fullName, .email]
+        
+        let controller = ASAuthorizationController(authorizationRequests: [request])
+        
+        controller.delegate = self
+        controller.presentationContextProvider = self
+        controller.performRequests()
+        
+    }
+    
+    
     
     func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
         self.view.window ?? UIWindow()
@@ -46,9 +64,8 @@ extension AuthVC: ASAuthorizationControllerPresentationContextProviding {
             //대성 최
             UserDefaultManager.appleLoginUserId = userIdentifier
             
-            let applLoginQuery = AppleLgoinQuery(idToken: idToken, nick: "스탠")
+            let applLoginQuery = AppleLgoinQuery(idToken: idToken, nick: "000376.49686746cdae49329623afae267791ed.1253")
             print("여기는?")
-            print(idToken)
             NetworkManager.shared.performRequest(router: .appleLogin(query: applLoginQuery), responseType: AuthModel.self) { result in
                 print("결과 가져와서~")
                 switch result {
@@ -78,7 +95,7 @@ extension AuthVC: ASAuthorizationControllerPresentationContextProviding {
             
             UserDefaultManager.appleLoginUserId = userIdentifier
             
-            let applLoginQuery = AppleLgoinQuery(idToken: "eotjd0818@naver.com", nick: "sesac_apple11")
+            let applLoginQuery = AppleLgoinQuery(idToken: "eotjd0818@naver.com", nick: "스탠리")
             print("여기는?")
             NetworkManager.shared.performRequest(router: .appleLogin(query: applLoginQuery), responseType: AuthModel.self) { result in
                 print("결과 가져와서~")

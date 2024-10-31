@@ -8,13 +8,16 @@
 import UIKit
 import Combine
 import CombineCocoa
-import AuthenticationServices
+import KakaoSDKAuth
+import KakaoSDKUser
 
 final class AuthVC: BaseVC {
     
     private let authView = AuthView()
     
     private var cancellables = Set<AnyCancellable>()
+    
+    private lazy var kakaoAuthVM = KakaoAuthVM()
     
     override func loadView() {
         view = authView
@@ -39,6 +42,13 @@ final class AuthVC: BaseVC {
             }
             .store(in: &cancellables)
         
+        authView.kakaoLoginBtn.tapPublisher
+            .sink { [weak self] _ in
+                guard let self else { return }
+                kakaoAuthVM.kakaoSignIn()
+            }
+            .store(in: &cancellables)
+        
         
         authView.emailLoginBtn.tapPublisher
             .sink { [weak self] _ in
@@ -57,21 +67,5 @@ final class AuthVC: BaseVC {
                 present(vc, animated: true)
             }
             .store(in: &cancellables)
-    }
-    
-    private func handleAppleSignIn() {
-        
-        let appleIDProvider = ASAuthorizationAppleIDProvider()
-        let requset = appleIDProvider.createRequest()
-        
-        
-        requset.requestedScopes = [.fullName, .email]
-        
-        let controller = ASAuthorizationController(authorizationRequests: [requset])
-        
-        controller.delegate = self
-        controller.presentationContextProvider = self
-        controller.performRequests()
-        
     }
 }

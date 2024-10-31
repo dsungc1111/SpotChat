@@ -33,6 +33,7 @@ final class UserDefaultManager {
         case userId
         case profile
         case appleLoginUserId
+        case kakaoToken
     }
     
     
@@ -58,4 +59,7 @@ final class UserDefaultManager {
     
     @UserDefault(key: UserDefaultKey.appleLoginUserId.rawValue, defaultValue: "")
     static var appleLoginUserId
+    
+    @UserDefault(key: UserDefaultKey.kakaoToken.rawValue, defaultValue: "")
+    static var kakaoToken
 }

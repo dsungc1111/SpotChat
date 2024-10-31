@@ -17,6 +17,7 @@ enum Router {
     case emailValidation(query: EmailValidationQuery)
     case signin(query: SigninQuery)
     case appleLogin(query: AppleLgoinQuery)
+    case kakaoLogin(query: KakaoLoginQuery)
 }
 
 
@@ -27,7 +28,7 @@ extension Router: TargetType {
     
     var method: String {
         switch self {
-        case .emailValidation, .signin, .appleLogin:
+        case .emailValidation, .signin, .appleLogin, .kakaoLogin:
             return "POST"
         }
     }
@@ -40,6 +41,8 @@ extension Router: TargetType {
             return "users/join"
         case .appleLogin:
             return "users/login/apple"
+        case .kakaoLogin:
+            return "users/login/kakao"
         }
     }
     
@@ -50,7 +53,7 @@ extension Router: TargetType {
                 APIKey.HTTPHeaderName.sesacKey.rawValue : APIKey.developerKey,
                 APIKey.HTTPHeaderName.contentType.rawValue : APIKey.HTTPHeaderName.json.rawValue
             ]
-        case .signin, .appleLogin:
+        case .signin, .appleLogin, .kakaoLogin:
             return [
                 APIKey.HTTPHeaderName.sesacKey.rawValue : APIKey.developerKey,
                 APIKey.HTTPHeaderName.contentType.rawValue : APIKey.HTTPHeaderName.json.rawValue,
@@ -72,6 +75,8 @@ extension Router: TargetType {
         case .signin(query: let query):
             return try? encoder.encode(query)
         case .appleLogin(let query):
+            return try? encoder.encode(query)
+        case .kakaoLogin(query: let query):
             return try? encoder.encode(query)
         }
     }
