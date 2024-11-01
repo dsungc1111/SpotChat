@@ -33,7 +33,7 @@ final class TabBarVC: UITabBarController {
         setViewControllers([chatVC, mapVC, settingVC], animated: true)
         
         self.tabBar.unselectedItemTintColor = .white
-        self.tabBar.tintColor = .systemYellow
+        self.tabBar.tintColor = AppColorSet.keyColor
         self.tabBar.backgroundColor = UIColor(hexCode: "#24242C")
         self.selectedIndex = 1
     }

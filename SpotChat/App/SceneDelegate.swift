@@ -27,7 +27,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let scene  = (scene as? UIWindowScene) else { return }
         
         let appleIDProvider = ASAuthorizationAppleIDProvider()
-        appleIDProvider.getCredentialState(forUserID: "") { (credentialState, error) in
+        appleIDProvider.getCredentialState(forUserID: UserDefaultManager.appleLoginUserId) { (credentialState, error) in
             switch credentialState {
                 case .authorized:
                    print("authorized")
