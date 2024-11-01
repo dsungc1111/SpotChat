@@ -53,6 +53,8 @@
 		8BDC9F8E2CD4719700E94702 /* IQKeyboardManagerSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 8BDC9F8D2CD4719700E94702 /* IQKeyboardManagerSwift */; };
 		8BDC9F902CD476F200E94702 /* StoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDC9F8F2CD476F200E94702 /* StoryCollectionViewCell.swift */; };
 		8BDC9F922CD4771600E94702 /* BaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDC9F912CD4771600E94702 /* BaseCollectionViewCell.swift */; };
+		8BDC9F952CD4CD8C00E94702 /* SignInVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDC9F942CD4CD8C00E94702 /* SignInVC.swift */; };
+		8BDC9F972CD4CE0D00E94702 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDC9F962CD4CE0D00E94702 /* SignInView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -117,6 +119,8 @@
 		8BDC9F8A2CD46CE100E94702 /* AppColorSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColorSet.swift; sourceTree = "<group>"; };
 		8BDC9F8F2CD476F200E94702 /* StoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		8BDC9F912CD4771600E94702 /* BaseCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCollectionViewCell.swift; sourceTree = "<group>"; };
+		8BDC9F942CD4CD8C00E94702 /* SignInVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInVC.swift; sourceTree = "<group>"; };
+		8BDC9F962CD4CE0D00E94702 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -246,6 +250,7 @@
 			children = (
 				8B7F3B7F2CD0CD4E00B6D34C /* OnBoarding */,
 				8B7F3B8C2CD0D01D00B6D34C /* SignUp */,
+				8BDC9F932CD4CD7E00E94702 /* SignIn */,
 				8B7F3BBB2CD45F8A00B6D34C /* TabBar */,
 				8B7F3BBE2CD4608200B6D34C /* Map */,
 				8BDC9F822CD460C400E94702 /* Chat */,
@@ -344,6 +349,15 @@
 				8BDC9F862CD4612E00E94702 /* SettingVC.swift */,
 			);
 			path = Setting;
+			sourceTree = "<group>";
+		};
+		8BDC9F932CD4CD7E00E94702 /* SignIn */ = {
+			isa = PBXGroup;
+			children = (
+				8BDC9F962CD4CE0D00E94702 /* SignInView.swift */,
+				8BDC9F942CD4CD8C00E94702 /* SignInVC.swift */,
+			);
+			path = SignIn;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -499,6 +513,7 @@
 				8B7F3B662CCF9ADE00B6D34C /* NetworkManager.swift in Sources */,
 				8B7424D72CCA5A9600E198C3 /* ViewController.swift in Sources */,
 				8B7424D32CCA5A9600E198C3 /* AppDelegate.swift in Sources */,
+				8BDC9F972CD4CE0D00E94702 /* SignInView.swift in Sources */,
 				8B7F3B6E2CCFA04D00B6D34C /* TargetType.swift in Sources */,
 				8B7F3B702CCFA51400B6D34C /* UserDefaultManager.swift in Sources */,
 				8B7F3BA12CD336CF00B6D34C /* BaseVMProtocol.swift in Sources */,
@@ -519,6 +534,7 @@
 				8BDC9F8B2CD46CE100E94702 /* AppColorSet.swift in Sources */,
 				8B7424D52CCA5A9600E198C3 /* SceneDelegate.swift in Sources */,
 				8BDC9F922CD4771600E94702 /* BaseCollectionViewCell.swift in Sources */,
+				8BDC9F952CD4CD8C00E94702 /* SignInVC.swift in Sources */,
 				8B7F3B8B2CD0CF4D00B6D34C /* SignUpView.swift in Sources */,
 				8B7F3B642CCF846A00B6D34C /* APIKey.swift in Sources */,
 				8B7F3B892CD0CE6E00B6D34C /* UIColor+.swift in Sources */,

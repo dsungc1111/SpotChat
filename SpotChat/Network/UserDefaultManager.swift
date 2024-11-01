@@ -30,6 +30,7 @@ final class UserDefaultManager {
         case access
         case refresh
         case userNickname
+        case userEmail
         case userId
         case profile
         case appleLoginUserId
@@ -50,6 +51,7 @@ final class UserDefaultManager {
     @UserDefault(key: UserDefaultKey.userNickname.rawValue, defaultValue: "")
     static var userNickname
     
+    // 애플, 이메일, 카카오 토큰 넣자
     @UserDefault(key: UserDefaultKey.userId.rawValue, defaultValue: "")
     static var userId
     
@@ -57,9 +59,13 @@ final class UserDefaultManager {
     static var profileImage
     
     
-    @UserDefault(key: UserDefaultKey.appleLoginUserId.rawValue, defaultValue: "")
-    static var appleLoginUserId
+//    @UserDefault(key: UserDefaultKey.appleLoginUserId.rawValue, defaultValue: "")
+//    static var appleLoginUserId
     
-    @UserDefault(key: UserDefaultKey.kakaoToken.rawValue, defaultValue: "")
-    static var kakaoToken
+//    @UserDefault(key: UserDefaultKey.kakaoToken.rawValue, defaultValue: "")
+//    static var kakaoToken
+    
+    @UserDefault(key: UserDefaultKey.userEmail.rawValue, defaultValue: "")
+    static var userEmail
+    
 }

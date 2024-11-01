@@ -49,11 +49,11 @@ final class AuthVC: BaseVC {
             }
             .store(in: &cancellables)
         
-        
         authView.emailLoginBtn.tapPublisher
             .sink { [weak self] _ in
                 guard let self else { return }
-                kakaoAuthVM.kakaoLogout()
+                let vc = SignInVC()
+                present(vc, animated: true)
             }
             .store(in: &cancellables)
         

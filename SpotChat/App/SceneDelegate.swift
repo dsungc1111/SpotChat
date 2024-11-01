@@ -27,32 +27,44 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let scene  = (scene as? UIWindowScene) else { return }
         
         let appleIDProvider = ASAuthorizationAppleIDProvider()
-        appleIDProvider.getCredentialState(forUserID: UserDefaultManager.appleLoginUserId) { (credentialState, error) in
+        appleIDProvider.getCredentialState(forUserID: "") { [weak self] (credentialState, error) in
+            
+            guard let self else { return }
+            
             switch credentialState {
                 case .authorized:
                    print("authorized")
                    // The Apple ID credential is valid.
                    DispatchQueue.main.async {
                      //authorized된 상태이므로 바로 로그인 완료 화면으로 이동
-                     self.window?.rootViewController = TabBarVC()
+                       self.window?.rootViewController = TabBarVC()
+                       self.window?.makeKeyAndVisible()
                    }
                 case .revoked:
                    print("revoked")
                 case .notFound:
-                   // The Apple ID credential is either revoked or was not found, so show the sign-in UI.
-                   print("notFound")
-                       
-                default:
-                    break
+                
+                print("notFound")
+                DispatchQueue.main.async {
+                    self.window = UIWindow(windowScene: scene)
+                    if UserDefaultManager.userId.isEmpty {
+                        
+                        let vc = OnBoardingVC()
+                        self.window?.rootViewController = UINavigationController(rootViewController: vc)
+                        self.window?.makeKeyAndVisible()
+                    } else {
+                        let vc = TabBarVC()
+                        self.window?.rootViewController = vc
+                        self.window?.makeKeyAndVisible()
+                    }
+                }
+            default:
+                break
             }
         }
         
         
-        window = UIWindow(windowScene: scene)
         
-        let vc = OnBoardingVC()
-        window?.rootViewController = UINavigationController(rootViewController: vc)
-        window?.makeKeyAndVisible()
                 
                 
     }

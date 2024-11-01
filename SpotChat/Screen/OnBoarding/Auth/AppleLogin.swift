@@ -62,13 +62,14 @@ extension AuthVC: ASAuthorizationControllerPresentationContextProviding {
             print("authorizationCode: \(authorizationCode!)")
             //eotjd0818@naver.com
             //대성 최
-            UserDefaultManager.appleLoginUserId = userIdentifier
+            UserDefaultManager.userId = userIdentifier
             print("idToken", idToken)
-            UserDefaultManager.userNickname = fullName?.givenName ?? "" + (fullName?.familyName ?? "")
+            UserDefaultManager.userNickname = fullName?.givenName ?? "킷캣" + (fullName?.familyName ?? "")
             
-            let applLoginQuery = AppleLgoinQuery(idToken: idToken, nick: UserDefaultManager.userNickname)
+            let appleLoginQuery = AppleLgoinQuery(idToken: idToken, nick: UserDefaultManager.userNickname)
+            print(appleLoginQuery)
             print("여기는 아이디 관련?")
-            NetworkManager.shared.performRequest(router: .appleLogin(query: applLoginQuery), responseType: AuthModel.self) { result in
+            NetworkManager.shared.performRequest(router: .appleLogin(query: appleLoginQuery), responseType: AppleLoginModel.self) { result in
                 print("결과 가져와서~")
                 switch result {
                 case .success(let success):
@@ -77,7 +78,6 @@ extension AuthVC: ASAuthorizationControllerPresentationContextProviding {
                     print(failure)
                 }
             }
-//            
             
             let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
             
@@ -116,7 +116,7 @@ extension AuthVC: ASAuthorizationControllerPresentationContextProviding {
             let sceneDelegate = windowScene?.delegate as? SceneDelegate
             
             
-            let vc = UINavigationController(rootViewController: MapVC())
+            let vc = UINavigationController(rootViewController: TabBarVC())
             sceneDelegate?.window?.rootViewController = vc
             sceneDelegate?.window?.makeKeyAndVisible()
             

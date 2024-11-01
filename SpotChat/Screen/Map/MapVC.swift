@@ -18,20 +18,20 @@ final class MapVC: BaseVC, UICollectionViewDelegateFlowLayout {
     
     @Published private var story = [1, 2, 3, 4, 5]
     
+   
+    
     override func loadView() {
         view = mapView
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        navigationController?.navigationBar.isHidden = true
-        
+        print("맵VCVCVC")
         bindStoryToCollectionView()
+        
     }
-    
+ 
     private func bindStoryToCollectionView() {
-        // story 배열의 변경 사항을 구독하여 collection view의 데이터를 리로드
         $story
             .receive(on: RunLoop.main)
             .sink { [weak self] _ in

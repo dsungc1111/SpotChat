@@ -48,12 +48,15 @@ final class KakaoAuthVM: ObservableObject {
             
             print("🔫🔫🔫앱로그인")
             UserApi.shared.loginWithKakaoTalk { (oauthToken, error) in
-                
-                if let error = error { print(error); continuation.resume(returning: false) }
+                print("실행할거야")
+                if let error = error { 
+                    print(error)
+                    print("실행할거야에러야에러야")
+                    continuation.resume(returning: false) }
                 else {
-                    UserDefaultManager.kakaoToken = oauthToken!.accessToken
+                    UserDefaultManager.userId = oauthToken!.accessToken
                     continuation.resume(returning: true)
-                    let kakao = KakaoLoginQuery(oauthToken: UserDefaultManager.kakaoToken)
+                    let kakao = KakaoLoginQuery(oauthToken: UserDefaultManager.userId)
                     print("카카오 쿼리 받아서 넘겨줄거야")
                     NetworkManager.shared.performRequest(router: .kakaoLogin(query: kakao), responseType: AuthModel.self) { result in
                         switch result {
@@ -76,7 +79,7 @@ final class KakaoAuthVM: ObservableObject {
             UserApi.shared.loginWithKakaoAccount { (oauthToken, error) in
                 if let error = error { print(error); continuation.resume(returning: false) }
                 else {
-                    UserDefaultManager.kakaoToken = oauthToken!.accessToken
+                    UserDefaultManager.userId = oauthToken!.accessToken
                     continuation.resume(returning: true)
                 }
             }

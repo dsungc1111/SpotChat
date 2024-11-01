@@ -25,7 +25,7 @@ final class ChatVC: BaseVC {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("chatVC")
+        
         setup()
         for _ in 0...6 {
             images.append(UIImage(systemName: "person")!)
@@ -48,12 +48,8 @@ final class ChatVC: BaseVC {
             make.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(30)
             make.height.equalTo(70)
         }
-        
-        
     }
-    
 }
-
 extension ChatVC: UICollectionViewDataSource, UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
