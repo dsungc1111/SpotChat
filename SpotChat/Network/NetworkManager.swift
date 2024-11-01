@@ -14,7 +14,7 @@ final class NetworkManager {
     static let shared = NetworkManager()
     
     func performRequest<T: Codable>(router: Router, responseType: T.Type, completion: @escaping (Result<T, Error>) -> Void) {
-        
+        print("네트워크 메서드 실행")
         guard let request = router.makeRequest() else {
             print("url 에러임")
             return
@@ -33,6 +33,7 @@ final class NetworkManager {
                 if 200..<300 ~= httpResponse.statusCode {
                     // 성공적인 응답이므로 원하는 동작 수행
                     do {
+                        print("👍응답성공")
                         let decodedResponse = try JSONDecoder().decode(responseType, from: data)
                         completion(.success(decodedResponse))
                     } catch {

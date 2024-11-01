@@ -45,6 +45,9 @@
 		8B7F3BB42CD3967900B6D34C /* KakaoSDKCertCore in Frameworks */ = {isa = PBXBuildFile; productRef = 8B7F3BB32CD3967900B6D34C /* KakaoSDKCertCore */; };
 		8B7F3BB62CD3967900B6D34C /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = 8B7F3BB52CD3967900B6D34C /* KakaoSDKCommon */; };
 		8B7F3BB92CD3AF0D00B6D34C /* KakaoAuthVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7F3BB82CD3AF0D00B6D34C /* KakaoAuthVM.swift */; };
+		8B7F3BBD2CD45FA300B6D34C /* TabBarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7F3BBC2CD45FA300B6D34C /* TabBarVC.swift */; };
+		8BDC9F842CD460D400E94702 /* ChatVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDC9F832CD460D400E94702 /* ChatVC.swift */; };
+		8BDC9F872CD4612E00E94702 /* SettingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDC9F862CD4612E00E94702 /* SettingVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -102,6 +105,9 @@
 		8B7F3BA22CD37DE900B6D34C /* AppleLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLogin.swift; sourceTree = "<group>"; };
 		8B7F3BB82CD3AF0D00B6D34C /* KakaoAuthVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoAuthVM.swift; sourceTree = "<group>"; };
 		8B7F3BBA2CD3B8A800B6D34C /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		8B7F3BBC2CD45FA300B6D34C /* TabBarVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarVC.swift; sourceTree = "<group>"; };
+		8BDC9F832CD460D400E94702 /* ChatVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatVC.swift; sourceTree = "<group>"; };
+		8BDC9F862CD4612E00E94702 /* SettingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -229,7 +235,10 @@
 			children = (
 				8B7F3B7F2CD0CD4E00B6D34C /* OnBoarding */,
 				8B7F3B8C2CD0D01D00B6D34C /* SignUp */,
-				8B7F3B992CD1130600B6D34C /* MapVC.swift */,
+				8B7F3BBB2CD45F8A00B6D34C /* TabBar */,
+				8B7F3BBE2CD4608200B6D34C /* Map */,
+				8BDC9F822CD460C400E94702 /* Chat */,
+				8BDC9F852CD4611B00E94702 /* Setting */,
 			);
 			path = Screen;
 			sourceTree = "<group>";
@@ -289,6 +298,38 @@
 				8B7F3BB82CD3AF0D00B6D34C /* KakaoAuthVM.swift */,
 			);
 			path = Auth;
+			sourceTree = "<group>";
+		};
+		8B7F3BBB2CD45F8A00B6D34C /* TabBar */ = {
+			isa = PBXGroup;
+			children = (
+				8B7F3BBC2CD45FA300B6D34C /* TabBarVC.swift */,
+			);
+			path = TabBar;
+			sourceTree = "<group>";
+		};
+		8B7F3BBE2CD4608200B6D34C /* Map */ = {
+			isa = PBXGroup;
+			children = (
+				8B7F3B992CD1130600B6D34C /* MapVC.swift */,
+			);
+			path = Map;
+			sourceTree = "<group>";
+		};
+		8BDC9F822CD460C400E94702 /* Chat */ = {
+			isa = PBXGroup;
+			children = (
+				8BDC9F832CD460D400E94702 /* ChatVC.swift */,
+			);
+			path = Chat;
+			sourceTree = "<group>";
+		};
+		8BDC9F852CD4611B00E94702 /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+				8BDC9F862CD4612E00E94702 /* SettingVC.swift */,
+			);
+			path = Setting;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -437,6 +478,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8B7F3B9F2CD336AC00B6D34C /* SignUpVM.swift in Sources */,
+				8BDC9F872CD4612E00E94702 /* SettingVC.swift in Sources */,
 				8B7F3B902CD0D32500B6D34C /* AuthVC.swift in Sources */,
 				8B7F3B662CCF9ADE00B6D34C /* NetworkManager.swift in Sources */,
 				8B7424D72CCA5A9600E198C3 /* ViewController.swift in Sources */,
@@ -444,6 +486,7 @@
 				8B7F3B6E2CCFA04D00B6D34C /* TargetType.swift in Sources */,
 				8B7F3B702CCFA51400B6D34C /* UserDefaultManager.swift in Sources */,
 				8B7F3BA12CD336CF00B6D34C /* BaseVMProtocol.swift in Sources */,
+				8B7F3BBD2CD45FA300B6D34C /* TabBarVC.swift in Sources */,
 				8B7F3B812CD0CD5F00B6D34C /* OnBoardingVC.swift in Sources */,
 				8B7F3B6A2CCF9D1B00B6D34C /* URLComponent.swift in Sources */,
 				8B7F3B942CD0FC6500B6D34C /* SignUpVC.swift in Sources */,
@@ -453,6 +496,7 @@
 				8B7F3B732CCFAA9400B6D34C /* ResponseModel.swift in Sources */,
 				8B7F3B972CD0FF3900B6D34C /* CustomSignTextField.swift in Sources */,
 				8B7F3B7D2CD0C09D00B6D34C /* NetworkError.swift in Sources */,
+				8BDC9F842CD460D400E94702 /* ChatVC.swift in Sources */,
 				8B7F3B862CD0CDBB00B6D34C /* BaseView.swift in Sources */,
 				8B7424D52CCA5A9600E198C3 /* SceneDelegate.swift in Sources */,
 				8B7F3B8B2CD0CF4D00B6D34C /* SignUpView.swift in Sources */,

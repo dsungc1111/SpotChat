@@ -55,7 +55,7 @@ extension AuthVC: ASAuthorizationControllerPresentationContextProviding {
             
             print("Apple ID 로그인에 성공하였습니다.")
             print("사용자 ID: \(userIdentifier)")
-            print("전체 이름: \(fullName?.givenName ?? "") \(fullName?.familyName ?? "")")
+            print("전체 이름: \(fullName?.givenName ?? "")\(fullName?.familyName ?? "")")
             print("이메일: \(email ?? "")")
             print("Token: \(identityToken!)")
             let idToken = String(data: identityToken!, encoding: .utf8)!
@@ -63,9 +63,11 @@ extension AuthVC: ASAuthorizationControllerPresentationContextProviding {
             //eotjd0818@naver.com
             //대성 최
             UserDefaultManager.appleLoginUserId = userIdentifier
+            print("idToken", idToken)
+            UserDefaultManager.userNickname = fullName?.givenName ?? "" + (fullName?.familyName ?? "")
             
-            let applLoginQuery = AppleLgoinQuery(idToken: idToken, nick: "000376.49686746cdae49329623afae267791ed.1253")
-            print("여기는?")
+            let applLoginQuery = AppleLgoinQuery(idToken: idToken, nick: UserDefaultManager.userNickname)
+            print("여기는 아이디 관련?")
             NetworkManager.shared.performRequest(router: .appleLogin(query: applLoginQuery), responseType: AuthModel.self) { result in
                 print("결과 가져와서~")
                 switch result {
@@ -75,14 +77,14 @@ extension AuthVC: ASAuthorizationControllerPresentationContextProviding {
                     print(failure)
                 }
             }
-            
+//            
             
             let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
             
             let sceneDelegate = windowScene?.delegate as? SceneDelegate
             
             
-            let vc = UINavigationController(rootViewController: MapVC())
+            let vc = UINavigationController(rootViewController: TabBarVC())
             sceneDelegate?.window?.rootViewController = vc
             sceneDelegate?.window?.makeKeyAndVisible()
             
@@ -90,22 +92,24 @@ extension AuthVC: ASAuthorizationControllerPresentationContextProviding {
         case let passwordCredential as ASPasswordCredential:
             let userIdentifier = passwordCredential.user
             let password = passwordCredential.password
+            
+            print("🔫🔫🔫🔫패스워드🔫🔫🔫🔫")
             print("사용자: \(userIdentifier)")
             print("비밀번호: \(password)")
             
-            UserDefaultManager.appleLoginUserId = userIdentifier
-            
-            let applLoginQuery = AppleLgoinQuery(idToken: "eotjd0818@naver.com", nick: "스탠리")
-            print("여기는?")
-            NetworkManager.shared.performRequest(router: .appleLogin(query: applLoginQuery), responseType: AuthModel.self) { result in
-                print("결과 가져와서~")
-                switch result {
-                case .success(let success):
-                    print(success)
-                case .failure(let failure):
-                    print(failure)
-                }
-            }
+//            UserDefaultManager.appleLoginUserId = userIdentifier
+//            
+//            let applLoginQuery = AppleLgoinQuery(idToken: "eotjd0818@naver.com", nick: "킷캣")
+//            print("여기는?")
+//            NetworkManager.shared.performRequest(router: .appleLogin(query: applLoginQuery), responseType: AuthModel.self) { result in
+//                print("결과 가져와서~")
+//                switch result {
+//                case .success(let success):
+//                    print(success)
+//                case .failure(let failure):
+//                    print(failure)
+//                }
+//            }
             
             let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
             

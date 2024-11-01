@@ -14,7 +14,6 @@ final class MapVC: BaseVC {
         super.viewDidLoad()
         
         
-        view.backgroundColor = .red
     }
     
 }

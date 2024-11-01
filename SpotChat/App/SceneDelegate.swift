@@ -34,7 +34,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                    // The Apple ID credential is valid.
                    DispatchQueue.main.async {
                      //authorized된 상태이므로 바로 로그인 완료 화면으로 이동
-                     self.window?.rootViewController = MapVC()
+                     self.window?.rootViewController = TabBarVC()
                    }
                 case .revoked:
                    print("revoked")

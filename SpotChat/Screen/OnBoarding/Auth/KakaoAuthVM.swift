@@ -45,6 +45,8 @@ final class KakaoAuthVM: ObservableObject {
     func kakaoSignInWithApp() async -> Bool {
         
         await withCheckedContinuation { continuation in
+            
+            print("🔫🔫🔫앱로그인")
             UserApi.shared.loginWithKakaoTalk { (oauthToken, error) in
                 
                 if let error = error { print(error); continuation.resume(returning: false) }
@@ -52,6 +54,7 @@ final class KakaoAuthVM: ObservableObject {
                     UserDefaultManager.kakaoToken = oauthToken!.accessToken
                     continuation.resume(returning: true)
                     let kakao = KakaoLoginQuery(oauthToken: UserDefaultManager.kakaoToken)
+                    print("카카오 쿼리 받아서 넘겨줄거야")
                     NetworkManager.shared.performRequest(router: .kakaoLogin(query: kakao), responseType: AuthModel.self) { result in
                         switch result {
                         case .success(let success):
@@ -79,9 +82,6 @@ final class KakaoAuthVM: ObservableObject {
             }
         }
     }
-    
-   
-    
      
     func handleKakaoLogout() async -> Bool {
         

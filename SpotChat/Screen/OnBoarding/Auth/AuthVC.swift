@@ -53,10 +53,7 @@ final class AuthVC: BaseVC {
         authView.emailLoginBtn.tapPublisher
             .sink { [weak self] _ in
                 guard let self else { return }
-                print("fdfdfd")
-                let vc = SignUpVC()
-                vc.sheetPresentationController?.prefersGrabberVisible = true
-                present(vc, animated: true)
+                kakaoAuthVM.kakaoLogout()
             }
             .store(in: &cancellables)
         

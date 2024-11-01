@@ -51,22 +51,26 @@ final class AuthView: BaseView {
     override func configureLayout() {
         appleLoginBtn.snp.makeConstraints { make in
             make.top.equalTo(safeAreaLayoutGuide).inset(20)
-            make.horizontalEdges.equalTo(safeAreaLayoutGuide).inset(20)
+            make.centerX.equalTo(safeAreaLayoutGuide)
+            make.width.equalTo(375)
             make.height.equalTo(50)
         }
         kakaoLoginBtn.snp.makeConstraints { make in
             make.top.equalTo(appleLoginBtn.snp.bottom).offset(10)
-            make.horizontalEdges.equalTo(safeAreaLayoutGuide).inset(20)
+            make.centerX.equalTo(safeAreaLayoutGuide)
+            make.width.equalTo(375)
             make.height.equalTo(50)
         }
         emailLoginBtn.snp.makeConstraints { make in
             make.top.equalTo(kakaoLoginBtn.snp.bottom).offset(10)
-            make.horizontalEdges.equalTo(safeAreaLayoutGuide).inset(20)
+            make.centerX.equalTo(safeAreaLayoutGuide)
+            make.width.equalTo(375)
             make.height.equalTo(50)
         }
         signinBtn.snp.makeConstraints { make in
             make.top.equalTo(emailLoginBtn.snp.bottom).offset(10)
-            make.horizontalEdges.equalTo(safeAreaLayoutGuide).inset(20)
+            make.centerX.equalTo(safeAreaLayoutGuide)
+            make.width.equalTo(375)
             make.height.equalTo(50)
         }
     }
