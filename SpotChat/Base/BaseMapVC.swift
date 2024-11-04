@@ -11,23 +11,33 @@ import SnapKit
 
 class BaseMapVC: UIViewController, MapControllerDelegate {
     
+    private let mapView = MapView()
+    
     deinit {
+        print("deinit!")
         mapController?.pauseEngine()
         mapController?.resetEngine()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         //KMController 생성.
         mapController = KMController(viewContainer: mapContainer)
         mapController!.delegate = self
-        
+        let ac = UIView()
+        ac.backgroundColor = .red
         view.addSubview(mapContainer)
+        mapContainer.addSubview(mapView)
         mapContainer.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
+        mapView.snp.makeConstraints {
+            $0.top.horizontalEdges.equalTo(view.safeAreaLayoutGuide)
+            $0.height.equalTo(80)
+        }
+        bind()
     }
+    func bind() {}
 
     override func viewWillAppear(_ animated: Bool) {
         addObservers()
@@ -44,7 +54,7 @@ class BaseMapVC: UIViewController, MapControllerDelegate {
     
     override func viewDidAppear(_ animated: Bool) {
         if let view = mapController?.getView("mapview") as? KakaoMap {
-            let cameraUpdate = CameraUpdate.make(target: MapPoint(longitude: 126.964286, latitude: 37.529744), zoomLevel: 11, rotation: 0.0, tilt: 0.0, mapView: view)
+            let cameraUpdate = CameraUpdate.make(target: MapPoint(longitude: 128.9072, latitude: 37.7918), zoomLevel: 11, rotation: 0.0, tilt: 0.0, mapView: view)
             view.moveCamera(cameraUpdate)
         }
     }
@@ -54,10 +64,11 @@ class BaseMapVC: UIViewController, MapControllerDelegate {
         mapController?.pauseEngine()
     }
 
-    override func viewDidDisappear(_ animated: Bool) {
-        removeObservers()
-        mapController?.resetEngine()
-    }
+//    override func viewDidDisappear(_ animated: Bool) {
+//        print("없어지긴해!")
+//        removeObservers()
+//        mapController?.resetEngine()
+//    }
     
     func authenticationSucceeded() {
         
@@ -103,7 +114,7 @@ class BaseMapVC: UIViewController, MapControllerDelegate {
     
     func addViews() {
         //여기에서 그릴 View(KakaoMap, Roadview)들을 추가한다.
-        let defaultPosition: MapPoint = MapPoint(longitude: 127.108678, latitude: 37.402001)
+        let defaultPosition: MapPoint = MapPoint(longitude: 128.9072, latitude: 37.7918)
         //지도(KakaoMap)를 그리기 위한 viewInfo를 생성
         let mapviewInfo: MapviewInfo = MapviewInfo(viewName: "mapview", viewInfoName: "map", defaultPosition: defaultPosition, defaultLevel: 6)
         //KakaoMap 추가.
@@ -114,7 +125,7 @@ class BaseMapVC: UIViewController, MapControllerDelegate {
         print("OK")
     }
     
-    //view hierarchy 상 KMViewContainer 의 child view 까지 resize가 잘 수행됐는지, containerResized delegate에서 수정된 사이즈로 kakaomap 의 크기가 잘 지정됐는지 확인해 보시기 바랍니다.
+    //(카카오)view hierarchy 상 KMViewContainer 의 child view 까지 resize가 잘 수행됐는지, containerResized delegate에서 수정된 사이즈로 kakaomap 의 크기가 잘 지정됐는지 확인해 보시기 바랍니다.
     //addView 성공 이벤트 delegate. 추가적으로 수행할 작업을 진행한다.
     func addViewSucceeded(_ viewName: String, viewInfoName: String) {
         print("뷰 추가 성공")

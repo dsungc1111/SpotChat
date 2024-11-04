@@ -50,7 +50,7 @@ final class MapView: BaseView {
     override func configureHierarchy() {
         storyCollectionView.backgroundColor = .clear
         storyCollectionView.register(StoryCollectionViewCell.self, forCellWithReuseIdentifier: StoryCollectionViewCell.identifier)
-        
+        backgroundColor = .clear
         addSubview(myPinBtn)
         addSubview(searchBar)
         addSubview(radiusSetBtn)
