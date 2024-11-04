@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		8B2A753F2CD89F9C000C6162 /* BaseMapVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2A753E2CD89F9C000C6162 /* BaseMapVC.swift */; };
+		8B2A75422CD8BBAC000C6162 /* PostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2A75412CD8BBAC000C6162 /* PostView.swift */; };
+		8B2A75442CD8BBB2000C6162 /* PostVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2A75432CD8BBB2000C6162 /* PostVC.swift */; };
+		8B2A75462CD8D915000C6162 /* PostVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2A75452CD8D915000C6162 /* PostVM.swift */; };
 		8B3437352CD75A12003B3104 /* KakaoMapsSDK-SPM in Frameworks */ = {isa = PBXBuildFile; productRef = 8B3437342CD75A12003B3104 /* KakaoMapsSDK-SPM */; };
 		8B3437382CD76CD3003B3104 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3437372CD76CD3003B3104 /* OpenGLES.framework */; };
 		8B34373A2CD76CDE003B3104 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3437392CD76CDE003B3104 /* SystemConfiguration.framework */; };
@@ -85,6 +88,9 @@
 
 /* Begin PBXFileReference section */
 		8B2A753E2CD89F9C000C6162 /* BaseMapVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseMapVC.swift; sourceTree = "<group>"; };
+		8B2A75412CD8BBAC000C6162 /* PostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostView.swift; sourceTree = "<group>"; };
+		8B2A75432CD8BBB2000C6162 /* PostVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostVC.swift; sourceTree = "<group>"; };
+		8B2A75452CD8D915000C6162 /* PostVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostVM.swift; sourceTree = "<group>"; };
 		8B3437372CD76CD3003B3104 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		8B3437392CD76CDE003B3104 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		8B34373B2CD76CED003B3104 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -181,6 +187,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8B2A75402CD8BB9E000C6162 /* Post */ = {
+			isa = PBXGroup;
+			children = (
+				8B2A75412CD8BBAC000C6162 /* PostView.swift */,
+				8B2A75432CD8BBB2000C6162 /* PostVC.swift */,
+				8B2A75452CD8D915000C6162 /* PostVM.swift */,
+			);
+			path = Post;
+			sourceTree = "<group>";
+		};
 		8B3437362CD76CD3003B3104 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -294,6 +310,7 @@
 				8B7F3BBB2CD45F8A00B6D34C /* TabBar */,
 				8B7F3BBE2CD4608200B6D34C /* Map */,
 				8BDC9F822CD460C400E94702 /* Chat */,
+				8B2A75402CD8BB9E000C6162 /* Post */,
 				8BDC9F852CD4611B00E94702 /* Setting */,
 			);
 			path = Screen;
@@ -572,7 +589,9 @@
 				8B7F3B8E2CD0D19700B6D34C /* OnBoardingView.swift in Sources */,
 				8B7F3B732CCFAA9400B6D34C /* ResponseModel.swift in Sources */,
 				8B7F3B972CD0FF3900B6D34C /* CustomSignTextField.swift in Sources */,
+				8B2A75442CD8BBB2000C6162 /* PostVC.swift in Sources */,
 				8B7F3B7D2CD0C09D00B6D34C /* NetworkError.swift in Sources */,
+				8B2A75462CD8D915000C6162 /* PostVM.swift in Sources */,
 				8BDC9F842CD460D400E94702 /* ChatVC.swift in Sources */,
 				8B7F3B862CD0CDBB00B6D34C /* BaseView.swift in Sources */,
 				8BDC9F8B2CD46CE100E94702 /* AppColorSet.swift in Sources */,
@@ -584,6 +603,7 @@
 				8B7F3B892CD0CE6E00B6D34C /* UIColor+.swift in Sources */,
 				8B7F3BA32CD37DE900B6D34C /* AppleLogin.swift in Sources */,
 				8B7F3BB92CD3AF0D00B6D34C /* KakaoAuthVM.swift in Sources */,
+				8B2A75422CD8BBAC000C6162 /* PostView.swift in Sources */,
 				8B7F3B9A2CD1130600B6D34C /* MapVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

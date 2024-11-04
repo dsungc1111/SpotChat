@@ -20,6 +20,7 @@ final class TabBarVC: UITabBarController {
         
         let mapVC = MapVC()
         let chatVC =  ChatVC()
+        let postVC = PostVC()
         let settingVC = SettingVC()
         
         chatVC.tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: "message"), selectedImage: UIImage(systemName: "message.fill"))
@@ -28,10 +29,13 @@ final class TabBarVC: UITabBarController {
         mapVC.tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: "map"), selectedImage: UIImage(systemName: "map.fill"))
         mapVC.tabBarItem.tag = 1
         
-        settingVC.tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: "person"), selectedImage: UIImage(systemName: "person.fill"))
-        settingVC.tabBarItem.tag = 2
+        postVC.tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: "pencil.tip.crop.circle"), selectedImage: UIImage(systemName: "pencil.tip.crop.circle.fill"))
+        postVC.tabBarItem.tag = 2
         
-        setViewControllers([chatVC, mapVC, settingVC], animated: true)
+        settingVC.tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: "person"), selectedImage: UIImage(systemName: "person.fill"))
+        settingVC.tabBarItem.tag = 3
+        
+        setViewControllers([chatVC, mapVC, postVC, settingVC], animated: true)
         
         self.tabBar.unselectedItemTintColor = .white
         self.tabBar.tintColor = AppColorSet.keyColor
