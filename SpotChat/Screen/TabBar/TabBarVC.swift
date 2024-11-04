@@ -9,11 +9,8 @@ import UIKit
 
 final class TabBarVC: UITabBarController {
     
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("탭바탭바")
         navigationController?.navigationBar.isHidden = true
         setTabBar()
         
@@ -23,7 +20,7 @@ final class TabBarVC: UITabBarController {
         
         let mapVC = MapVC()
         let chatVC =  ChatVC()
-        let settingVC =  SettingVC()
+        let settingVC = SettingVC()
         
         chatVC.tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: "message"), selectedImage: UIImage(systemName: "message.fill"))
         chatVC.tabBarItem.tag = 0

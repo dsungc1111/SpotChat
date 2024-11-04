@@ -21,6 +21,7 @@ final class MapView: BaseView {
         let search = UISearchBar()
         search.placeholder = "검색하세요."
         search.clipsToBounds = true
+        search.backgroundColor = .white
         search.layer.cornerRadius = 20
         return search
     }()
@@ -38,9 +39,8 @@ final class MapView: BaseView {
         let layout = UICollectionViewFlowLayout()
         let sectionSpacing: CGFloat = 10
         let cellSpacing: CGFloat = 10
-//        let width = UIScreen.main.bounds.width
-        layout.scrollDirection = .vertical
-        layout.itemSize = CGSize(width: 90, height: 90)
+        layout.scrollDirection = .horizontal
+        layout.itemSize = CGSize(width: 80, height: 100)
         layout.minimumInteritemSpacing = cellSpacing
         layout.minimumLineSpacing = cellSpacing
         layout.sectionInset = UIEdgeInsets(top: sectionSpacing, left: sectionSpacing, bottom: sectionSpacing, right: sectionSpacing)
@@ -48,7 +48,9 @@ final class MapView: BaseView {
     }
     
     override func configureHierarchy() {
+        storyCollectionView.backgroundColor = .clear
         storyCollectionView.register(StoryCollectionViewCell.self, forCellWithReuseIdentifier: StoryCollectionViewCell.identifier)
+        
         addSubview(myPinBtn)
         addSubview(searchBar)
         addSubview(radiusSetBtn)
@@ -73,12 +75,9 @@ final class MapView: BaseView {
         }
         storyCollectionView.snp.makeConstraints { make in
             make.top.equalTo(searchBar.snp.bottom).offset(10)
-            make.horizontalEdges.equalTo(safeAreaLayoutGuide).inset(10)
-            make.height.equalTo(100)
+            make.horizontalEdges.equalTo(safeAreaLayoutGuide).inset(5)
+            make.height.equalTo(140)
         }
-        storyCollectionView.backgroundColor = .brown
     }
 
-    
-    
 }

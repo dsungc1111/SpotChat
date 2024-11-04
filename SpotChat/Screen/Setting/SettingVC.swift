@@ -18,6 +18,8 @@ final class SettingVC: BaseVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        print("세팅뷰")
+        
     }
     override func viewWillDisappear(_ animated: Bool) {
         navigationController?.navigationBar.isHidden = true

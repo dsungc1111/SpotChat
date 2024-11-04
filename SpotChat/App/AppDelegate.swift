@@ -10,6 +10,7 @@ import AuthenticationServices
 import KakaoSDKCommon
 import KakaoSDKAuth
 import IQKeyboardManagerSwift
+import KakaoMapsSDK
 
 
 @main
@@ -32,7 +33,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         IQKeyboardManager.shared.resignOnTouchOutside = true
         
         print("네이티브 앱키", nativeAppKey)
-        KakaoSDK.initSDK(appKey: APIKey.kakaoKEY)
+        KakaoSDK.initSDK(appKey: nativeAppKey as! String)
+        SDKInitializer.InitSDK(appKey: nativeAppKey as! String)
         
         return true
     }

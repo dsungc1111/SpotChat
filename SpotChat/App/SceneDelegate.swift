@@ -27,7 +27,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let scene  = (scene as? UIWindowScene) else { return }
         
         let appleIDProvider = ASAuthorizationAppleIDProvider()
-        appleIDProvider.getCredentialState(forUserID: "") { [weak self] (credentialState, error) in
+        appleIDProvider.getCredentialState(forUserID: UserDefaultManager.userId) { [weak self] (credentialState, error) in
             
             guard let self else { return }
             
@@ -41,10 +41,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                        self.window?.makeKeyAndVisible()
                    }
                 case .revoked:
-                   print("revoked")
+                   print("애플 revoked")
                 case .notFound:
-                
-                print("notFound")
+//                UserDefaultManager.userId = ""
+                print("애플 notFound")
                 DispatchQueue.main.async {
                     self.window = UIWindow(windowScene: scene)
                     if UserDefaultManager.userId.isEmpty {

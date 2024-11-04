@@ -3,67 +3,51 @@
 //  SpotChat
 //
 //  Created by 최대성 on 11/1/24.
-//
 
 import UIKit
-import Combine
-import SnapKit
+import KakaoMapsSDK
 
-final class ChatVC: BaseVC {
+
+
+final class ChatVC: BaseMapVC {
     
-    private var images: [UIImage] = []
     
-    private let collectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
+    init() {
         
-        let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        view.backgroundColor = .systemCyan
-        view.register(StoryCollectionViewCell.self, forCellWithReuseIdentifier: StoryCollectionViewCell.identifier)
-        return view
-    }()
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        setup()
-        for _ in 0...6 {
-            images.append(UIImage(systemName: "person")!)
-            images.append(UIImage(systemName: "person")!)
-            images.append(UIImage(systemName: "person")!)
-            images.append(UIImage(systemName: "person")!)
-        }
-        
-        collectionView.dataSource = self
-        collectionView.delegate = self
+        super.init(nibName: nil, bundle: nil)
     }
     
-    func setup() {
-        
-        view.addSubview(collectionView)
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        
-        collectionView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).inset(20)
-            make.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(30)
-            make.height.equalTo(70)
-        }
-    }
-}
-extension ChatVC: UICollectionViewDataSource, UICollectionViewDelegate {
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return images.count
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: StoryCollectionViewCell.identifier, for: indexPath) as? StoryCollectionViewCell else { return StoryCollectionViewCell() }
+    override func addViews() {
+        let defaultPosition: MapPoint = MapPoint(longitude: 126.964286, latitude: 37.529744)
+        let mapviewInfo: MapviewInfo = MapviewInfo(viewName: "mapview", viewInfoName: "map", defaultPosition: defaultPosition, defaultLevel: 6)
         
-        let image = images[indexPath.row]
-        cell.storyCircleBtn.setImage(image, for: .normal)
-        
-        return cell
+        mapController?.addView(mapviewInfo)
     }
     
+    override func viewInit(viewName: String) {
+        createLodLabelLayer()
+        
+    }
+    
+    func createLodLabelLayer() {
+        let view = mapController?.getView("mapview") as! KakaoMap
+        let manager = view.getLabelManager()
+    
+        let custom = LodLabelLayerOptions(layerID: "custom", competitionType: .sameLower, competitionUnit: .symbolFirst, orderType: .rank, zOrder: 10000, radius: _radius)
+        
+        let _ = manager.addLodLabelLayer(option: custom)
+    }
+    
+    
+    override func containerDidResized(_ size: CGSize) {
+        let mapView: KakaoMap? = mapController?.getView("mapview") as? KakaoMap
+        mapView?.viewRect = CGRect(origin: CGPoint(x: 0.0, y: 0.0), size: size)
+    }
+    
+    var _radius: Float = 20.0
     
 }
