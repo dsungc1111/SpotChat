@@ -19,6 +19,8 @@ enum Router {
     case appleLogin(query: AppleLgoinQuery)
     case kakaoLogin(query: KakaoLoginQuery)
     case login(query: LoginQuery)
+    case newPost(query: PostQuery)
+    case newPostImage(qeury: PostImageQuery)
 }
 
 
@@ -29,7 +31,7 @@ extension Router: TargetType {
     
     var method: String {
         switch self {
-        case .emailValidation, .signin, .appleLogin, .kakaoLogin, .login:
+        case .emailValidation, .signin, .appleLogin, .kakaoLogin, .login, .newPost, .newPostImage:
             return "POST"
         }
     }
@@ -46,6 +48,10 @@ extension Router: TargetType {
             return "users/login/kakao"
         case .login:
             return "users/login"
+        case .newPost:
+            return "posts"
+        case .newPostImage:
+            return "posts/files"
         }
     }
     
@@ -61,6 +67,15 @@ extension Router: TargetType {
                 APIKey.HTTPHeaderName.sesacKey.rawValue : APIKey.developerKey,
                 APIKey.HTTPHeaderName.contentType.rawValue : APIKey.HTTPHeaderName.json.rawValue,
                 APIKey.HTTPHeaderName.productID.rawValue : APIKey.HTTPHeaderName.productIDContent.rawValue
+            ]
+            
+        case .newPost, .newPostImage:
+            return [
+                APIKey.HTTPHeaderName.sesacKey.rawValue : APIKey.developerKey,
+                APIKey.HTTPHeaderName.contentType.rawValue : APIKey.HTTPHeaderName.json.rawValue,
+                APIKey.HTTPHeaderName.productID.rawValue : APIKey.HTTPHeaderName.productIDContent.rawValue,
+                APIKey.HTTPHeaderName.authorization.rawValue : UserDefaultManager.accessToken
+            
             ]
         }
     }
@@ -83,11 +98,38 @@ extension Router: TargetType {
             return try? encoder.encode(query)
         case .login(let query):
             return try? encoder.encode(query)
+        case .newPost(query: let query):
+            return try? encoder.encode(query)
+        case .newPostImage(let postImage):
+            
+            var body = Data()
+            // 첫번째 경계
+            body.append("--\(postImage.boundary)\r\n".data(using: .utf8)!)
+            // 파일 메타 정보 추가, name과 filename속성 지정
+            body.append("Content-Disposition: form-data; name=\"files\"; filename=\"image.jpg\"\r\n".data(using: .utf8)!)
+            // MIME 타입 지정
+            body.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
+            // 이미지 데이터 추가
+            body.append(postImage.imageData ?? Data())
+            // 데이터 파트 종료 식별
+            body.append("\r\n".data(using: .utf8)!)
+            // multipart 형식의 종료 명시
+            body.append("--\(postImage.boundary)--\r\n".data(using: .utf8)!)
+            
+            return body
         }
     }
     
     var boundary: String? {
-        return nil
+        
+        switch self {
+        case .newPostImage(let postImage):
+            return postImage.boundary
+            
+        default:
+            return nil
+        }
+        
     }
     func makeRequest() -> URLRequest? {
         guard let url = URL(string: baseURL + path) else { return nil }
@@ -96,6 +138,19 @@ extension Router: TargetType {
         request.allHTTPHeaderFields = header
         request.httpBody = httpBody
         return request
+        
+        
+//        guard let url = URL(string: baseURL + path) else { return nil }
+//          var request = URLRequest(url: url)
+//          request.httpMethod = method
+//          var headers = header
+//          if case .newPostImage(let postImage) = self {
+//              headers[APIKey.HTTPHeaderName.contentType.rawValue] = "multipart/form-data; boundary=\(postImage.boundary)"
+//          }
+//        
+//          request.allHTTPHeaderFields = headers
+//          request.httpBody = httpBody
+//          return request
     }
     
 }

@@ -11,6 +11,11 @@
 		8B2A75422CD8BBAC000C6162 /* PostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2A75412CD8BBAC000C6162 /* PostView.swift */; };
 		8B2A75442CD8BBB2000C6162 /* PostVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2A75432CD8BBB2000C6162 /* PostVC.swift */; };
 		8B2A75462CD8D915000C6162 /* PostVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2A75452CD8D915000C6162 /* PostVM.swift */; };
+		8B2A75492CD9FCDC000C6162 /* UserQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2A75482CD9FCDC000C6162 /* UserQuery.swift */; };
+		8B2A754B2CD9FCF8000C6162 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2A754A2CD9FCF8000C6162 /* UserModel.swift */; };
+		8B2A754E2CDA0021000C6162 /* PostModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2A754D2CDA0021000C6162 /* PostModel.swift */; };
+		8B2A75502CDA06E4000C6162 /* SignInVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2A754F2CDA06E4000C6162 /* SignInVM.swift */; };
+		8B2A75522CDA30B2000C6162 /* PostDataSourceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2A75512CDA30B2000C6162 /* PostDataSourceProvider.swift */; };
 		8B3437352CD75A12003B3104 /* KakaoMapsSDK-SPM in Frameworks */ = {isa = PBXBuildFile; productRef = 8B3437342CD75A12003B3104 /* KakaoMapsSDK-SPM */; };
 		8B3437382CD76CD3003B3104 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3437372CD76CD3003B3104 /* OpenGLES.framework */; };
 		8B34373A2CD76CDE003B3104 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3437392CD76CDE003B3104 /* SystemConfiguration.framework */; };
@@ -34,7 +39,7 @@
 		8B7F3B6A2CCF9D1B00B6D34C /* URLComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7F3B692CCF9D1B00B6D34C /* URLComponent.swift */; };
 		8B7F3B6E2CCFA04D00B6D34C /* TargetType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7F3B6D2CCFA04D00B6D34C /* TargetType.swift */; };
 		8B7F3B702CCFA51400B6D34C /* UserDefaultManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7F3B6F2CCFA51400B6D34C /* UserDefaultManager.swift */; };
-		8B7F3B732CCFAA9400B6D34C /* ResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7F3B722CCFAA9400B6D34C /* ResponseModel.swift */; };
+		8B7F3B732CCFAA9400B6D34C /* PostQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7F3B722CCFAA9400B6D34C /* PostQuery.swift */; };
 		8B7F3B7D2CD0C09D00B6D34C /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7F3B7C2CD0C09D00B6D34C /* NetworkError.swift */; };
 		8B7F3B812CD0CD5F00B6D34C /* OnBoardingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7F3B802CD0CD5E00B6D34C /* OnBoardingVC.swift */; };
 		8B7F3B842CD0CD8A00B6D34C /* BaseVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7F3B832CD0CD8A00B6D34C /* BaseVC.swift */; };
@@ -91,6 +96,11 @@
 		8B2A75412CD8BBAC000C6162 /* PostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostView.swift; sourceTree = "<group>"; };
 		8B2A75432CD8BBB2000C6162 /* PostVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostVC.swift; sourceTree = "<group>"; };
 		8B2A75452CD8D915000C6162 /* PostVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostVM.swift; sourceTree = "<group>"; };
+		8B2A75482CD9FCDC000C6162 /* UserQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserQuery.swift; sourceTree = "<group>"; };
+		8B2A754A2CD9FCF8000C6162 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
+		8B2A754D2CDA0021000C6162 /* PostModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostModel.swift; sourceTree = "<group>"; };
+		8B2A754F2CDA06E4000C6162 /* SignInVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInVM.swift; sourceTree = "<group>"; };
+		8B2A75512CDA30B2000C6162 /* PostDataSourceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDataSourceProvider.swift; sourceTree = "<group>"; };
 		8B3437372CD76CD3003B3104 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		8B3437392CD76CDE003B3104 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		8B34373B2CD76CED003B3104 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -116,7 +126,7 @@
 		8B7F3B692CCF9D1B00B6D34C /* URLComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLComponent.swift; sourceTree = "<group>"; };
 		8B7F3B6D2CCFA04D00B6D34C /* TargetType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TargetType.swift; sourceTree = "<group>"; };
 		8B7F3B6F2CCFA51400B6D34C /* UserDefaultManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultManager.swift; sourceTree = "<group>"; };
-		8B7F3B722CCFAA9400B6D34C /* ResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseModel.swift; sourceTree = "<group>"; };
+		8B7F3B722CCFAA9400B6D34C /* PostQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostQuery.swift; sourceTree = "<group>"; };
 		8B7F3B7C2CD0C09D00B6D34C /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
 		8B7F3B802CD0CD5E00B6D34C /* OnBoardingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingVC.swift; sourceTree = "<group>"; };
 		8B7F3B832CD0CD8A00B6D34C /* BaseVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseVC.swift; sourceTree = "<group>"; };
@@ -193,6 +203,25 @@
 				8B2A75412CD8BBAC000C6162 /* PostView.swift */,
 				8B2A75432CD8BBB2000C6162 /* PostVC.swift */,
 				8B2A75452CD8D915000C6162 /* PostVM.swift */,
+				8B2A75512CDA30B2000C6162 /* PostDataSourceProvider.swift */,
+			);
+			path = Post;
+			sourceTree = "<group>";
+		};
+		8B2A75472CD9FC26000C6162 /* User */ = {
+			isa = PBXGroup;
+			children = (
+				8B2A75482CD9FCDC000C6162 /* UserQuery.swift */,
+				8B2A754A2CD9FCF8000C6162 /* UserModel.swift */,
+			);
+			path = User;
+			sourceTree = "<group>";
+		};
+		8B2A754C2CD9FD2D000C6162 /* Post */ = {
+			isa = PBXGroup;
+			children = (
+				8B7F3B722CCFAA9400B6D34C /* PostQuery.swift */,
+				8B2A754D2CDA0021000C6162 /* PostModel.swift */,
 			);
 			path = Post;
 			sourceTree = "<group>";
@@ -296,7 +325,8 @@
 		8B7F3B712CCFAA4B00B6D34C /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				8B7F3B722CCFAA9400B6D34C /* ResponseModel.swift */,
+				8B2A75472CD9FC26000C6162 /* User */,
+				8B2A754C2CD9FD2D000C6162 /* Post */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -414,6 +444,7 @@
 			children = (
 				8BDC9F962CD4CE0D00E94702 /* SignInView.swift */,
 				8BDC9F942CD4CD8C00E94702 /* SignInVC.swift */,
+				8B2A754F2CDA06E4000C6162 /* SignInVM.swift */,
 			);
 			path = SignIn;
 			sourceTree = "<group>";
@@ -572,8 +603,10 @@
 				8B7F3B902CD0D32500B6D34C /* AuthVC.swift in Sources */,
 				8B7F3B662CCF9ADE00B6D34C /* NetworkManager.swift in Sources */,
 				8B7424D72CCA5A9600E198C3 /* ViewController.swift in Sources */,
+				8B2A75492CD9FCDC000C6162 /* UserQuery.swift in Sources */,
 				8B7424D32CCA5A9600E198C3 /* AppDelegate.swift in Sources */,
 				8B2A753F2CD89F9C000C6162 /* BaseMapVC.swift in Sources */,
+				8B2A75522CDA30B2000C6162 /* PostDataSourceProvider.swift in Sources */,
 				8BDC9F972CD4CE0D00E94702 /* SignInView.swift in Sources */,
 				8B7F3B6E2CCFA04D00B6D34C /* TargetType.swift in Sources */,
 				8B7F3B702CCFA51400B6D34C /* UserDefaultManager.swift in Sources */,
@@ -583,11 +616,12 @@
 				8B7F3B6A2CCF9D1B00B6D34C /* URLComponent.swift in Sources */,
 				8B7F3B942CD0FC6500B6D34C /* SignUpVC.swift in Sources */,
 				8B7F3B922CD0EB4D00B6D34C /* AuthView.swift in Sources */,
+				8B2A754B2CD9FCF8000C6162 /* UserModel.swift in Sources */,
 				8BDC9F892CD4683900E94702 /* MapView.swift in Sources */,
 				8B7F3B842CD0CD8A00B6D34C /* BaseVC.swift in Sources */,
 				8BDC9F902CD476F200E94702 /* StoryCollectionViewCell.swift in Sources */,
 				8B7F3B8E2CD0D19700B6D34C /* OnBoardingView.swift in Sources */,
-				8B7F3B732CCFAA9400B6D34C /* ResponseModel.swift in Sources */,
+				8B7F3B732CCFAA9400B6D34C /* PostQuery.swift in Sources */,
 				8B7F3B972CD0FF3900B6D34C /* CustomSignTextField.swift in Sources */,
 				8B2A75442CD8BBB2000C6162 /* PostVC.swift in Sources */,
 				8B7F3B7D2CD0C09D00B6D34C /* NetworkError.swift in Sources */,
@@ -597,11 +631,13 @@
 				8BDC9F8B2CD46CE100E94702 /* AppColorSet.swift in Sources */,
 				8B7424D52CCA5A9600E198C3 /* SceneDelegate.swift in Sources */,
 				8BDC9F922CD4771600E94702 /* BaseCollectionViewCell.swift in Sources */,
+				8B2A754E2CDA0021000C6162 /* PostModel.swift in Sources */,
 				8BDC9F952CD4CD8C00E94702 /* SignInVC.swift in Sources */,
 				8B7F3B8B2CD0CF4D00B6D34C /* SignUpView.swift in Sources */,
 				8B7F3B642CCF846A00B6D34C /* APIKey.swift in Sources */,
 				8B7F3B892CD0CE6E00B6D34C /* UIColor+.swift in Sources */,
 				8B7F3BA32CD37DE900B6D34C /* AppleLogin.swift in Sources */,
+				8B2A75502CDA06E4000C6162 /* SignInVM.swift in Sources */,
 				8B7F3BB92CD3AF0D00B6D34C /* KakaoAuthVM.swift in Sources */,
 				8B2A75422CD8BBAC000C6162 /* PostView.swift in Sources */,
 				8B7F3B9A2CD1130600B6D34C /* MapVC.swift in Sources */,

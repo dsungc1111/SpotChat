@@ -75,6 +75,9 @@ final class SignUpVC: BaseVC {
         // 바인딩한 값을 메서드에 대입 후 실행
         signupVM.transform(input: input)
         
+        
+        
+        
     }
     
 }

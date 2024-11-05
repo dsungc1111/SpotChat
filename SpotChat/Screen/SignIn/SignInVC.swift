@@ -12,6 +12,7 @@ import CombineCocoa
 final class SignInVC: BaseVC {
     
     private let signInView = SignInView()
+    private let signInVM = SignInVM()
     
     private var cancellables = Set<AnyCancellable>()
     
@@ -27,58 +28,43 @@ final class SignInVC: BaseVC {
     
     override func bind() {
         
-        var emailText = ""
-        var passwordText = ""
+        let input = SignInVM.Input(
+            emailText: PassthroughSubject<String, Never>(),
+            passwordText: PassthroughSubject<String, Never>(),
+            signInBtnTap: PassthroughSubject<Void, Never>()
+        )
+        let output = signInVM.transform(input: input)
         
-        
-        signInView.emailTextField.textPublisher // 텍스트가 변할때마다
-            .compactMap { $0 } // 옵셔널 처리한 text를
-            .sink(receiveValue: { text in
-                emailText = text
-            }) // input.emailText에 넣어줄래요~
-            .store(in: &cancellables) // 구독했으니 스트림 끊어줄래요~ 메모리 누수 방지요~
+        signInView.emailTextField.textPublisher
+            .compactMap{ $0 }
+            .subscribe(input.emailText)
+            .store(in: &cancellables)
         
         signInView.passwordTextField.textPublisher
-            .compactMap { $0 }
-            .sink(receiveValue: { text in
-                passwordText = text
-            })
+            .compactMap{ $0 }
+            .subscribe(input.passwordText)
+            .store(in: &cancellables)
+        
+        signInView.signInBtn.tapPublisher
+            .map { _ in } // 버튼 탭 시 Void 값을 넘김
+            .subscribe(input.signInBtnTap)
             .store(in: &cancellables)
         
         
-        
-        signInView.signInBtn.tapPublisher
+        output.loginSuccess
             .sink { _ in
-                let loginQuery = LoginQuery(email: emailText, password: passwordText)
-                NetworkManager.shared.performRequest(router: .login(query: loginQuery), responseType: AuthModel.self) { result in
+                
+                DispatchQueue.main.async {
+                    let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
                     
-                    switch result {
-                    case .success(let success):
-                        print("성공", success)
-                        UserDefaultManager.accessToken = success.accessToken
-                        UserDefaultManager.refreshToken = success.refreshToken
-                        UserDefaultManager.userId = success.user_id
-                        UserDefaultManager.userNickname = success.nick
-                        UserDefaultManager.userEmail = success.email
-                        
-                        DispatchQueue.main.async {
-                            let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
-                            
-                            let sceneDelegate = windowScene?.delegate as? SceneDelegate
-                            
-                            
-                            let vc = UINavigationController(rootViewController: TabBarVC())
-                            
-                            vc.navigationBar.tintColor = .black
-                            sceneDelegate?.window?.rootViewController = vc
-                            sceneDelegate?.window?.makeKeyAndVisible()
-                        }
-                      
-                        
-                    case .failure(let failure):
-                        print("실패", failure)
-                    }
+                    let sceneDelegate = windowScene?.delegate as? SceneDelegate
+                    
+                    let vc = UINavigationController(rootViewController: TabBarVC())
+                    sceneDelegate?.window?.rootViewController = vc
+                    sceneDelegate?.window?.makeKeyAndVisible()
                 }
+             
+                
             }
             .store(in: &cancellables)
         

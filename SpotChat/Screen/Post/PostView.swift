@@ -8,31 +8,42 @@
 import UIKit
 import SnapKit
 
-
 final class PostView: BaseView {
     
     let photoButton: UIButton = {
-        let button = UIButton()
-        button.setImage(UIImage(systemName: "camera.circle")?.withTintColor(.lightGray, renderingMode: .alwaysOriginal), for: .normal)
-        button.imageView?.contentMode = .scaleAspectFill
-        button.clipsToBounds = true
-        button.layer.cornerRadius = 10
-        button.layer.borderWidth = 1
-        button.layer.borderColor = UIColor.lightGray.cgColor
-//        button.isUserInteractionEnabled = true
-        return button
+        let btn = UIButton()
+        btn.setImage(UIImage(systemName: "camera.circle")?.withTintColor(.lightGray, renderingMode: .alwaysOriginal), for: .normal)
+        btn.imageView?.contentMode = .scaleAspectFill
+        btn.clipsToBounds = true
+        btn.layer.cornerRadius = 10
+        btn.layer.borderWidth = 1
+        btn.layer.borderColor = UIColor.lightGray.cgColor
+        return btn
     }()
     
-    private let titleTextField = {
-        let view = UITextField()
-        view.placeholder = "제목을 입력하세요 :)"
-        view.borderStyle = .roundedRect
-        view.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
-        view.leftViewMode = .always
-        return view
+    let collectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        layout.minimumLineSpacing = 8
+        layout.itemSize = CGSize(width: 80, height: 80)
+        
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.backgroundColor = .clear
+        collectionView.showsHorizontalScrollIndicator = false
+        
+        return collectionView
     }()
     
-    private let contentTextView = {
+    let titleTextField: UITextField = {
+        let textField = UITextField()
+        textField.placeholder = "제목을 입력하세요 :)"
+        textField.borderStyle = .roundedRect
+        textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
+        textField.leftViewMode = .always
+        return textField
+    }()
+    
+    let contentTextView: UITextView = {
         let view = UITextView()
         view.layer.cornerRadius = 10
         view.font = .systemFont(ofSize: 14)
@@ -42,38 +53,38 @@ final class PostView: BaseView {
         return view
     }()
     
-    private let priceLabel = {
-        let view = UILabel()
-        view.text = "가격"
-        return view
+    private let hashTagLabel: UILabel = {
+        let label = UILabel()
+        label.text = "해시태그"
+        label.textColor = .white
+        return label
     }()
     
-    private let priceTextField = {
-        let view = UITextField()
-        view.placeholder = "가격 필드"
-        view.keyboardType = .numberPad
-        return view
+    let hashTagTextField: UITextField = {
+        let textField = UITextField()
+        textField.placeholder = "해시 태그 입력"
+        textField.textColor = .lightGray
+        return textField
     }()
     
-    private lazy var contentView = {
+    lazy var contentView: UIView = {
         let view = UIView()
         view.addSubview(photoButton)
         view.addSubview(titleTextField)
+        view.addSubview(collectionView)
         view.addSubview(contentTextView)
-        view.addSubview(priceLabel)
-        view.addSubview(priceTextField)
+        view.addSubview(hashTagLabel)
+        view.addSubview(hashTagTextField)
         return view
     }()
     
-    private let scrollTapGesture = UITapGestureRecognizer()
-    
-    private lazy var scrollView = {
+    private lazy var scrollView: UIScrollView = {
         let view = UIScrollView()
         view.addSubview(contentView)
         return view
     }()
     
-    private let createPostButton = {
+    let createPostButton: UIButton = {
         let btn = UIButton()
         btn.setTitle("  게시", for: .normal)
         btn.backgroundColor = .lightGray
@@ -87,48 +98,63 @@ final class PostView: BaseView {
     override func configureHierarchy() {
         addSubview(scrollView)
         addSubview(createPostButton)
+        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "ImageCell")
     }
     
     override func configureLayout() {
         
-        photoButton.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(40)
-            $0.leading.equalToSuperview().offset(20)
-            $0.size.equalTo(80)
+        photoButton.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(40)
+            make.leading.equalToSuperview().offset(20)
+            make.size.equalTo(80)
         }
-        titleTextField.snp.makeConstraints {
-            $0.top.equalTo(photoButton.snp.bottom).offset(20)
-            $0.leading.equalTo(photoButton)
-            $0.trailing.equalToSuperview().offset(-20)
-            $0.height.equalTo(44)
+        
+        collectionView.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(40)
+            make.leading.equalTo(photoButton.snp.trailing).offset(20)
+            make.trailing.equalToSuperview().offset(-20)
+            make.height.equalTo(80)
         }
-        contentTextView.snp.makeConstraints {
-            $0.top.equalTo(titleTextField.snp.bottom).offset(20)
-            $0.horizontalEdges.equalTo(titleTextField)
-            $0.height.equalTo(200)
+                
+        titleTextField.snp.makeConstraints { make in
+            make.top.equalTo(photoButton.snp.bottom).offset(20)
+            make.leading.equalTo(photoButton)
+            make.trailing.equalToSuperview().offset(-20)
+            make.height.equalTo(44)
         }
-        priceLabel.snp.makeConstraints {
-            $0.top.equalTo(contentTextView.snp.bottom).offset(20)
-            $0.leading.equalTo(contentTextView)
+        
+        contentTextView.snp.makeConstraints { make in
+            make.top.equalTo(titleTextField.snp.bottom).offset(20)
+            make.horizontalEdges.equalTo(titleTextField)
+            make.height.equalTo(200)
         }
-        priceTextField.snp.makeConstraints {
-            $0.top.equalTo(priceLabel.snp.bottom).offset(10)
-            $0.horizontalEdges.equalTo(contentTextView)
-            $0.height.equalTo(44)
-            $0.bottom.equalToSuperview().offset(-20)
+        
+        hashTagLabel.snp.makeConstraints { make in
+            make.top.equalTo(contentTextView.snp.bottom).offset(20)
+            make.leading.equalTo(contentTextView)
         }
-        contentView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-            $0.width.equalToSuperview()
+        
+        hashTagTextField.snp.makeConstraints { make in
+            make.top.equalTo(hashTagLabel.snp.bottom).offset(10)
+            make.horizontalEdges.equalTo(contentTextView)
+            make.height.equalTo(44)
+            make.bottom.equalToSuperview().offset(-20)
         }
-        createPostButton.snp.makeConstraints {
-            $0.bottom.equalTo(keyboardLayoutGuide.snp.top).offset(-8)
-            $0.horizontalEdges.equalTo(priceTextField)
-            $0.height.equalTo(44)
+        
+        contentView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+            make.width.equalToSuperview()
         }
-        scrollView.snp.makeConstraints {
-            $0.top.horizontalEdges.equalTo(safeAreaLayoutGuide)
-            $0.bottom.equalTo(createPostButton.snp.top)
+        
+        createPostButton.snp.makeConstraints { make in
+            make.bottom.equalTo(keyboardLayoutGuide.snp.top).offset(-8)
+            make.horizontalEdges.equalTo(hashTagTextField)
+            make.height.equalTo(44)
+        }
+        
+        scrollView.snp.makeConstraints { make in
+            make.top.horizontalEdges.equalTo(safeAreaLayoutGuide)
+            make.bottom.equalTo(createPostButton.snp.top)
         }
     }
 }

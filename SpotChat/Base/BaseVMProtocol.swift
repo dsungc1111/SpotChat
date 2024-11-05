@@ -17,5 +17,5 @@ protocol BaseVMProtocol: AnyObject {
     
     var cancellables: Set<AnyCancellable> { get }
     
-    func transform(input: Input)
+    func transform(input: Input) -> Output
 }
