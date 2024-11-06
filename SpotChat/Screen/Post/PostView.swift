@@ -117,7 +117,7 @@ final class PostView: BaseView {
         btn.setImage(UIImage(systemName: "square.and.arrow.up.on.square"), for: .normal)
         btn.tintColor = .white
         btn.layer.cornerRadius = 10
-        btn.isEnabled = false
+//        btn.isEnabled = false
         return btn
     }()
     

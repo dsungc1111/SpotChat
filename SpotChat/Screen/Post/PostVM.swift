@@ -21,7 +21,7 @@ final class PostVM: BaseVMProtocol {
         let content2: String // 업로드 시간 > 버튼 클릭 시 당시 시각 저장 || 버튼 클릭하면 구현 0
         let content3: String = "off" // dm 가능여부 ||구현0
         let content4: String = "off"// 인원 모집여부 || 구현 0
-        let content5: String //
+        let content5: String // 게시자 상세위치
         let files: [String] // 이미지 -- 뷰모델에서 바로 전달
         let longitude: Double // 게시자 위치 -- 자동
         let latitude: Double // 게시자 위치 -- 자동
@@ -48,17 +48,53 @@ final class PostVM: BaseVMProtocol {
     
     func transform(input: Input) -> Output {
 
+        var postQuery = PostQuery(category: "", title: "", price: 1000, content: "", content1: "", content2: "", files: [], longitude: 128.8966344, latitude: 37.7950773)
         
-        input.messagePossible
-            .sink { value in
-                print("값 =", value)
+        input.titleText
+            .sink { title in
+                print("타이틀 =", title)
+                postQuery.title = title
             }
             .store(in: &cancellables)
         
+        input.messagePossible
+            .sink { dmOn in
+                print("디엠 가능? =", dmOn)
+                postQuery.content3 = dmOn
+            }
+            .store(in: &cancellables)
+        
+        input.meetingPossible
+            .sink { meeting in
+                print("동행 가능? =", meeting)
+                postQuery.content4 = meeting
+            }
+            .store(in: &cancellables)
+        
+        input.contentText
+            .sink { content in
+                postQuery.content1 = content
+            }
+            .store(in: &cancellables)
+        
+        input.hashTagText
+            .sink { hashTag in
+                postQuery.content = hashTag
+            }
+            .store(in: &cancellables)
         
         input.postBtnTap
             .sink { _ in
-                print("탭탭")
+                NetworkManager.shared.performRequest(router: .newPost(query: postQuery), responseType: PostModel.self) { result in
+                    
+                    switch result {
+                    case .success(let success):
+                        print("성공", success)
+                    case .failure(let failure):
+                        print("실패", failure)
+                    }
+                    
+                }
             }
             .store(in: &cancellables)
         

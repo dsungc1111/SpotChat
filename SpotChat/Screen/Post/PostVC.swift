@@ -41,19 +41,33 @@ final class PostVC: BaseVC {
             postBtnTap: PassthroughSubject<Void, Never>()
         )
         
+        
+        postView.titleTextField.textPublisher
+            .compactMap { $0 }
+            .subscribe(input.titleText)
+            .store(in: &cancellables)
+        
+        postView.contentTextView.textPublisher
+            .compactMap { $0 }
+            .subscribe(input.contentText)
+            .store(in: &cancellables)
+        
+
         postView.DMSegmentedControl.selectedSegmentIndexPublisher
+            .compactMap{ $0 == 0 ? "true" : "false" }
+            .subscribe(input.messagePossible)
+            .store(in: &cancellables)
+        
+        postView.JoinSegmentedControl
+            .selectedSegmentIndexPublisher
             .compactMap{ $0 == 0 ? "true" : "false" }
             .subscribe(input.meetingPossible)
             .store(in: &cancellables)
         
-        
-        
-        let output = postVM.transform(input: input)
-        
-        /*
-         클로저
-         후행클로저
-         */
+        postView.hashTagTextField.textPublisher
+            .compactMap { $0 }
+            .subscribe(input.hashTagText)
+            .store(in: &cancellables)
         
         postView.photoButton.tapPublisher
             .sink { [weak self] _ in
@@ -63,10 +77,14 @@ final class PostVC: BaseVC {
             }
             .store(in: &cancellables)
         
-//        postView.createPostButton.tapPublisher
-//            .map { _ in }
-//            .subscribe(input.postBtnTap)
-//            .store(in: &cancellables)
+        postView.createPostButton.tapPublisher
+            .map { _ in }
+            .subscribe(input.postBtnTap)
+            .store(in: &cancellables)
+        
+        let output = postVM.transform(input: input)
+        
+       
         
     }
     
