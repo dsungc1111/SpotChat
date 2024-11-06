@@ -21,6 +21,27 @@ final class PostView: BaseView {
         return btn
     }()
     
+    let DMSegmentedControl = {
+        let segment = UISegmentedControl()
+        
+        segment.insertSegment(withTitle: "DM ON", at: 0, animated: true)
+        segment.insertSegment(withTitle: "DM OFF", at: 1, animated: true)
+        segment.selectedSegmentIndex = 0
+        
+        return segment
+    }()
+    
+    let JoinSegmentedControl = {
+        let segment = UISegmentedControl()
+        
+        segment.insertSegment(withTitle: "JOIN", at: 0, animated: true)
+        segment.insertSegment(withTitle: "POST", at: 1, animated: true)
+        segment.selectedSegmentIndex = 0
+        
+        return segment
+    }()
+    
+    
     let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -62,8 +83,11 @@ final class PostView: BaseView {
     
     let hashTagTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "해시 태그 입력"
-        textField.textColor = .lightGray
+        textField.placeholder = "해시태그 입력"
+        textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
+        textField.leftViewMode = .always
+        textField.layer.cornerRadius = 10
+        textField.backgroundColor = .white
         return textField
     }()
     
@@ -71,6 +95,8 @@ final class PostView: BaseView {
         let view = UIView()
         view.addSubview(photoButton)
         view.addSubview(titleTextField)
+        view.addSubview(DMSegmentedControl)
+        view.addSubview(JoinSegmentedControl)
         view.addSubview(collectionView)
         view.addSubview(contentTextView)
         view.addSubview(hashTagLabel)
@@ -115,9 +141,22 @@ final class PostView: BaseView {
             make.trailing.equalToSuperview().offset(-20)
             make.height.equalTo(80)
         }
+        
+        DMSegmentedControl.snp.makeConstraints { make in
+            make.top.equalTo(photoButton.snp.bottom).offset(20)
+            make.leading.equalTo(photoButton)
+            make.width.equalTo(120)
+            make.height.equalTo(44)
+        }
+        JoinSegmentedControl.snp.makeConstraints { make in
+            make.top.equalTo(photoButton.snp.bottom).offset(20)
+            make.leading.equalTo(DMSegmentedControl.snp.trailing).offset(20)
+            make.width.equalTo(120)
+            make.height.equalTo(44)
+        }
                 
         titleTextField.snp.makeConstraints { make in
-            make.top.equalTo(photoButton.snp.bottom).offset(20)
+            make.top.equalTo(DMSegmentedControl.snp.bottom).offset(20)
             make.leading.equalTo(photoButton)
             make.trailing.equalToSuperview().offset(-20)
             make.height.equalTo(44)

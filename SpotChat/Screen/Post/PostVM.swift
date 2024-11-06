@@ -13,14 +13,14 @@ final class PostVM: BaseVMProtocol {
    /*
     // 포스트할 내용
     struct PostQuery: Encodable {
-        let category: String
-        let title: String
+        let category: String > 위치 기반으로 저장
+        let title: String > 제목 구현 0
         let price: Int // 1차적으로 사용 X
-        let content: String // 해시태그
-        let content1: String // 내용
-        let content2: String // 업로드 시간 > 버튼 클릭 시 당시 시각 저장
-        let content3: String = "off" // dm 가능여부
-        let content4: String = "off"// 인원 모집여부
+        let content: String // 해시태그, 구현 0
+        let content1: String // 내용 구현 0
+        let content2: String // 업로드 시간 > 버튼 클릭 시 당시 시각 저장 || 버튼 클릭하면 구현 0
+        let content3: String = "off" // dm 가능여부 ||구현0
+        let content4: String = "off"// 인원 모집여부 || 구현 0
         let content5: String //
         let files: [String] // 이미지 -- 뷰모델에서 바로 전달
         let longitude: Double // 게시자 위치 -- 자동
@@ -48,6 +48,13 @@ final class PostVM: BaseVMProtocol {
     
     func transform(input: Input) -> Output {
 
+        
+        input.messagePossible
+            .sink { value in
+                print("값 =", value)
+            }
+            .store(in: &cancellables)
+        
         
         input.postBtnTap
             .sink { _ in

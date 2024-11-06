@@ -18,7 +18,6 @@ final class PostVC: BaseVC {
     private var selectedImages: [UIImage] = []
     private var dataSourceProvider: DataSourceProvider!
         
-    
     override func loadView() {
         view = postView
     }
@@ -32,17 +31,29 @@ final class PostVC: BaseVC {
         
 //        let postQuery = PostImageQuery(imageData: <#T##Data?#>)
        
-//        let input = PostVM.Input(postImageQuery: postQuery)
+        let input = PostVM.Input(
+            categoryText: PassthroughSubject<String, Never>(),
+            titleText: PassthroughSubject<String, Never>(),
+            hashTagText: PassthroughSubject<String, Never>(),
+            contentText: PassthroughSubject<String, Never>(),
+            messagePossible: PassthroughSubject<String, Never>(),
+            meetingPossible: PassthroughSubject<String, Never>(),
+            postBtnTap: PassthroughSubject<Void, Never>()
+        )
+        
+        postView.DMSegmentedControl.selectedSegmentIndexPublisher
+            .compactMap{ $0 == 0 ? "true" : "false" }
+            .subscribe(input.meetingPossible)
+            .store(in: &cancellables)
         
         
-//        let input = PostVM.Input(
-//        
-//
-//            postBtnTap: PassthroughSubject<Void, Never>()
-//        )
         
-//        let output = postVM.transform(input: input)
+        let output = postVM.transform(input: input)
         
+        /*
+         클로저
+         후행클로저
+         */
         
         postView.photoButton.tapPublisher
             .sink { [weak self] _ in
@@ -52,10 +63,10 @@ final class PostVC: BaseVC {
             }
             .store(in: &cancellables)
         
-        postView.createPostButton.tapPublisher
-            .map { _ in }
-            .subscribe(input.postBtnTap)
-            .store(in: &cancellables)
+//        postView.createPostButton.tapPublisher
+//            .map { _ in }
+//            .subscribe(input.postBtnTap)
+//            .store(in: &cancellables)
         
     }
     
