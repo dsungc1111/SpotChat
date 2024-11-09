@@ -16,6 +16,8 @@
 		8B2A754E2CDA0021000C6162 /* PostModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2A754D2CDA0021000C6162 /* PostModel.swift */; };
 		8B2A75502CDA06E4000C6162 /* SignInVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2A754F2CDA06E4000C6162 /* SignInVM.swift */; };
 		8B2A75522CDA30B2000C6162 /* PostDataSourceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2A75512CDA30B2000C6162 /* PostDataSourceProvider.swift */; };
+		8B2A75542CDEF81F000C6162 /* UITextField+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2A75532CDEF81F000C6162 /* UITextField+.swift */; };
+		8B2A75562CDF0CAD000C6162 /* UIButton+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2A75552CDF0CAD000C6162 /* UIButton+.swift */; };
 		8B3437352CD75A12003B3104 /* KakaoMapsSDK-SPM in Frameworks */ = {isa = PBXBuildFile; productRef = 8B3437342CD75A12003B3104 /* KakaoMapsSDK-SPM */; };
 		8B3437382CD76CD3003B3104 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3437372CD76CD3003B3104 /* OpenGLES.framework */; };
 		8B34373A2CD76CDE003B3104 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3437392CD76CDE003B3104 /* SystemConfiguration.framework */; };
@@ -101,6 +103,8 @@
 		8B2A754D2CDA0021000C6162 /* PostModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostModel.swift; sourceTree = "<group>"; };
 		8B2A754F2CDA06E4000C6162 /* SignInVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInVM.swift; sourceTree = "<group>"; };
 		8B2A75512CDA30B2000C6162 /* PostDataSourceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDataSourceProvider.swift; sourceTree = "<group>"; };
+		8B2A75532CDEF81F000C6162 /* UITextField+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+.swift"; sourceTree = "<group>"; };
+		8B2A75552CDF0CAD000C6162 /* UIButton+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+.swift"; sourceTree = "<group>"; };
 		8B3437372CD76CD3003B3104 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		8B3437392CD76CDE003B3104 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		8B34373B2CD76CED003B3104 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -372,6 +376,8 @@
 			isa = PBXGroup;
 			children = (
 				8B7F3B882CD0CE6E00B6D34C /* UIColor+.swift */,
+				8B2A75532CDEF81F000C6162 /* UITextField+.swift */,
+				8B2A75552CDF0CAD000C6162 /* UIButton+.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -602,6 +608,7 @@
 				8BDC9F872CD4612E00E94702 /* SettingVC.swift in Sources */,
 				8B7F3B902CD0D32500B6D34C /* AuthVC.swift in Sources */,
 				8B7F3B662CCF9ADE00B6D34C /* NetworkManager.swift in Sources */,
+				8B2A75562CDF0CAD000C6162 /* UIButton+.swift in Sources */,
 				8B7424D72CCA5A9600E198C3 /* ViewController.swift in Sources */,
 				8B2A75492CD9FCDC000C6162 /* UserQuery.swift in Sources */,
 				8B7424D32CCA5A9600E198C3 /* AppDelegate.swift in Sources */,
@@ -641,6 +648,7 @@
 				8B7F3BB92CD3AF0D00B6D34C /* KakaoAuthVM.swift in Sources */,
 				8B2A75422CD8BBAC000C6162 /* PostView.swift in Sources */,
 				8B7F3B9A2CD1130600B6D34C /* MapVC.swift in Sources */,
+				8B2A75542CDEF81F000C6162 /* UITextField+.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

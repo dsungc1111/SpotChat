@@ -14,53 +14,66 @@ final class SignUpVM {
     
     
     struct Input {
-        let emailText: PassthroughSubject<String, Never>
-        let passwordText: PassthroughSubject<String, Never>
-        let emailValidTap: PassthroughSubject<Void, Never>
-        let passwordCheck: PassthroughSubject<String, Never>
-        let nicknameText: PassthroughSubject<String, Never>
-        let phoneNumberText: PassthroughSubject<String, Never>
-        let signInTap: PassthroughSubject<Void, Never>
+        let emailText = CurrentValueSubject<String, Never>("")
+        let passwordText = CurrentValueSubject<String, Never>("")
+        let emailValidTap = PassthroughSubject<Void, Never>()
+        let passwordCheck = CurrentValueSubject<String, Never>("")
+        let nicknameText = CurrentValueSubject<String, Never>("")
+        let phoneNumberText = CurrentValueSubject<String, Never>("")
+        let signInTap = PassthroughSubject<Void, Never>()
+
     }
     
+    
     struct Output {
-        let emailText: PassthroughSubject<String, Never>
+//        let emailText = CurrentValueSubject<String, Never>("")
+//        var nicknameText = CurrentValueSubject<String, Never>("")
+//        var passwordText = CurrentValueSubject<String, Never>("")
+        
+        let emailInvalid = PassthroughSubject<String, Never>()
+        let singUpInvalid = PassthroughSubject<String, Never>()
     }
+    
+    @Published
+    var input = Input()
+    var output = Output()
     
     var cancellables = Set<AnyCancellable>()
     
-    private var emailText = ""
-    private var passwordText = ""
-    private var nicknameText = ""
-    private var phoneText = ""
-    
-    
     func transform(input: Input) {
+        
+        // 이메일, 비밀번호, 비밀번호 확인, 닉네임, 전화번호 합쳐서 fill로 버튼 색 변경
+    
         
         
         input.emailText
-            .assign(to: \.emailText, on: self)
+            .sink { text in
+                print("이메일 = ", text)
+            }
             .store(in: &cancellables)
+        
         input.passwordText
-            .assign(to: \.passwordText, on: self)
+            .sink { text in
+                print("패스워드 = ", text)
+            }
             .store(in: &cancellables)
-        input.nicknameText
-            .assign(to: \.nicknameText, on: self)
-            .store(in: &cancellables)
+        
         input.phoneNumberText
-            .assign(to: \.phoneText, on: self)
+            .sink { text in
+                print("폰넘버 = ", text)
+            }
             .store(in: &cancellables)
         
-        
+        // 이메일 중복 검사
         input.emailValidTap
-            .sink { [weak self] _ in
-                guard let self else { return }
-                
-                print("중복확인 버튼", emailText )
-                let emailValid = EmailValidationQuery(email: emailText)
+            .map { _ in
+                let emailValid = EmailValidationQuery(email: input.emailText.value)
+                return emailValid
+            }
+            .sink { emailQuery in
                 
                 NetworkManager.shared.performRequest(
-                    router: .emailValidation(query: emailValid),
+                    router: .emailValidation(query: emailQuery),
                     responseType: EmailValidationModel.self) { result in
                     switch result {
                     case .success(let success):
@@ -73,10 +86,9 @@ final class SignUpVM {
             .store(in: &cancellables)
         
         input.passwordCheck
-            .sink { [weak self] password in
+            .sink { password in
                 print("패스워드 텍스트 체크")
-                guard let self else { return }
-                if passwordText == password {
+                if input.passwordText.value == password {
                     print("😁😁😁똑같넹")
                 } else {
                     print("😠😠😠다르넹")
@@ -85,16 +97,23 @@ final class SignUpVM {
             .store(in: &cancellables)
         
         input.signInTap
-            .sink { [weak self] _ in
-                guard let self else { return }
-                let signInText = SigninQuery(email: emailText, password: passwordText, nick: nicknameText, phoneNum: phoneText, birthDay: "", gender: "", info1: "", info2: "", info3: "", info4: "", info5: "")
+            .sink { _ in
+                
+                let signInText = SigninQuery(
+                    email: input.emailText.value,
+                    password: input.passwordText.value,
+                    nick: input.nicknameText.value,
+                    phoneNum: input.phoneNumberText.value,
+                    birthDay: "", gender: "",
+                    info1: "", info2: "", info3: "",
+                    info4: "", info5: "")
                 
                 NetworkManager.shared.performRequest(router: .signin(query: signInText), responseType: AuthModel.self) { result in
                     switch result {
                     case .success(let success):
-                        print("성공, ", success)
+                        print("👉👉성공 = ", success)
                     case .failure(let failure):
-                        print("실패, ", failure)
+                        print("👉👉실패 = ", failure)
                     }
                 }
             }

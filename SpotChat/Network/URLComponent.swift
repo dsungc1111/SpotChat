@@ -21,6 +21,7 @@ enum Router {
     case login(query: LoginQuery)
     case newPost(query: PostQuery)
     case newPostImage(qeury: PostImageQuery)
+    
 }
 
 
