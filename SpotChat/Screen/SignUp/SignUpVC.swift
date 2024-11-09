@@ -29,7 +29,7 @@ final class SignUpVC: BaseVC {
         
         let input = signupVM.input
         
-        let output: () = signupVM.transform(input: input)
+        let output = signupVM.transform(input: input)
         
         
         // 사용자가 텍스트필드에 입력을 했을 때 UI변경 X > Runloop.main
@@ -63,11 +63,13 @@ final class SignUpVC: BaseVC {
             .store(in: &cancellables)
         
         
+        output.emailValidation
+            .sink { text in
+                print("이메일 유효성 검사", text)
+            }
+            .store(in: &cancellables)
         
         
-       
-        
-
     }
     
 }

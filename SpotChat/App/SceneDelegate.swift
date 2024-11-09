@@ -51,7 +51,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     if UserDefaultManager.userId.isEmpty {
                         
                         let vc = OnBoardingVC()
-                        self.window?.rootViewController = UINavigationController(rootViewController: vc)
+                        self.window?.rootViewController = vc
                         self.window?.makeKeyAndVisible()
                     } else {
                         let vc = TabBarVC()

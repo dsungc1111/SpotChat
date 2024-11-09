@@ -59,7 +59,7 @@ final class SignInVC: BaseVC {
                     
                     let sceneDelegate = windowScene?.delegate as? SceneDelegate
                     
-                    let vc = UINavigationController(rootViewController: TabBarVC())
+                    let vc = TabBarVC()
                     sceneDelegate?.window?.rootViewController = vc
                     sceneDelegate?.window?.makeKeyAndVisible()
                 }
