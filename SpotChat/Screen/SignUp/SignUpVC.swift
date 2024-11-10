@@ -7,7 +7,6 @@
 
 import UIKit
 import Combine
-//import CombineCocoa
 
 
 final class SignUpVC: BaseVC {
@@ -30,7 +29,6 @@ final class SignUpVC: BaseVC {
         let input = signupVM.input
         
         let output = signupVM.transform(input: input)
-        
         
         // 사용자가 텍스트필드에 입력을 했을 때 UI변경 X > Runloop.main
         // UI변경 0 > Dispatchqueue.main
@@ -66,6 +64,12 @@ final class SignUpVC: BaseVC {
         output.emailValidation
             .sink { text in
                 print("이메일 유효성 검사", text)
+            }
+            .store(in: &cancellables)
+        
+        output.singUpValidation
+            .sink { text in
+                print("회원가입 확인", text)
             }
             .store(in: &cancellables)
         

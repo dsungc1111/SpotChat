@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-
+// 👉👉👉👉👉👉👉 클로저 형태 - URLSession
 final class NetworkManager {
     
     static let shared = NetworkManager()
@@ -49,5 +49,66 @@ final class NetworkManager {
           
         }
         task.resume()
+    }
+}
+
+// 👉👉👉👉👉👉👉 Combine활용 - URLSession
+//final class NetworkManager {
+//    
+//    static let shared = NetworkManager()
+//    
+//    private init() {}
+//    
+//    
+//    func performRequest<T: Decodable>(router: Router, responseType: T.Type) -> AnyPublisher<T, Error> {
+//        
+//        guard let request = router.makeRequest() else {
+//            return Fail(error: URLError(.badURL)).eraseToAnyPublisher()
+//        }
+//        
+//        return URLSession.shared.dataTaskPublisher(for: request)
+//            .tryMap { data, response in
+//                guard let httpResponse = response as? HTTPURLResponse, 
+//                        200..<300 ~= httpResponse.statusCode else {
+//                    throw URLError(.badServerResponse)
+//                }
+//                
+//                print("응답성공")
+//                return data
+//            }
+//            .decode(type: responseType, decoder: JSONDecoder())
+//            .eraseToAnyPublisher()
+//        
+//    }
+//    
+//}
+
+// swift concurrency
+final class NetworkManager2 {
+    
+    static let shared = NetworkManager2()
+    
+    private init() {}
+    
+    
+    func performRequest<T: Decodable>(router: Router, responseType: T.Type) async throws -> T {
+        
+        guard let request = router.makeRequest() else {
+            throw URLError(.badURL)
+        }
+        
+        let (data, response) = try await URLSession.shared.data(for: request)
+        
+        guard let httpResponse = response as? HTTPURLResponse,
+              200..<300 ~= httpResponse.statusCode else {
+                  throw URLError(.badServerResponse)
+              }
+        
+        do {
+            let decodedResponse = try JSONDecoder().decode(responseType, from: data)
+            return decodedResponse
+        } catch {
+            throw error
+        }
     }
 }

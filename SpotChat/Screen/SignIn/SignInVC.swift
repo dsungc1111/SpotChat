@@ -7,7 +7,6 @@
 
 import UIKit
 import Combine
-import CombineCocoa
 
 final class SignInVC: BaseVC {
     
@@ -28,19 +27,15 @@ final class SignInVC: BaseVC {
     
     override func bind() {
         
-        let input = SignInVM.Input(
-            emailText: PassthroughSubject<String, Never>(),
-            passwordText: PassthroughSubject<String, Never>(),
-            signInBtnTap: PassthroughSubject<Void, Never>()
-        )
+        let input = signInVM.input
         let output = signInVM.transform(input: input)
         
-        signInView.emailTextField.textPublisher
+        signInView.emailTextField.publisher
             .compactMap{ $0 }
             .subscribe(input.emailText)
             .store(in: &cancellables)
         
-        signInView.passwordTextField.textPublisher
+        signInView.passwordTextField.publisher
             .compactMap{ $0 }
             .subscribe(input.passwordText)
             .store(in: &cancellables)
@@ -52,19 +47,9 @@ final class SignInVC: BaseVC {
         
         
         output.loginSuccess
-            .sink { _ in
-                
-                DispatchQueue.main.async {
-                    let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
-                    
-                    let sceneDelegate = windowScene?.delegate as? SceneDelegate
-                    
-                    let vc = TabBarVC()
-                    sceneDelegate?.window?.rootViewController = vc
-                    sceneDelegate?.window?.makeKeyAndVisible()
-                }
-             
-                
+            .sink { [weak self] _ in
+                guard let self else { return }
+                changeToMainView()
             }
             .store(in: &cancellables)
         
@@ -73,4 +58,21 @@ final class SignInVC: BaseVC {
     override func viewWillDisappear(_ animated: Bool) {
         navigationController?.navigationBar.isHidden = true
     }
+}
+
+extension SignInVC {
+    
+    func changeToMainView() {
+        DispatchQueue.main.async {
+            let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+            
+            let sceneDelegate = windowScene?.delegate as? SceneDelegate
+            
+            let vc = TabBarVC()
+            sceneDelegate?.window?.rootViewController = vc
+            sceneDelegate?.window?.makeKeyAndVisible()
+        }
+
+    }
+    
 }
