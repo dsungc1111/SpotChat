@@ -7,7 +7,6 @@
 
 import UIKit
 import Combine
-import CombineCocoa
 
 final class OnBoardingVC: BaseVC {
  

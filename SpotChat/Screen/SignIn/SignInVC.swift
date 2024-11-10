@@ -30,12 +30,12 @@ final class SignInVC: BaseVC {
         let input = signInVM.input
         let output = signInVM.transform(input: input)
         
-        signInView.emailTextField.publisher
+        signInView.emailTextField.textPublisher
             .compactMap{ $0 }
             .subscribe(input.emailText)
             .store(in: &cancellables)
         
-        signInView.passwordTextField.publisher
+        signInView.passwordTextField.textPublisher
             .compactMap{ $0 }
             .subscribe(input.passwordText)
             .store(in: &cancellables)
@@ -44,7 +44,6 @@ final class SignInVC: BaseVC {
             .map { _ in } // 버튼 탭 시 Void 값을 넘김
             .subscribe(input.signInBtnTap)
             .store(in: &cancellables)
-        
         
         output.loginSuccess
             .sink { [weak self] _ in

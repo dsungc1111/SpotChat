@@ -29,22 +29,24 @@ final class PostVM: BaseVMProtocol {
     */
     struct Input {
 //        let postImageQuery: PostImageQuery
-        let categoryText: PassthroughSubject<String, Never>
-        let titleText: PassthroughSubject<String, Never>
-        let hashTagText: PassthroughSubject<String, Never>
-        let contentText: PassthroughSubject<String, Never>
-        let messagePossible: PassthroughSubject<String, Never>
-        let meetingPossible: PassthroughSubject<String, Never>
-        let postBtnTap: PassthroughSubject<Void, Never>
+        let categoryText = CurrentValueSubject<String, Never>("")
+        let titleText = CurrentValueSubject<String, Never>("")
+        let hashTagText = CurrentValueSubject<String, Never>("")
+        let contentText = CurrentValueSubject<String, Never>("")
+        let messagePossible = CurrentValueSubject<String, Never>("")
+        let meetingPossible = CurrentValueSubject<String, Never>("")
+        let postBtnTap = PassthroughSubject<Void, Never>()
     }
     
     struct Output {
         
     }
     
+    @Published
+    var input = Input()
+    
     var cancellables = Set<AnyCancellable>()
     
-
     
     func transform(input: Input) -> Output {
 
@@ -100,10 +102,8 @@ final class PostVM: BaseVMProtocol {
                 receiveCompletion: { completion in
                     switch completion {
                     case .finished:
-                        
                         break
                     case .failure(let error):
-                        // 에러 처리
                         print("Error: \(error)")
                     }
                 },

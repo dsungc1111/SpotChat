@@ -7,7 +7,20 @@
 
 import UIKit
 
-class DataSourceProvider {
+
+protocol PostDataSourceProviderProtocol {
+    
+    associatedtype Snapshot
+    associatedtype Section
+    
+    
+    func configureDataSource()
+    func applyInitialSnapshot()
+    func updateDataSource(with images: [UIImage])
+}
+
+class PostDataSourceProvider: PostDataSourceProviderProtocol {
+    
     typealias Snapshot = NSDiffableDataSourceSnapshot<Section, UIImage>
     
     enum Section {
@@ -22,7 +35,7 @@ class DataSourceProvider {
         configureDataSource()
     }
     
-    private func configureDataSource() {
+    func configureDataSource() {
         dataSource = UICollectionViewDiffableDataSource<Section, UIImage>(collectionView: collectionView) { collectionView, indexPath, image in
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath)
             let imageView = UIImageView(image: image)
@@ -38,7 +51,7 @@ class DataSourceProvider {
         applyInitialSnapshot()
     }
     
-    private func applyInitialSnapshot() {
+    func applyInitialSnapshot() {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
         dataSource.apply(snapshot, animatingDifferences: false)

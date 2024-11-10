@@ -7,7 +7,7 @@
 
 import UIKit
 import Combine
-
+import CombineCocoa
 
 final class SignUpVC: BaseVC {
     
@@ -32,23 +32,28 @@ final class SignUpVC: BaseVC {
         
         // 사용자가 텍스트필드에 입력을 했을 때 UI변경 X > Runloop.main
         // UI변경 0 > Dispatchqueue.main
-        signUpView.emailTextField.publisher
+        signUpView.emailTextField.textPublisher
+            .map { $0 ?? "" }
             .subscribe(input.emailText)
             .store(in: &cancellables)
         
-        signUpView.passwordTextField.publisher
+        signUpView.passwordTextField.textPublisher
+            .map { $0 ?? "" }
             .subscribe(input.passwordText)
             .store(in: &cancellables)
         
-        signUpView.passwordCheckTextField.publisher
+        signUpView.passwordCheckTextField.textPublisher
+            .map { $0 ?? "" }
             .subscribe(input.passwordCheck)
             .store(in: &cancellables)
         
-        signUpView.nicknameTextField.publisher
+        signUpView.nicknameTextField.textPublisher
+            .map { $0 ?? "" }
             .subscribe(input.nicknameText)
             .store(in: &cancellables)
         
-        signUpView.phoneNumberTextfield.publisher
+        signUpView.phoneNumberTextfield.textPublisher
+            .map { $0 ?? "" }
             .subscribe(input.phoneNumberText)
             .store(in: &cancellables)
         

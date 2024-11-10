@@ -7,7 +7,7 @@
 
 import UIKit
 import Combine
-import CombineCocoa
+//import CombineCocoa
 import KakaoSDKAuth
 import KakaoSDKUser
 

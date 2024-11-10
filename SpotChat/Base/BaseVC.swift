@@ -18,5 +18,5 @@ class BaseVC: UIViewController {
     
     
     func bind() {}
-    
+  
 }
