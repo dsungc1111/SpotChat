@@ -14,6 +14,11 @@ final class TabBarVC: UITabBarController {
         navigationController?.navigationBar.isHidden = true
         setTabBar()
         
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(moveToOnBoarding),
+                                               name: NSNotification.Name("ExpiredRefreshToken"),
+                                               object: nil)
+        
     }
     
     private func setTabBar() {
@@ -43,5 +48,34 @@ final class TabBarVC: UITabBarController {
         self.selectedIndex = 1
     }
     
+
+    
+    @objc
+    private func moveToOnBoarding() {
+        
+        DispatchQueue.main.async {
+            let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+            let sceneDelegate = windowScene?.delegate as? SceneDelegate
+            
+            let vc = UINavigationController(rootViewController: OnBoardingVC())
+            
+            sceneDelegate?.window?.rootViewController = vc
+            sceneDelegate?.window?.makeKeyAndVisible()
+        }
+    
+    }
     
 }
+
+
+/*
+ let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+ 
+ let sceneDelegate = windowScene?.delegate as? SceneDelegate
+ 
+ 
+ let vc = UINavigationController(rootViewController: OnBoardingVC())
+ 
+ sceneDelegate?.window?.rootViewController = vc
+ sceneDelegate?.window?.makeKeyAndVisible()
+ */

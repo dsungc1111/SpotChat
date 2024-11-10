@@ -84,18 +84,34 @@ final class PostVM: BaseVMProtocol {
             .store(in: &cancellables)
         
         input.postBtnTap
-            .sink { _ in
-                NetworkManager.shared.performRequest(router: .newPost(query: postQuery), responseType: PostModel.self) { result in
-                    
-                    switch result {
-                    case .success(let success):
-                        print("성공", success)
-                    case .failure(let failure):
-                        print("실패", failure)
+            .flatMap { [postQuery] _ in
+                Future<PostModel, Error> { promise in
+                    Task {
+                        do {
+                            let result = try await NetworkManager2.shared.performRequest(router: .newPost(query: postQuery), responseType: PostModel.self, retrying: false)
+                            promise(.success(result))
+                        } catch {
+                            promise(.failure(error))
+                        }
                     }
-                    
                 }
             }
+            .sink(
+                receiveCompletion: { completion in
+                    switch completion {
+                    case .finished:
+                        
+                        break
+                    case .failure(let error):
+                        // 에러 처리
+                        print("Error: \(error)")
+                    }
+                },
+                receiveValue: { result in
+                    // 성공 시 결과 처리
+                    print("Received post: \(result)")
+                }
+            )
             .store(in: &cancellables)
         
         return Output()

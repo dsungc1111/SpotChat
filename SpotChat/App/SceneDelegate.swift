@@ -43,7 +43,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 case .revoked:
                    print("애플 revoked")
                 case .notFound:
-                UserDefaultManager.userId = ""
+//                UserDefaultManager.userId = ""
                 print("유저아이디", UserDefaultManager.accessToken)
                 print("애플 notFound")
                 DispatchQueue.main.async {
@@ -63,10 +63,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 break
             }
         }
-        
-        
-        
-                
                 
     }
 

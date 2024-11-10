@@ -21,7 +21,7 @@ enum Router {
     case login(query: LoginQuery)
     case newPost(query: PostQuery)
     case newPostImage(qeury: PostImageQuery)
-    
+    case refreshToken
 }
 
 
@@ -34,6 +34,8 @@ extension Router: TargetType {
         switch self {
         case .emailValidation, .signin, .appleLogin, .kakaoLogin, .login, .newPost, .newPostImage:
             return "POST"
+        case .refreshToken:
+            return "GET"
         }
     }
     
@@ -53,6 +55,8 @@ extension Router: TargetType {
             return "posts"
         case .newPostImage:
             return "posts/files"
+        case .refreshToken:
+            return "auth/refresh"
         }
     }
     
@@ -77,6 +81,14 @@ extension Router: TargetType {
                 APIKey.HTTPHeaderName.productID.rawValue : APIKey.HTTPHeaderName.productIDContent.rawValue,
                 APIKey.HTTPHeaderName.authorization.rawValue : UserDefaultManager.accessToken
             
+            ]
+        case .refreshToken:
+            return [
+            
+                APIKey.HTTPHeaderName.sesacKey.rawValue : APIKey.developerKey,
+                APIKey.HTTPHeaderName.contentType.rawValue : APIKey.HTTPHeaderName.json.rawValue,
+                APIKey.HTTPHeaderName.productID.rawValue : APIKey.HTTPHeaderName.productIDContent.rawValue,
+                APIKey.HTTPHeaderName.refresh.rawValue : UserDefaultManager.refreshToken
             ]
         }
     }
@@ -118,6 +130,8 @@ extension Router: TargetType {
             body.append("--\(postImage.boundary)--\r\n".data(using: .utf8)!)
             
             return body
+            
+        default: return nil
         }
     }
     
@@ -127,8 +141,7 @@ extension Router: TargetType {
         case .newPostImage(let postImage):
             return postImage.boundary
             
-        default:
-            return nil
+        default: return nil
         }
         
     }
@@ -139,19 +152,6 @@ extension Router: TargetType {
         request.allHTTPHeaderFields = header
         request.httpBody = httpBody
         return request
-        
-        
-//        guard let url = URL(string: baseURL + path) else { return nil }
-//          var request = URLRequest(url: url)
-//          request.httpMethod = method
-//          var headers = header
-//          if case .newPostImage(let postImage) = self {
-//              headers[APIKey.HTTPHeaderName.contentType.rawValue] = "multipart/form-data; boundary=\(postImage.boundary)"
-//          }
-//        
-//          request.allHTTPHeaderFields = headers
-//          request.httpBody = httpBody
-//          return request
     }
     
 }

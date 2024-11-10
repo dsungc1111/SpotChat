@@ -29,3 +29,10 @@ struct AppleLoginModel: Codable {
     let accessToken: String
     let refreshToken: String
 }
+
+
+struct TokenModel: Codable {
+    
+    let accessToken: String
+    let refreshToken: String
+}

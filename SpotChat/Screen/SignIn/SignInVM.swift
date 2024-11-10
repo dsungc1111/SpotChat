@@ -34,20 +34,19 @@ final class SignInVM: BaseVMProtocol {
 
         
         input.signInBtnTap
-            .map { [weak self] _ in
-                guard let self else { return LoginQuery(email: "", password: "")}
+            .map { _ in
                 return LoginQuery(email: input.emailText.value, password: input.passwordText.value)
             }
             .flatMap{ loginQuery in
                 // combine의 Future(퍼블리셔)를 사용하여
                 // 하나의 값 or 에러를 방출
-                Future<AuthModel, Error> { query in
+                Future<AuthModel, Error> { promise in
                     Task {
                         do {
-                            let result = try await NetworkManager2.shared.performRequest(router: .login(query: loginQuery), responseType: AuthModel.self)
-                            query(.success(result))
+                            let result = try await NetworkManager2.shared.performRequest(router: .login(query: loginQuery), responseType: AuthModel.self, retrying: false)
+                            promise(.success(result))
                         } catch {
-                            query(.failure(error))
+                            promise(.failure(error))
                         }
                     }
                 }
@@ -56,13 +55,17 @@ final class SignInVM: BaseVMProtocol {
             .sink(receiveCompletion: { result in
                 switch result {
                 case .finished:
-                    print("finished")
+                    print("😈😈😈😈 finished")
                 case .failure(let failure):
                     print("실패", failure)
+                    print("😈😈😈😈 실패 = ", failure)
                 }
-            }, receiveValue: { authmodel in
-                print("로그인 성공이요~~~~~~~~")
+            }, receiveValue: { [weak self] authmodel in
+                print("🔫🔫🔫🔫🔫 로그인 성공이요~~~~~~~~")
+                guard let self else { return }
+                saveUserInfo(success: authmodel)
                 loginSuccess.send(())
+                
             })
             .store(in: &cancellables)
         
@@ -77,6 +80,9 @@ final class SignInVM: BaseVMProtocol {
 extension SignInVM {
     
     private func saveUserInfo(success: AuthModel) {
+        
+        print("😶😶😶😶😶😶😶저장!!")
+        
         UserDefaultManager.accessToken = success.accessToken
         UserDefaultManager.refreshToken = success.refreshToken
         UserDefaultManager.userId = success.user_id
