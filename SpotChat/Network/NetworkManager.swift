@@ -85,8 +85,6 @@ final class NetworkManager {
 // 👉👉👉👉👉👉👉 swift concurrency
 final class NetworkManager2 {
     
-    
-    
     static let shared = NetworkManager2()
     
     private init() {}
@@ -97,34 +95,54 @@ final class NetworkManager2 {
             throw URLError(.badURL)
         }
         
+        print("요청 라우터: \(request)")
+        
         let (data, response) = try await URLSession.shared.data(for: request)
         
         guard let httpResponse = response as? HTTPURLResponse else {
             throw URLError(.badServerResponse)
         }
-        print("⭐️⭐️⭐️⭐️⭐️⭐️⭐️\(httpResponse.statusCode)⭐️⭐️⭐️⭐️⭐️⭐️⭐️")
+        
+        print("🔫🔫🔫🔫🔫응답 상태 코드: \(httpResponse.statusCode)🔫🔫🔫🔫🔫")
+        
         switch httpResponse.statusCode {
         case 200..<300:
+            print("성공인데유")
             do {
-                print("🔫🔫🔫🔫 네트워크 응답")
                 let decodedResponse = try JSONDecoder().decode(responseType, from: data)
                 return decodedResponse
             } catch {
                 throw error
             }
+        
+        case 401, 403, 418:
+            print("로그인 화면으로 이동 (403 또는 418 상태)")
+            NotificationCenter.default.post(
+                name: NSNotification.Name("ExpiredRefreshToken"),
+                object: nil
+            )
+            throw URLError(.userAuthenticationRequired)
             
-        case 418:
-            print("🔄 액세스 토큰 갱신 필요")
+        case 419:
+            print("액세스 토큰 갱신 필요")
+            print("리트라이은 뭘까ㅣ요", retrying)
+            print("😈😈😈😈\(UserDefaultManager.refreshToken)")
             guard !retrying else {
                 throw URLError(.userAuthenticationRequired)
             }
             
             do {
-                let refreshedToken = try await self.performRequest(router: .refreshToken, responseType: TokenModel.self)
+                // 리프레시 토큰으로 새로운 액세스 토큰 요청
+                let refreshedToken = try await refreshAccessToken()
                 
+                // 갱신된 토큰으로 UserDefaultManager 업데이트
                 UserDefaultManager.accessToken = refreshedToken.accessToken
                 UserDefaultManager.refreshToken = refreshedToken.refreshToken
                 
+                print("🥶🥶🥶🥶🥶🥶토큰 갱신 후 액세스 토큰:", UserDefaultManager.accessToken)
+                print("🥶🥶🥶🥶🥶🥶토큰 갱신 후 리프레시 토큰:", UserDefaultManager.refreshToken)
+                
+                // 갱신된 토큰으로 원래 요청을 재시도
                 return try await self.performRequest(router: router, responseType: responseType, retrying: true)
                 
             } catch {
@@ -132,20 +150,14 @@ final class NetworkManager2 {
                 throw URLError(.userAuthenticationRequired)
             }
             
-        case 419:
-            print("🔒 로그인 화면으로 이동")
-            NotificationCenter.default.post(
-                name: NSNotification.Name("ExpiredRefreshToken"),
-                object: nil
-            )
-            throw URLError(.userAuthenticationRequired)
-            
         default:
-            print("❌ 예외 응답 코드:", httpResponse.statusCode)
+            print("예외 응답 코드:", httpResponse.statusCode)
             throw URLError(.badServerResponse)
         }
     }
+    
+    private func refreshAccessToken() async throws -> TokenModel {
+        // 리프레시 토큰으로 새로운 액세스 토큰 요청
+        return try await performRequest(router: .refreshToken, responseType: TokenModel.self, retrying: false)
+    }
 }
-
-
-
