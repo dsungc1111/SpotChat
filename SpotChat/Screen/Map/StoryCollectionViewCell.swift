@@ -22,7 +22,7 @@ final class StoryCollectionViewCell: BaseCollectionViewCell {
         gradientLayer.endPoint = CGPoint(x: 1, y: 0.5)
         gradientLayer.frame = CGRect(x: 0, y: 0, width: 70, height: 70)
         gradientLayer.cornerRadius = 35
-
+        
         let shapeLayer = CAShapeLayer()
         shapeLayer.lineWidth = 3 // 보더의 두께를 설정
         shapeLayer.path = UIBezierPath(ovalIn: gradientLayer.bounds.insetBy(dx: 2.5, dy: 2.5)).cgPath
@@ -60,5 +60,5 @@ final class StoryCollectionViewCell: BaseCollectionViewCell {
     }
     func configureCell(with image: UIImage) {
         storyCircleBtn.setImage(image, for: .normal)
-        }
+    }
 }

@@ -13,11 +13,9 @@ protocol PostDataSourceProviderProtocol {
     associatedtype Snapshot
     associatedtype Section
     
-    
     func configureDataSource()
     func applyInitialSnapshot()
     func updateDataSource(with images: [UIImage])
-    func getCurrentImages() -> [UIImage] 
 }
 
 class PostDataSourceProvider: PostDataSourceProviderProtocol {
@@ -63,10 +61,5 @@ class PostDataSourceProvider: PostDataSourceProviderProtocol {
         snapshot.appendSections([.main])
         snapshot.appendItems(images)
         dataSource.apply(snapshot, animatingDifferences: true)
-    }
-    
-    func getCurrentImages() -> [UIImage] {
-        guard let items = dataSource?.snapshot().itemIdentifiers else { return [] }
-        return items
     }
 }
