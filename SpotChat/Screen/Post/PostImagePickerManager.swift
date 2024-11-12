@@ -18,7 +18,6 @@ protocol PostImagePickerManagerProtocol: AnyObject {
 final class PostImagePickerManager: PHPickerViewControllerDelegate, PostImagePickerManagerProtocol {
     var finishImagePick: (([UIImage]) -> Void)?
     
-    var selectedImages: (([UIImage]) -> Void)?
     
     func openGallery(in viewController: UIViewController) {
         
@@ -47,13 +46,10 @@ final class PostImagePickerManager: PHPickerViewControllerDelegate, PostImagePic
                 dispatchGroup.leave()
             }
         }
-        // 5장 로드된 후 한번에 전달
+        // 여러장 로드된 후 한번에 전달
         dispatchGroup.notify(queue: .main) {
+            print("🔫🔫🔫🔫🔫전달 돼쓰~")
             self.finishImagePick?(selectedImages)
         }
-        
     }
-    
-    
-    
 }

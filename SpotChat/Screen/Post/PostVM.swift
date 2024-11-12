@@ -28,7 +28,7 @@ final class PostVM: BaseVMProtocol {
     }
     */
     struct Input {
-//        let postImageQuery: PostImageQuery
+        let postImageQuery = CurrentValueSubject<PostImageQuery, Never>(PostImageQuery(imageData: Data()))
         let categoryText = CurrentValueSubject<String, Never>("")
         let titleText = CurrentValueSubject<String, Never>("")
         let hashTagText = CurrentValueSubject<String, Never>("")
@@ -41,6 +41,7 @@ final class PostVM: BaseVMProtocol {
     struct Output {
         
     }
+    
     
     @Published
     var input = Input()
@@ -86,11 +87,12 @@ final class PostVM: BaseVMProtocol {
             .store(in: &cancellables)
         
         input.postBtnTap
-            .flatMap { [postQuery] _ in
-                Future<PostModel, Error> { promise in
+            .flatMap { _ in
+                Future<PostImageModel, Error> { promise in
                     Task {
                         do {
-                            let result = try await NetworkManager2.shared.performRequest(router: .newPost(query: postQuery), responseType: PostModel.self, retrying: false)
+                            let result = try await NetworkManager2.shared.performRequest(router: .newPostImage(query: PostImageQuery(imageData: input.postImageQuery.value.imageData)), responseType: PostImageModel.self, retrying: false)
+                            
                             promise(.success(result))
                         } catch {
                             promise(.failure(error))
@@ -102,14 +104,15 @@ final class PostVM: BaseVMProtocol {
                 receiveCompletion: { completion in
                     switch completion {
                     case .finished:
+                        print("finished")
                         break
                     case .failure(let error):
                         print("Error: \(error)")
                     }
                 },
                 receiveValue: { result in
-                    // 성공 시 결과 처리
-                    print("Received post: \(result)")
+                    print("⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️ Received post: \(input.postImageQuery.value)⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️")
+                    print("⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️ Received post: \(result)⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️")
                 }
             )
             .store(in: &cancellables)

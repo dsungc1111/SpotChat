@@ -95,7 +95,7 @@ final class NetworkManager2 {
             throw URLError(.badURL)
         }
         
-        print("요청 라우터: \(request)")
+        print("요청 라우터: \(request.httpBody)")
         
         let (data, response) = try await URLSession.shared.data(for: request)
         
@@ -115,8 +115,8 @@ final class NetworkManager2 {
                 throw error
             }
         
-        case 401, 403, 418:
-            print("로그인 화면으로 이동 (403 또는 418 상태)")
+        case 403, 418:
+            print("로그인 화면으로 이동 (401 or 403 or 418 상태)")
             NotificationCenter.default.post(
                 name: NSNotification.Name("ExpiredRefreshToken"),
                 object: nil
@@ -124,9 +124,7 @@ final class NetworkManager2 {
             throw URLError(.userAuthenticationRequired)
             
         case 419:
-            print("액세스 토큰 갱신 필요")
-            print("리트라이은 뭘까ㅣ요", retrying)
-            print("😈😈😈😈\(UserDefaultManager.refreshToken)")
+            
             guard !retrying else {
                 throw URLError(.userAuthenticationRequired)
             }

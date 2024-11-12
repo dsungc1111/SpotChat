@@ -20,7 +20,7 @@ enum Router {
     case kakaoLogin(query: KakaoLoginQuery)
     case login(query: LoginQuery)
     case newPost(query: PostQuery)
-    case newPostImage(qeury: PostImageQuery)
+    case newPostImage(query: PostImageQuery)
     case refreshToken
 }
 
@@ -74,7 +74,7 @@ extension Router: TargetType {
                 APIKey.HTTPHeaderName.productID.rawValue : APIKey.HTTPHeaderName.productIDContent.rawValue
             ]
             
-        case .newPost, .newPostImage:
+        case .newPost:
             return [
                 APIKey.HTTPHeaderName.sesacKey.rawValue : APIKey.developerKey,
                 APIKey.HTTPHeaderName.contentType.rawValue : APIKey.HTTPHeaderName.json.rawValue,
@@ -82,11 +82,17 @@ extension Router: TargetType {
                 APIKey.HTTPHeaderName.authorization.rawValue : UserDefaultManager.accessToken
             
             ]
+        case .newPostImage:
+            return [
+                APIKey.HTTPHeaderName.sesacKey.rawValue : APIKey.developerKey,
+                APIKey.HTTPHeaderName.contentType.rawValue : APIKey.HTTPHeaderName.mutipart.rawValue,
+                APIKey.HTTPHeaderName.productID.rawValue : APIKey.HTTPHeaderName.productIDContent.rawValue,
+                APIKey.HTTPHeaderName.authorization.rawValue : UserDefaultManager.accessToken
+            ]
         case .refreshToken:
             return [
-            
                 APIKey.HTTPHeaderName.sesacKey.rawValue : APIKey.developerKey,
-                APIKey.HTTPHeaderName.contentType.rawValue : APIKey.HTTPHeaderName.json.rawValue,
+                APIKey.HTTPHeaderName.authorization.rawValue : UserDefaultManager.accessToken,
                 APIKey.HTTPHeaderName.productID.rawValue : APIKey.HTTPHeaderName.productIDContent.rawValue,
                 APIKey.HTTPHeaderName.refresh.rawValue : UserDefaultManager.refreshToken
             ]
@@ -99,7 +105,7 @@ extension Router: TargetType {
     
     var httpBody: Data? {
         let encoder = JSONEncoder()
-        print("~~~~~인코딩~~~~~~")
+        
         switch self {
         case .emailValidation(let query):
             return try? encoder.encode(query)
@@ -113,25 +119,12 @@ extension Router: TargetType {
             return try? encoder.encode(query)
         case .newPost(query: let query):
             return try? encoder.encode(query)
+            
         case .newPostImage(let postImage):
+            return encodeMultipartData(postImage)
             
-            var body = Data()
-            // 첫번째 경계
-            body.append("--\(postImage.boundary)\r\n".data(using: .utf8)!)
-            // 파일 메타 정보 추가, name과 filename속성 지정
-            body.append("Content-Disposition: form-data; name=\"files\"; filename=\"image.jpg\"\r\n".data(using: .utf8)!)
-            // MIME 타입 지정
-            body.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
-            // 이미지 데이터 추가
-            body.append(postImage.imageData ?? Data())
-            // 데이터 파트 종료 식별
-            body.append("\r\n".data(using: .utf8)!)
-            // multipart 형식의 종료 명시
-            body.append("--\(postImage.boundary)--\r\n".data(using: .utf8)!)
-            
-            return body
-            
-        default: return nil
+        default:
+            return nil
         }
     }
     
@@ -151,7 +144,41 @@ extension Router: TargetType {
         request.httpMethod = method
         request.allHTTPHeaderFields = header
         request.httpBody = httpBody
+        
+        if let boundary = boundary {
+            request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        }
         return request
     }
-    
+
+    // Multipart Data Encoding
+    private func encodeMultipartData(_ postImage: PostImageQuery) -> Data {
+        var body = Data()
+//        let boundary = postImage.boundary
+//        print("포스트 이미지 개수 = ", postImage.imageData.count)
+//        
+//        for (index, imageData) in postImage.imageData.enumerated() {
+//            
+//            guard let imageData = imageData else {
+//                print("Image data at index \(index) is nil")
+//                continue
+//            }
+//            
+//            body.append("--\(boundary)\r\n".data(using: .utf8)!)
+//            body.append("Content-Disposition: form-data; name=\"files[\(index)]\"; filename=\"image\(index).png\"\r\n".data(using: .utf8)!)
+//            body.append("Content-Type: image/png\r\n\r\n".data(using: .utf8)!)
+//            body.append(imageData)
+//            body.append("\r\n".data(using: .utf8)!)
+//        }
+//        
+//        body.append("--\(boundary)--\r\n".data(using: .utf8)!)
+
+        body.append("--\(postImage.boundary)\r\n".data(using: .utf8)!)
+        body.append("Content-Disposition: form-data; name=\"files\"; filename=\"image.png\"\r\n".data(using: .utf8)!)
+        body.append("Content-Type: image/png\r\n\r\n".data(using: .utf8)!)
+        body.append(postImage.imageData ?? body)
+        body.append("\r\n".data(using: .utf8)!)
+        body.append("--\(postImage.boundary)--\r\n".data(using: .utf8)!)
+        return body
+    }
 }

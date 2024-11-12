@@ -18,17 +18,18 @@ final class TabBarVC: UITabBarController {
                                                selector: #selector(moveToOnBoarding),
                                                name: NSNotification.Name("ExpiredRefreshToken"),
                                                object: nil)
-        
     }
     
     private func setTabBar() {
-        
+        let postView = PostView()
         let mapVC = MapVC()
         let chatVC =  ChatVC()
-        let postVC = PostVC(bindManager: PostBindingManager(),
+        
+        let postVC = PostVC(postView: postView,
                             postVM: PostVM(),
+                            bindManager: PostBindingManager(),
                             imagePickerManager: PostImagePickerManager(),
-                            dataSourceProvider: PostDataSourceProvider(collectionView: PostView().collectionView))
+                            dataSourceProvider: PostDataSourceProvider(collectionView: postView.collectionView))
         let settingVC = SettingVC()
         
         chatVC.tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: "message"), selectedImage: UIImage(systemName: "message.fill"))
@@ -65,20 +66,5 @@ final class TabBarVC: UITabBarController {
             sceneDelegate?.window?.rootViewController = vc
             sceneDelegate?.window?.makeKeyAndVisible()
         }
-    
     }
-    
 }
-
-
-/*
- let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
- 
- let sceneDelegate = windowScene?.delegate as? SceneDelegate
- 
- 
- let vc = UINavigationController(rootViewController: OnBoardingVC())
- 
- sceneDelegate?.window?.rootViewController = vc
- sceneDelegate?.window?.makeKeyAndVisible()
- */

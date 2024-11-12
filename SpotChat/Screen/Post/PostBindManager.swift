@@ -10,16 +10,17 @@ import Combine
 import CombineCocoa
 
 protocol PostBindManagerProtocol: AnyObject {
-    func bind(view: PostView, viewModel: PostVM)
+    func bind(view: PostView, viewModel: PostVM, vc: PostVC, imagePicker: PostImagePickerManagerProtocol)
 }
 
 final class PostBindingManager: PostBindManagerProtocol {
   
     private var cancellables = Set<AnyCancellable>()
     
-    func bind(view: PostView, viewModel: PostVM) {
+    func bind(view: PostView, viewModel: PostVM, vc: PostVC , imagePicker: PostImagePickerManagerProtocol) {
         
         let input = viewModel.input
+        _ = viewModel.transform(input: input)
         
         view.titleTextField.textPublisher
             .compactMap { $0 }
@@ -48,19 +49,21 @@ final class PostBindingManager: PostBindManagerProtocol {
             .subscribe(input.hashTagText)
             .store(in: &cancellables)
         
-//        view.photoButton.tapPublisher
-//            .sink { [weak self] _ in
-//                guard let self else { return }
-//                selectedImages = []
-//                openGallery()
-//            }
-//            .store(in: &cancellables)
-        
-        view.createPostButton.tapPublisher
-            .map { _ in }
-            .subscribe(input.postBtnTap)
+        view.photoButton.tapPublisher
+            .sink {  _ in
+                imagePicker.openGallery(in: vc)
+                print("⭐️⭐️⭐️⭐️탭했슈⭐️⭐️⭐️⭐️")
+            }
             .store(in: &cancellables)
         
+       view.createPostButton.tapPublisher
+            .sink { [weak self] _ in
+                guard let self else { return }
+//                let images = dataSourceProvider.getCurrentImages()
+                viewModel.input.postBtnTap.send(())
+                
+            }
+            .store(in: &cancellables)
         
         
     }
