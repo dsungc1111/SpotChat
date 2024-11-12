@@ -108,6 +108,7 @@ final class NetworkManager2 {
         switch httpResponse.statusCode {
         case 200..<300:
             print("성공인데유")
+            print("🍿🍿🍿🍿🍿액세스 토큰", UserDefaultManager.accessToken)
             do {
                 let decodedResponse = try JSONDecoder().decode(responseType, from: data)
                 return decodedResponse

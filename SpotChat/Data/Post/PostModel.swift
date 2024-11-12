@@ -24,11 +24,11 @@ struct PostModel: Codable {
     let hashTags: [String]
     let comments: [Comment]
     let geolocation: Geolocation
-//    let distance: Double
+    let distance: Double?
 
     enum CodingKeys: String, CodingKey {
         case postID = "post_id"
-        case category, title, price, content, content1, content2, content3, content4, content5, createdAt, creator, files, likes, likes2, buyers, hashTags, comments, geolocation
+        case category, title, price, content, content1, content2, content3, content4, content5, createdAt, creator, files, likes, likes2, buyers, hashTags, comments, geolocation, distance
     }
 }
 
@@ -58,3 +58,70 @@ struct Geolocation: Codable {
     let longitude, latitude: Double
 }
 
+
+struct GeolocationBasedDataModel: Codable {
+    let data: [PostModel]
+}
+//
+//struct GeolocationModel: Codable {
+//    let longitude: String
+//    let latitude: String
+//}
+
+
+/*
+ {
+   "data": [
+     {
+       "post_id": "670bcd66539a670e42b2a3d8",
+       "category": "study",
+       "title": "스터디원 모집합니다",
+       "price": 100,
+       "content": "오늘 밥 뭐 먹지 🤤 #영등포 #청취사 #새싹",
+       "content1": "8000원",
+       "content2": "영등포캠퍼스",
+       "content3": "저녁에 스터디 하실분",
+       "content4": "붕어빵 드실분",
+       "content5": "slp 같이 하실 분",
+       "createdAt": "2024-10-19T03:05:03.422Z",
+       "creator": {
+         "user_id": "65c9aa6932b0964405117d97",
+         "nick": "jack",
+         "profileImage": "uploads/profiles/1707716853682.png"
+       },
+       "files": [
+         "uploads/posts/스크린샷 2024-03-08 오후 11.11.05_1712739634962.png"
+       ],
+       "likes": [
+         "65c9aa6932b0964405117d97"
+       ],
+       "likes2": [
+         "670bcd66539a670e42b2a3d8"
+       ],
+       "buyers": [
+         "65c9aa6932b0964405117d08"
+       ],
+       "hashTags": [
+         "영등포"
+       ],
+       "comments": [
+         {
+           "comment_id": "65c9bc50a76c82debcf0e3e3",
+           "content": "할수있다 !! 포트폴리오 가즈아 ! 🔥",
+           "createdAt": "2024-02-12T06:36:00.073Z",
+           "creator": {
+             "user_id": "65c9aa6932b0964405117d97",
+             "nick": "jack",
+             "profileImage": "uploads/profiles/1707716853682.png"
+           }
+         }
+       ],
+       "geolocation": {
+         "longitude": 126.886557,
+         "latitude": 37.51775
+       },
+       "distance": 75.42775857964551
+     }
+   ]
+ }
+ */

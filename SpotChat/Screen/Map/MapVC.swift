@@ -18,6 +18,9 @@ final class MapVC: BaseMapVC, UICollectionViewDelegateFlowLayout {
     
     private let mapView = MapView()
     
+    private var logtitude = 128.9072
+    private var latitude = 37.7918
+    
     init() {
         super.init(nibName: nil, bundle: nil)
     }
@@ -27,7 +30,7 @@ final class MapVC: BaseMapVC, UICollectionViewDelegateFlowLayout {
     }
     
     override func addViews() {
-        let defaultPosition: MapPoint = MapPoint(longitude: 128.9072, latitude: 37.7918)
+        let defaultPosition: MapPoint = MapPoint(longitude: logtitude, latitude: latitude)
         let mapviewInfo: MapviewInfo = MapviewInfo(viewName: "mapview", viewInfoName: "map", defaultPosition: defaultPosition, defaultLevel: 6)
         
         mapController?.addView(mapviewInfo)
@@ -98,5 +101,21 @@ final class MapVC: BaseMapVC, UICollectionViewDelegateFlowLayout {
                 self?.dataSource.apply(snapshot, animatingDifferences: true)
             }
             .store(in: &cancellables)
+        
+        
+        Task {
+            
+            let geolocationQuery = GeolocationQuery(longitude: "\(128.90782356262207)", latitude: "\(37.805477856609954)", maxDistance: "\(2000)")
+            
+            do {
+                let result = try await NetworkManager2.shared.performRequest(router: .geolocationBasedSearch(query: geolocationQuery), responseType: GeolocationBasedDataModel.self)
+                
+                print("😡😡😡😡😡😡😡😡😡", result)
+                print("🥶🥶🥶🥶🥶🥶🥶🥶🥶", geolocationQuery)
+            } catch {
+                
+            }
+            
+        }
     }
 }

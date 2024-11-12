@@ -14,14 +14,18 @@ import Foundation
  */
 
 enum Router {
+    //MARK: AUTH ROUTER
     case emailValidation(query: EmailValidationQuery)
     case signin(query: SigninQuery)
     case appleLogin(query: AppleLgoinQuery)
     case kakaoLogin(query: KakaoLoginQuery)
     case login(query: LoginQuery)
+    case refreshToken
+    
+    //MARK: POST ROUTER
     case newPost(query: PostQuery)
     case newPostImage(query: PostImageQuery)
-    case refreshToken
+    case geolocationBasedSearch(query: GeolocationQuery)
 }
 
 
@@ -34,7 +38,7 @@ extension Router: TargetType {
         switch self {
         case .emailValidation, .signin, .appleLogin, .kakaoLogin, .login, .newPost, .newPostImage:
             return "POST"
-        case .refreshToken:
+        case .refreshToken, .geolocationBasedSearch:
             return "GET"
         }
     }
@@ -57,6 +61,8 @@ extension Router: TargetType {
             return "posts/files"
         case .refreshToken:
             return "auth/refresh"
+        case .geolocationBasedSearch:
+            return "posts/geolocation"
         }
     }
     
@@ -80,7 +86,7 @@ extension Router: TargetType {
                 APIKey.HTTPHeaderName.contentType.rawValue : APIKey.HTTPHeaderName.json.rawValue,
                 APIKey.HTTPHeaderName.productID.rawValue : APIKey.HTTPHeaderName.productIDContent.rawValue,
                 APIKey.HTTPHeaderName.authorization.rawValue : UserDefaultManager.accessToken
-            
+                
             ]
         case .newPostImage:
             return [
@@ -96,13 +102,37 @@ extension Router: TargetType {
                 APIKey.HTTPHeaderName.productID.rawValue : APIKey.HTTPHeaderName.productIDContent.rawValue,
                 APIKey.HTTPHeaderName.refresh.rawValue : UserDefaultManager.refreshToken
             ]
+        case .geolocationBasedSearch:
+            return [
+                APIKey.HTTPHeaderName.sesacKey.rawValue : APIKey.developerKey,
+                APIKey.HTTPHeaderName.authorization.rawValue : UserDefaultManager.accessToken,
+                APIKey.HTTPHeaderName.productID.rawValue : APIKey.HTTPHeaderName.productIDContent.rawValue
+            ]
         }
     }
-    
-    var parameters: [URLQueryItem]? {
+    var parameters: String? {
         return nil
     }
     
+    var queryItems: [URLQueryItem]? {
+        let encoder = JSONEncoder()
+        switch self {
+            
+        case .geolocationBasedSearch(let query):
+            
+            
+            let param = [
+                URLQueryItem(name: "longitude", value: query.longitude),
+                URLQueryItem(name: "latitude", value: query.latitude),
+                URLQueryItem(name: "maxDistance", value: query.maxDistance)
+            ]
+            
+            return param
+            
+        default:
+            return nil
+        }
+    }
     var httpBody: Data? {
         let encoder = JSONEncoder()
         
@@ -138,41 +168,46 @@ extension Router: TargetType {
         }
         
     }
+    
     func makeRequest() -> URLRequest? {
-        guard let url = URL(string: baseURL + path) else { return nil }
+        var components = URLComponents(string: baseURL + path)
+        components?.queryItems = queryItems
+        
+        guard let url = components?.url else { return nil }
         var request = URLRequest(url: url)
         request.httpMethod = method
         request.allHTTPHeaderFields = header
         request.httpBody = httpBody
+        
         
         if let boundary = boundary {
             request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
         }
         return request
     }
-
+    
     // Multipart Data Encoding
     private func encodeMultipartData(_ postImage: PostImageQuery) -> Data {
         var body = Data()
-//        let boundary = postImage.boundary
-//        print("포스트 이미지 개수 = ", postImage.imageData.count)
-//        
-//        for (index, imageData) in postImage.imageData.enumerated() {
-//            
-//            guard let imageData = imageData else {
-//                print("Image data at index \(index) is nil")
-//                continue
-//            }
-//            
-//            body.append("--\(boundary)\r\n".data(using: .utf8)!)
-//            body.append("Content-Disposition: form-data; name=\"files[\(index)]\"; filename=\"image\(index).png\"\r\n".data(using: .utf8)!)
-//            body.append("Content-Type: image/png\r\n\r\n".data(using: .utf8)!)
-//            body.append(imageData)
-//            body.append("\r\n".data(using: .utf8)!)
-//        }
-//        
-//        body.append("--\(boundary)--\r\n".data(using: .utf8)!)
-
+        //        let boundary = postImage.boundary
+        //        print("포스트 이미지 개수 = ", postImage.imageData.count)
+        //
+        //        for (index, imageData) in postImage.imageData.enumerated() {
+        //
+        //            guard let imageData = imageData else {
+        //                print("Image data at index \(index) is nil")
+        //                continue
+        //            }
+        //
+        //            body.append("--\(boundary)\r\n".data(using: .utf8)!)
+        //            body.append("Content-Disposition: form-data; name=\"files[\(index)]\"; filename=\"image\(index).png\"\r\n".data(using: .utf8)!)
+        //            body.append("Content-Type: image/png\r\n\r\n".data(using: .utf8)!)
+        //            body.append(imageData)
+        //            body.append("\r\n".data(using: .utf8)!)
+        //        }
+        //
+        //        body.append("--\(boundary)--\r\n".data(using: .utf8)!)
+        
         body.append("--\(postImage.boundary)\r\n".data(using: .utf8)!)
         body.append("Content-Disposition: form-data; name=\"files\"; filename=\"image.png\"\r\n".data(using: .utf8)!)
         body.append("Content-Type: image/png\r\n\r\n".data(using: .utf8)!)
@@ -181,4 +216,5 @@ extension Router: TargetType {
         body.append("--\(postImage.boundary)--\r\n".data(using: .utf8)!)
         return body
     }
+    
 }

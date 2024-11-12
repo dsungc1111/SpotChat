@@ -115,7 +115,4 @@ final class PostVM: BaseVMProtocol {
             print("Error: \(error)")
         }
     }
-
-    
-    
 }

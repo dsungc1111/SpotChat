@@ -29,3 +29,11 @@ struct PostQuery: Encodable {
     var latitude: Double // 게시자 위치
 }
 
+// 위치기반 포스트 get 쿼리
+struct GeolocationQuery: Encodable {
+    let longitude: String
+    let latitude: String
+    let maxDistance: String
+//    let order_by: String
+//    let sort_by: String
+}
