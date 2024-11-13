@@ -7,24 +7,30 @@
 
 import UIKit
 import SnapKit
+import MapKit
 
 final class MapView: BaseView {
     
-    private let myPinBtn = {
+    var map: MKMapView!
+    let myPinBtn = {
         let btn = UIButton()
         btn.setImage(UIImage(named: "locator"), for: .normal)
         btn.contentMode = .scaleAspectFill
         return btn
     }()
     
-    private let searchBar = {
+    let searchBar = {
         let search = UISearchBar()
         search.placeholder = "검색하세요."
         search.clipsToBounds = true
+        search.searchTextField.backgroundColor = .white
+        search.searchTextField.layer.borderColor = .none
         search.backgroundColor = .white
+        search.tintColor = .green
         search.layer.cornerRadius = 20
         return search
     }()
+    
     
     let radiusSetBtn = {
         let btn = UIButton()
@@ -48,16 +54,24 @@ final class MapView: BaseView {
     }
     
     override func configureHierarchy() {
+        map = MKMapView(frame: .zero)
         storyCollectionView.backgroundColor = .clear
         storyCollectionView.register(StoryCollectionViewCell.self, forCellWithReuseIdentifier: StoryCollectionViewCell.identifier)
+        addSubview(map)
         backgroundColor = .clear
         addSubview(myPinBtn)
         addSubview(searchBar)
         addSubview(radiusSetBtn)
         addSubview(storyCollectionView)
+        
+        
+        map.showsUserLocation = true
     }
     
     override func configureLayout() {
+        map.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
         myPinBtn.snp.makeConstraints { make in
             make.top.equalTo(safeAreaLayoutGuide).inset(24)
             make.leading.equalTo(safeAreaLayoutGuide).inset(10)
