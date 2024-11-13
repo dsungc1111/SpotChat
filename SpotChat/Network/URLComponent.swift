@@ -189,28 +189,11 @@ extension Router: TargetType {
     // Multipart Data Encoding
     private func encodeMultipartData(_ postImage: PostImageQuery) -> Data {
         var body = Data()
-        //        let boundary = postImage.boundary
-        //        print("포스트 이미지 개수 = ", postImage.imageData.count)
-        //
-        //        for (index, imageData) in postImage.imageData.enumerated() {
-        //
-        //            guard let imageData = imageData else {
-        //                print("Image data at index \(index) is nil")
-        //                continue
-        //            }
-        //
-        //            body.append("--\(boundary)\r\n".data(using: .utf8)!)
-        //            body.append("Content-Disposition: form-data; name=\"files[\(index)]\"; filename=\"image\(index).png\"\r\n".data(using: .utf8)!)
-        //            body.append("Content-Type: image/png\r\n\r\n".data(using: .utf8)!)
-        //            body.append(imageData)
-        //            body.append("\r\n".data(using: .utf8)!)
-        //        }
-        //
-        //        body.append("--\(boundary)--\r\n".data(using: .utf8)!)
+        
         
         body.append("--\(postImage.boundary)\r\n".data(using: .utf8)!)
-        body.append("Content-Disposition: form-data; name=\"files\"; filename=\"image.png\"\r\n".data(using: .utf8)!)
-        body.append("Content-Type: image/png\r\n\r\n".data(using: .utf8)!)
+        body.append("Content-Disposition: form-data; name=\"files\"; filename=\"image.jpeg\"\r\n".data(using: .utf8)!)
+        body.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
         body.append(postImage.imageData ?? body)
         body.append("\r\n".data(using: .utf8)!)
         body.append("--\(postImage.boundary)--\r\n".data(using: .utf8)!)

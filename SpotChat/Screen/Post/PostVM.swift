@@ -26,7 +26,7 @@ final class PostVM: BaseVMProtocol {
         
     }
     
-    private var postQuery = PostQuery(category: "", title: "", price: 1000, content: "", content1: "", content2: "", files: [], longitude: 128.8966344, latitude: 37.7950773)
+    private var postQuery = PostQuery(category: "", title: "", price: 1000, content: "", content1: "", content2: "", files: [], longitude: 128.8993263244629, latitude: 37.81253022980311)
     
     @Published
     var input = Input()
@@ -96,7 +96,7 @@ final class PostVM: BaseVMProtocol {
                 responseType: PostImageModel.self,
                 retrying: false
             )
-
+            
             // 두 번째 요청을 위해 postQuery에 파일 정보 추가
             post.files = imageResult.files
 

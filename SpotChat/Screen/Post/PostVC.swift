@@ -61,8 +61,7 @@ final class PostVC: BaseVC {
         imagePickerManager.finishImagePick = { [weak self] images in
             guard let self else { return }
             dataSourceProvider.updateDataSource(with: images)
-            let imageData = images.compactMap { $0.pngData() }
-            print("imageData개수", imageData.count)
+            let imageData = images.compactMap { $0.jpegData(compressionQuality: 0.7) }
             postVM.input.postImageQuery.send(PostImageQuery(imageData: imageData.first))
         }
     }

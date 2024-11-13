@@ -95,7 +95,7 @@ final class NetworkManager2 {
             throw URLError(.badURL)
         }
         
-        print("요청 라우터: \(request.httpBody)")
+        print("요청 라우터: \(request)")
         
         let (data, response) = try await URLSession.shared.data(for: request)
         
@@ -116,7 +116,7 @@ final class NetworkManager2 {
                 throw error
             }
         
-        case 403, 418:
+        case 401, 403, 418:
             print("로그인 화면으로 이동 (401 or 403 or 418 상태)")
             NotificationCenter.default.post(
                 name: NSNotification.Name("ExpiredRefreshToken"),
