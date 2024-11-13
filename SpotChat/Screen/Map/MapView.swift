@@ -12,6 +12,7 @@ import MapKit
 final class MapView: BaseView {
     
     var map: MKMapView!
+    
     let myPinBtn = {
         let btn = UIButton()
         btn.setImage(UIImage(named: "locator"), for: .normal)
@@ -23,10 +24,7 @@ final class MapView: BaseView {
         let search = UISearchBar()
         search.placeholder = "검색하세요."
         search.clipsToBounds = true
-        search.searchTextField.backgroundColor = .white
-        search.searchTextField.layer.borderColor = .none
-        search.backgroundColor = .white
-        search.tintColor = .green
+        search.searchTextField.borderStyle = .none
         search.layer.cornerRadius = 20
         return search
     }()
@@ -53,16 +51,38 @@ final class MapView: BaseView {
         return layout
     }
     
+    
+    lazy var detailCollectionView = UICollectionView(frame: .zero, collectionViewLayout: detailCollectionViewLayout())
+    
+    private func detailCollectionViewLayout() -> UICollectionViewLayout {
+        let layout = UICollectionViewFlowLayout()
+        let width = UIScreen.main.bounds.width
+//        let height = UIScreen.main.bounds.height
+        layout.scrollDirection = .horizontal
+        layout.itemSize = CGSize(width: width - 50, height: 120)
+        layout.minimumLineSpacing = 30
+        layout.sectionInset = UIEdgeInsets(top: 5, left: 20, bottom: 5, right: 20)
+        return layout
+    }
+    
+    
     override func configureHierarchy() {
         map = MKMapView(frame: .zero)
         storyCollectionView.backgroundColor = .clear
+        detailCollectionView.backgroundColor = .clear
         storyCollectionView.register(StoryCollectionViewCell.self, forCellWithReuseIdentifier: StoryCollectionViewCell.identifier)
+        detailCollectionView.register(DetailCollectionViewCell.self, forCellWithReuseIdentifier: DetailCollectionViewCell.identifier)
+        storyCollectionView.showsHorizontalScrollIndicator = false
+        detailCollectionView.showsHorizontalScrollIndicator = false
+        storyCollectionView.isPagingEnabled = true
+        
         addSubview(map)
         backgroundColor = .clear
         addSubview(myPinBtn)
         addSubview(searchBar)
         addSubview(radiusSetBtn)
         addSubview(storyCollectionView)
+        addSubview(detailCollectionView)
         
         
         map.showsUserLocation = true
@@ -89,6 +109,11 @@ final class MapView: BaseView {
         }
         storyCollectionView.snp.makeConstraints { make in
             make.top.equalTo(searchBar.snp.bottom).offset(10)
+            make.horizontalEdges.equalTo(safeAreaLayoutGuide).inset(5)
+            make.height.equalTo(140)
+        }
+        detailCollectionView.snp.makeConstraints { make in
+            make.bottom.equalTo(safeAreaLayoutGuide).inset(10)
             make.horizontalEdges.equalTo(safeAreaLayoutGuide).inset(5)
             make.height.equalTo(140)
         }

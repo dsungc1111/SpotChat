@@ -26,6 +26,7 @@
 		8B3437402CD76D12003B3104 /* libc++.1.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B34373F2CD76D12003B3104 /* libc++.1.tbd */; };
 		8B3437422CD76D2A003B3104 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3437412CD76D2A003B3104 /* libxml2.tbd */; };
 		8B3437442CD76D37003B3104 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3437432CD76D37003B3104 /* libsqlite3.tbd */; };
+		8B3970222CE4BBEB00069824 /* DetailCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3970212CE4BBEB00069824 /* DetailCollectionViewCell.swift */; };
 		8B7424D32CCA5A9600E198C3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7424D22CCA5A9600E198C3 /* AppDelegate.swift */; };
 		8B7424D52CCA5A9600E198C3 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7424D42CCA5A9600E198C3 /* SceneDelegate.swift */; };
 		8B7424D72CCA5A9600E198C3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7424D62CCA5A9600E198C3 /* ViewController.swift */; };
@@ -114,6 +115,7 @@
 		8B34373F2CD76D12003B3104 /* libc++.1.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.1.tbd"; path = "usr/lib/libc++.1.tbd"; sourceTree = SDKROOT; };
 		8B3437412CD76D2A003B3104 /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
 		8B3437432CD76D37003B3104 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
+		8B3970212CE4BBEB00069824 /* DetailCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCollectionViewCell.swift; sourceTree = "<group>"; };
 		8B7424CF2CCA5A9600E198C3 /* SpotChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpotChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B7424D22CCA5A9600E198C3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8B7424D42CCA5A9600E198C3 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -248,6 +250,15 @@
 				8B3437372CD76CD3003B3104 /* OpenGLES.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		8B3970202CE4BBD400069824 /* CollectionViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				8BDC9F8F2CD476F200E94702 /* StoryCollectionViewCell.swift */,
+				8B3970212CE4BBEB00069824 /* DetailCollectionViewCell.swift */,
+			);
+			path = CollectionViewCell;
 			sourceTree = "<group>";
 		};
 		8B7424C62CCA5A9600E198C3 = {
@@ -428,9 +439,9 @@
 		8B7F3BBE2CD4608200B6D34C /* Map */ = {
 			isa = PBXGroup;
 			children = (
+				8B3970202CE4BBD400069824 /* CollectionViewCell */,
 				8BDC9F882CD4683800E94702 /* MapView.swift */,
 				8B7F3B992CD1130600B6D34C /* MapVC.swift */,
-				8BDC9F8F2CD476F200E94702 /* StoryCollectionViewCell.swift */,
 			);
 			path = Map;
 			sourceTree = "<group>";
@@ -645,6 +656,7 @@
 				8B7F3B862CD0CDBB00B6D34C /* BaseView.swift in Sources */,
 				8BDC9F8B2CD46CE100E94702 /* AppColorSet.swift in Sources */,
 				8B7424D52CCA5A9600E198C3 /* SceneDelegate.swift in Sources */,
+				8B3970222CE4BBEB00069824 /* DetailCollectionViewCell.swift in Sources */,
 				8BDC9F922CD4771600E94702 /* BaseCollectionViewCell.swift in Sources */,
 				8B2A754E2CDA0021000C6162 /* PostModel.swift in Sources */,
 				8BDC9F952CD4CD8C00E94702 /* SignInVC.swift in Sources */,

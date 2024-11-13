@@ -57,8 +57,8 @@ final class PostBindingManager: PostBindManagerProtocol {
             .store(in: &cancellables)
         
        view.createPostButton.tapPublisher
-            .sink { [weak self] _ in
-                guard let self else { return }
+            .sink { _ in
+//                guard let self else { return }
 //                let images = dataSourceProvider.getCurrentImages()
                 viewModel.input.postBtnTap.send(())
                 

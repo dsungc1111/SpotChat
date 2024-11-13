@@ -21,6 +21,11 @@ final class MapVC: BaseVC {
     private let mapView = MapView()
     private var cancellables = Set<AnyCancellable>()
     private let temp = CLLocationCoordinate2D(latitude: 37.79181196691732, longitude: 128.9071798324585)
+    var currentIndex: CGFloat = 0
+    
+    private var imageItems: [ImageItem] = (1...6).map { _ in
+        ImageItem(image: UIImage(systemName: "person")!)
+    }
     
     override func loadView() {
         view = mapView
@@ -33,6 +38,7 @@ final class MapVC: BaseVC {
         setAnnotation()
         mapView.map.delegate = self
         addTemporaryUserLocation()
+        setupCollectionView()
     }
     
     override func bind() {
@@ -43,6 +49,12 @@ final class MapVC: BaseVC {
                 mapView.map.setRegion(region, animated: true)
             }
             .store(in: &cancellables)
+    }
+    
+    private func setupCollectionView() {
+        mapView.storyCollectionView.dataSource = self
+        mapView.detailCollectionView.dataSource = self
+        mapView.detailCollectionView.delegate = self
     }
     
     func setMapView() {
@@ -75,11 +87,11 @@ final class MapVC: BaseVC {
         
     }
     func addTemporaryUserLocation() {
-            let tempAnnotation = MKPointAnnotation()
-            tempAnnotation.coordinate = temp
-            tempAnnotation.title = "내 위치"
-            mapView.map.addAnnotation(tempAnnotation)
-        }
+        let tempAnnotation = MKPointAnnotation()
+        tempAnnotation.coordinate = temp
+        tempAnnotation.title = "내 위치"
+        mapView.map.addAnnotation(tempAnnotation)
+    }
 }
 
 
@@ -105,3 +117,83 @@ extension MapVC: MKMapViewDelegate {
     }
     
 }
+
+
+extension MapVC: UICollectionViewDelegate, UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return imageItems.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let imageItem = imageItems[indexPath.item]
+        
+        if collectionView == mapView.storyCollectionView {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: StoryCollectionViewCell.identifier, for: indexPath) as! StoryCollectionViewCell
+            cell.configureCell(with: imageItem.image)
+            return cell
+        } else if collectionView == mapView.detailCollectionView {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DetailCollectionViewCell.identifier, for: indexPath) as! DetailCollectionViewCell
+            cell.storyCircleBtn.setImage(imageItem.image, for: .normal)
+            return cell
+        }
+        
+        return UICollectionViewCell()
+    }
+//    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+//          guard let collectionView = scrollView as? UICollectionView else { return }
+//          let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
+//          let cellWidthIncludingSpacing = layout.itemSize.width + layout.minimumLineSpacing
+//          
+//          var offset = targetContentOffset.pointee
+//          let index = (offset.x + scrollView.contentInset.left) / cellWidthIncludingSpacing
+//          let roundedIndex = round(index)
+//          
+//          offset = CGPoint(x: roundedIndex * cellWidthIncludingSpacing - scrollView.contentInset.left, y: -scrollView.contentInset.top)
+//          targetContentOffset.pointee = offset
+//      }
+//    
+}
+
+extension MapVC : UIScrollViewDelegate {
+    
+    
+    
+    
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        
+        // item의 사이즈와 item 간의 간격 사이즈를 구해서 하나의 item 크기로 설정.
+        guard let collectionView = scrollView as? UICollectionView else { return }
+        let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
+        let cellWidthIncludingSpacing = layout.itemSize.width + layout.minimumLineSpacing
+        // targetContentOff을 이용하여 x좌표가 얼마나 이동했는지 확인
+        // 이동한 x좌표 값과 item의 크기를 비교하여 몇 페이징이 될 것인지 값 설정
+        var offset = targetContentOffset.pointee
+        let index = (offset.x + scrollView.contentInset.left) / cellWidthIncludingSpacing
+        var roundedIndex = round(index)
+        
+        // scrollView, targetContentOffset의 좌표 값으로 스크롤 방향을 알 수 있다.
+        // index를 반올림하여 사용하면 item의 절반 사이즈만큼 스크롤을 해야 페이징이 된다.
+        // 스크로로 방향을 체크하여 올림,내림을 사용하면 좀 더 자연스러운 페이징 효과를 낼 수 있다.
+        if scrollView.contentOffset.x > targetContentOffset.pointee.x {
+               roundedIndex = floor(index)
+           } else if scrollView.contentOffset.x < targetContentOffset.pointee.x {
+               roundedIndex = ceil(index)
+           } else {
+               roundedIndex = round(index)
+           }
+               
+           if currentIndex > roundedIndex {
+               currentIndex -= 1
+               roundedIndex = currentIndex
+           } else if currentIndex < roundedIndex {
+               currentIndex += 1
+               roundedIndex = currentIndex
+           }
+
+        
+        // 위 코드를 통해 페이징 될 좌표값을 targetContentOffset에 대입하면 된다.
+        offset = CGPoint(x: roundedIndex * cellWidthIncludingSpacing - scrollView.contentInset.left, y: -scrollView.contentInset.top)
+        targetContentOffset.pointee = offset
+    }
+}
+
