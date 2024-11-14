@@ -48,7 +48,6 @@ final class SettingVC: BaseVC {
         
         trigger.send(UserDefaultManager.userId)
         
-        
         output.myInfoList
             .sink { [weak self] myInfo in
                 guard let self else { return }
@@ -56,10 +55,18 @@ final class SettingVC: BaseVC {
                 DispatchQueue.main.async {
                     self.settingView.configureView(info: myInfo)
                 }
-                
             }
             .store(in: &cancellables)
         
+        output.myImageList
+            .sink { imageList in
+                print(imageList.count)
+                DispatchQueue.main.async {
+                    self.settingView.images = imageList
+                }
+            }
+            .store(in: &cancellables)
+        
+        
     }
-    
 }

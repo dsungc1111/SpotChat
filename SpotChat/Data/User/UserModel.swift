@@ -53,7 +53,7 @@ struct ProfileModel: Codable {
 
 // MARK: - Follow
 struct Follow: Codable {
-    let userID, nick, profileImage: String
+    let userID, nick, profileImage: String?
 
     enum CodingKeys: String, CodingKey {
         case userID = "user_id"

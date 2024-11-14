@@ -27,6 +27,7 @@ enum Router {
     case newPost(query: PostQuery)
     case newPostImage(query: PostImageQuery)
     case geolocationBasedSearch(query: GeolocationQuery)
+    case findUserPost(String, GetPostQuery?)
 }
 
 
@@ -39,7 +40,7 @@ extension Router: TargetType {
         switch self {
         case .emailValidation, .signin, .appleLogin, .kakaoLogin, .login, .newPost, .newPostImage:
             return "POST"
-        case .refreshToken, .geolocationBasedSearch, .myProfile:
+        case .refreshToken, .geolocationBasedSearch, .myProfile, .findUserPost:
             return "GET"
         }
     }
@@ -66,23 +67,27 @@ extension Router: TargetType {
             return "posts/geolocation"
         case .myProfile:
             return "users/me/profile"
+        case .findUserPost(let query, _):
+            return "posts/users/\(query)"
         }
     }
     
     var header: [String : String] {
         switch self {
+            // 키, 컨텐츠타입 - 제이슨
         case .emailValidation :
             return [
                 APIKey.HTTPHeaderName.sesacKey.rawValue : APIKey.developerKey,
                 APIKey.HTTPHeaderName.contentType.rawValue : APIKey.HTTPHeaderName.json.rawValue
             ]
+            // 키, 컨텐츠타입 - 제이슨, 프로덕트아이디
         case .signin, .appleLogin, .kakaoLogin, .login:
             return [
                 APIKey.HTTPHeaderName.sesacKey.rawValue : APIKey.developerKey,
                 APIKey.HTTPHeaderName.contentType.rawValue : APIKey.HTTPHeaderName.json.rawValue,
                 APIKey.HTTPHeaderName.productID.rawValue : APIKey.HTTPHeaderName.productIDContent.rawValue
             ]
-            
+            // 키, 컨텐츠타입 - 제이슨, 프로덕트아이디, 액세[스토큰
         case .newPost:
             return [
                 APIKey.HTTPHeaderName.sesacKey.rawValue : APIKey.developerKey,
@@ -91,13 +96,15 @@ extension Router: TargetType {
                 APIKey.HTTPHeaderName.authorization.rawValue : UserDefaultManager.accessToken
                 
             ]
-        case .newPostImage, .myProfile:
+            // 키, 컨텐츠타입 - 멀티파트, 프로덕트아이디, 액세스토큰
+        case .newPostImage, .myProfile, .findUserPost:
             return [
                 APIKey.HTTPHeaderName.sesacKey.rawValue : APIKey.developerKey,
                 APIKey.HTTPHeaderName.contentType.rawValue : APIKey.HTTPHeaderName.mutipart.rawValue,
                 APIKey.HTTPHeaderName.productID.rawValue : APIKey.HTTPHeaderName.productIDContent.rawValue,
                 APIKey.HTTPHeaderName.authorization.rawValue : UserDefaultManager.accessToken
             ]
+            // 키, 컨텐츠타입 - 제이슨, 프로덕트아이디, 토큰 2개
         case .refreshToken:
             return [
                 APIKey.HTTPHeaderName.sesacKey.rawValue : APIKey.developerKey,
@@ -105,6 +112,7 @@ extension Router: TargetType {
                 APIKey.HTTPHeaderName.productID.rawValue : APIKey.HTTPHeaderName.productIDContent.rawValue,
                 APIKey.HTTPHeaderName.refresh.rawValue : UserDefaultManager.refreshToken
             ]
+            // 토큰, 키, 프로덕트 아이디
         case .geolocationBasedSearch:
             return [
                 APIKey.HTTPHeaderName.sesacKey.rawValue : APIKey.developerKey,
@@ -118,7 +126,7 @@ extension Router: TargetType {
     }
     
     var queryItems: [URLQueryItem]? {
-        let encoder = JSONEncoder()
+        
         switch self {
             
         case .geolocationBasedSearch(let query):
@@ -131,6 +139,16 @@ extension Router: TargetType {
             ]
             
             return param
+            
+        case .findUserPost(_, let query):
+            
+            let param = [
+                query?.next.map { URLQueryItem(name: "next", value: $0) },
+                query?.limit.map { URLQueryItem(name: "limit", value: $0) },
+                query?.category.map { URLQueryItem(name: "category", value: $0) }
+            ].compactMap { $0 }
+            print("===========", param)
+            return param.isEmpty ? nil : param
             
         default:
             return nil
@@ -152,7 +170,6 @@ extension Router: TargetType {
             return try? encoder.encode(query)
         case .newPost(query: let query):
             return try? encoder.encode(query)
-            
         case .newPostImage(let postImage):
             return encodeMultipartData(postImage)
             

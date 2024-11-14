@@ -7,6 +7,14 @@
 
 import Foundation
 
+
+// getPostQuery
+
+struct GetPostQuery: Encodable {
+    let next: String?
+    let limit: String?
+    var category: String?
+}
 // 포스트할 이미지 쿼리
 struct PostImageQuery: Encodable {
     let boundary = UUID().uuidString

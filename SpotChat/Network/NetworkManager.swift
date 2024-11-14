@@ -159,4 +159,21 @@ final class NetworkManager2 {
         // 리프레시 토큰으로 새로운 액세스 토큰 요청
         return try await performRequest(router: .refreshToken, responseType: TokenModel.self, retrying: false)
     }
+    
+    
+    func loadImage(from path: String) async -> Data? {
+        // URL 생성
+        guard let url = URL(string: APIKey.baseURL + path) else {
+            return nil
+        }
+
+        do {
+            // URLSession을 통한 데이터 다운로드
+            let (data, _) = try await URLSession.shared.data(from: url)
+            return data
+        } catch {
+            print("데이터 로드 실패!!!!!!!!")
+            return nil
+        }
+    }
 }

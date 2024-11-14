@@ -18,18 +18,27 @@ final class SettingView: BaseView {
     private let bioLabel = UILabel()
     private let editProfileButton = UIButton()
     
+    var images: [Data] = [] {
+        didSet {
+            postsCollectionView.reloadData()
+        }
+    }
+    
+    
     private let postsCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        layoutViews() // layoutViews 호출
+        configureLayout()
+        layoutViews()
+        configureCollectionView()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         configureLayout()
         layoutViews()
+        configureCollectionView()
     }
     
     override func configureLayout() {
@@ -74,9 +83,12 @@ final class SettingView: BaseView {
         postsCollectionView.backgroundColor = .white
         addSubview(postsCollectionView)
     }
+    private func configureCollectionView() {
+            postsCollectionView.dataSource = self
+            postsCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "imageCell")
+        }
     
     private func setupCountLabel(_ label: UILabel) {
-//        label.text = "\(count)\n\(title)"
         label.textAlignment = .center
         label.numberOfLines = 2
         label.font = .systemFont(ofSize: 14)
@@ -134,5 +146,38 @@ final class SettingView: BaseView {
         followingCountLabel.text = "\(info.following.count)\nFollowing"
         
         usernameLabel.text = (info.nick ?? "" ).isEmpty ? "아무개" : info.nick
+        
+        profileImageView.image = info.profileImage == nil ? UIImage(systemName: "person") : UIImage(systemName: "star")
+        
     }
+}
+
+
+extension SettingView: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        print("이미지 개수 레쓰고", images.count)
+           return images.count
+       }
+       
+       func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+           let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "imageCell", for: indexPath)
+           
+           
+           let imageData = images[indexPath.item]
+           if let image = UIImage(data: imageData) {
+               let imageView = UIImageView(image: image)
+               imageView.contentMode = .scaleAspectFill
+               imageView.clipsToBounds = true
+               cell.contentView.addSubview(imageView)
+               
+               imageView.snp.makeConstraints { make in
+                   make.edges.equalToSuperview()
+                   
+               }
+               imageView.backgroundColor = .black
+           }
+           return cell
+       }
+    
+    
 }

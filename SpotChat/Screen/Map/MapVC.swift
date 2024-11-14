@@ -73,9 +73,9 @@ final class MapVC: BaseVC {
             let geolocationQuery = GeolocationQuery(longitude: "128.90782356262207", latitude: "37.805477856609954", maxDistance: "2000")
             
             do {
-                let result = try await NetworkManager2.shared.performRequest(router: .geolocationBasedSearch(query: geolocationQuery), responseType: GeolocationBasedDataModel.self)
+                let result = try await NetworkManager2.shared.performRequest(router: .geolocationBasedSearch(query: geolocationQuery), responseType: PostDataModel.self)
                 geoResult = result.data
-
+                
                 for i in 0..<result.data.count {  // `locations`는 GeolocationBasedDataModel 내의 위치 배열이라고 가정합니다.
                     let annotation = MKPointAnnotation()
                     annotation.coordinate = CLLocationCoordinate2D(latitude: result.data[i].geolocation.latitude, longitude: result.data[i].geolocation.longitude)
@@ -130,15 +130,15 @@ extension MapVC: UICollectionViewDelegate, UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        let imageItem = imageItems[indexPath.item]
+        //        let imageItem = imageItems[indexPath.item]
         
         if collectionView == mapView.storyCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: StoryCollectionViewCell.identifier, for: indexPath) as! StoryCollectionViewCell
-//            cell.configureCell(with: imageItem.image)
+            //            cell.configureCell(with: imageItem.image)
             return cell
         } else if collectionView == mapView.detailCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DetailCollectionViewCell.identifier, for: indexPath) as! DetailCollectionViewCell
-//            cell.storyCircleBtn.setImage(imageItem.image, for: .normal)
+            //            cell.storyCircleBtn.setImage(imageItem.image, for: .normal)
             cell.configureCell(geoModel: geoResult[indexPath.item])
             return cell
         }
@@ -148,9 +148,6 @@ extension MapVC: UICollectionViewDelegate, UICollectionViewDataSource {
 }
 
 extension MapVC : UIScrollViewDelegate {
-    
-    
-    
     
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         
@@ -168,23 +165,21 @@ extension MapVC : UIScrollViewDelegate {
         // index를 반올림하여 사용하면 item의 절반 사이즈만큼 스크롤을 해야 페이징이 된다.
         // 스크로로 방향을 체크하여 올림,내림을 사용하면 좀 더 자연스러운 페이징 효과를 낼 수 있다.
         if scrollView.contentOffset.x > targetContentOffset.pointee.x {
-               roundedIndex = floor(index)
-           } else if scrollView.contentOffset.x < targetContentOffset.pointee.x {
-               roundedIndex = ceil(index)
-           } else {
-               roundedIndex = round(index)
-           }
-               
-           if currentIndex > roundedIndex {
-               currentIndex -= 1
-               roundedIndex = currentIndex
-           } else if currentIndex < roundedIndex {
-               currentIndex += 1
-               roundedIndex = currentIndex
-           }
-
+            roundedIndex = floor(index)
+        } else if scrollView.contentOffset.x < targetContentOffset.pointee.x {
+            roundedIndex = ceil(index)
+        } else {
+            roundedIndex = round(index)
+        }
         
-        // 위 코드를 통해 페이징 될 좌표값을 targetContentOffset에 대입하면 된다.
+        if currentIndex > roundedIndex {
+            currentIndex -= 1
+            roundedIndex = currentIndex
+        } else if currentIndex < roundedIndex {
+            currentIndex += 1
+            roundedIndex = currentIndex
+        }
+        
         offset = CGPoint(x: roundedIndex * cellWidthIncludingSpacing - scrollView.contentInset.left, y: -scrollView.contentInset.top)
         targetContentOffset.pointee = offset
     }

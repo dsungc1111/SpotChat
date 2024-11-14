@@ -59,7 +59,7 @@ struct Geolocation: Codable {
 }
 
 
-struct GeolocationBasedDataModel: Codable {
+struct PostDataModel: Codable {
     let data: [PostModel]
 }
 //
