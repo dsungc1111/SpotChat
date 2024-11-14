@@ -36,3 +36,27 @@ struct TokenModel: Codable {
     let accessToken: String
     let refreshToken: String
 }
+
+
+struct ProfileModel: Codable {
+    let userID, email, nick, profileImage: String?
+    let phoneNum, gender, birthDay, info1: String
+    let info2, info3, info4, info5: String
+    let followers, following: [Follow]
+    let posts: [String]
+
+    enum CodingKeys: String, CodingKey {
+        case userID = "user_id"
+        case email, nick, profileImage, phoneNum, gender, birthDay, info1, info2, info3, info4, info5, followers, following, posts
+    }
+}
+
+// MARK: - Follow
+struct Follow: Codable {
+    let userID, nick, profileImage: String
+
+    enum CodingKeys: String, CodingKey {
+        case userID = "user_id"
+        case nick, profileImage
+    }
+}

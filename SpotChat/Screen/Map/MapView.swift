@@ -44,9 +44,7 @@ final class MapView: BaseView {
         let sectionSpacing: CGFloat = 10
         let cellSpacing: CGFloat = 10
         layout.scrollDirection = .horizontal
-        layout.itemSize = CGSize(width: 80, height: 100)
-        layout.minimumInteritemSpacing = cellSpacing
-        layout.minimumLineSpacing = cellSpacing
+        layout.itemSize = CGSize(width: 70, height: 100)
         layout.sectionInset = UIEdgeInsets(top: sectionSpacing, left: sectionSpacing, bottom: sectionSpacing, right: sectionSpacing)
         return layout
     }
@@ -57,7 +55,6 @@ final class MapView: BaseView {
     private func detailCollectionViewLayout() -> UICollectionViewLayout {
         let layout = UICollectionViewFlowLayout()
         let width = UIScreen.main.bounds.width
-//        let height = UIScreen.main.bounds.height
         layout.scrollDirection = .horizontal
         layout.itemSize = CGSize(width: width - 50, height: 120)
         layout.minimumLineSpacing = 30
@@ -74,7 +71,6 @@ final class MapView: BaseView {
         detailCollectionView.register(DetailCollectionViewCell.self, forCellWithReuseIdentifier: DetailCollectionViewCell.identifier)
         storyCollectionView.showsHorizontalScrollIndicator = false
         detailCollectionView.showsHorizontalScrollIndicator = false
-        storyCollectionView.isPagingEnabled = true
         
         addSubview(map)
         backgroundColor = .clear
@@ -83,8 +79,6 @@ final class MapView: BaseView {
         addSubview(radiusSetBtn)
         addSubview(storyCollectionView)
         addSubview(detailCollectionView)
-        
-        
         map.showsUserLocation = true
     }
     
@@ -118,5 +112,4 @@ final class MapView: BaseView {
             make.height.equalTo(140)
         }
     }
-
 }

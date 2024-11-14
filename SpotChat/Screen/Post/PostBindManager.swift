@@ -52,16 +52,12 @@ final class PostBindingManager: PostBindManagerProtocol {
         view.photoButton.tapPublisher
             .sink {  _ in
                 imagePicker.openGallery(in: vc)
-                print("⭐️⭐️⭐️⭐️탭했슈⭐️⭐️⭐️⭐️")
             }
             .store(in: &cancellables)
         
        view.createPostButton.tapPublisher
             .sink { _ in
-//                guard let self else { return }
-//                let images = dataSourceProvider.getCurrentImages()
                 viewModel.input.postBtnTap.send(())
-                
             }
             .store(in: &cancellables)
         

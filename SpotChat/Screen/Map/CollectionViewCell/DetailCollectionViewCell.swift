@@ -52,6 +52,7 @@ final class DetailCollectionViewCell: BaseCollectionViewCell {
     private let contentLabel = {
         let label = UILabel()
         label.text = "내용칸"
+        label.textColor = .white
         return label
     }()
     private let timeLabel = {
@@ -96,7 +97,9 @@ final class DetailCollectionViewCell: BaseCollectionViewCell {
         
         
     }
-    func configureCell() {
-        
+    func configureCell(geoModel: PostModel) {
+        titleLabel.text = geoModel.title
+        contentLabel.text = geoModel.content1
+        timeLabel.text = geoModel.content2
     }
 }

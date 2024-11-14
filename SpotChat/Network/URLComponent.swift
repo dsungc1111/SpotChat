@@ -14,12 +14,13 @@ import Foundation
  */
 
 enum Router {
-    //MARK: AUTH ROUTER
+    //MARK: AUTH/User ROUTER
     case emailValidation(query: EmailValidationQuery)
     case signin(query: SigninQuery)
     case appleLogin(query: AppleLgoinQuery)
     case kakaoLogin(query: KakaoLoginQuery)
     case login(query: LoginQuery)
+    case myProfile
     case refreshToken
     
     //MARK: POST ROUTER
@@ -38,7 +39,7 @@ extension Router: TargetType {
         switch self {
         case .emailValidation, .signin, .appleLogin, .kakaoLogin, .login, .newPost, .newPostImage:
             return "POST"
-        case .refreshToken, .geolocationBasedSearch:
+        case .refreshToken, .geolocationBasedSearch, .myProfile:
             return "GET"
         }
     }
@@ -63,6 +64,8 @@ extension Router: TargetType {
             return "auth/refresh"
         case .geolocationBasedSearch:
             return "posts/geolocation"
+        case .myProfile:
+            return "users/me/profile"
         }
     }
     
@@ -88,7 +91,7 @@ extension Router: TargetType {
                 APIKey.HTTPHeaderName.authorization.rawValue : UserDefaultManager.accessToken
                 
             ]
-        case .newPostImage:
+        case .newPostImage, .myProfile:
             return [
                 APIKey.HTTPHeaderName.sesacKey.rawValue : APIKey.developerKey,
                 APIKey.HTTPHeaderName.contentType.rawValue : APIKey.HTTPHeaderName.mutipart.rawValue,

@@ -68,6 +68,8 @@
 		8B9F773E2CE0D903009887D4 /* CombineCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 8B9F773D2CE0D903009887D4 /* CombineCocoa */; };
 		8B9F77432CE0DE37009887D4 /* PostBindManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9F77422CE0DE37009887D4 /* PostBindManager.swift */; };
 		8B9F77452CE0E70A009887D4 /* PostImagePickerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9F77442CE0E70A009887D4 /* PostImagePickerManager.swift */; };
+		8BDC03102CE5CCC200B118A0 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDC030F2CE5CCC200B118A0 /* SettingView.swift */; };
+		8BDC03122CE5D28000B118A0 /* SettingVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDC03112CE5D28000B118A0 /* SettingVM.swift */; };
 		8BDC9F842CD460D400E94702 /* ChatVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDC9F832CD460D400E94702 /* ChatVC.swift */; };
 		8BDC9F872CD4612E00E94702 /* SettingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDC9F862CD4612E00E94702 /* SettingVC.swift */; };
 		8BDC9F892CD4683900E94702 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDC9F882CD4683800E94702 /* MapView.swift */; };
@@ -156,6 +158,8 @@
 		8B7F3BBC2CD45FA300B6D34C /* TabBarVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarVC.swift; sourceTree = "<group>"; };
 		8B9F77422CE0DE37009887D4 /* PostBindManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostBindManager.swift; sourceTree = "<group>"; };
 		8B9F77442CE0E70A009887D4 /* PostImagePickerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostImagePickerManager.swift; sourceTree = "<group>"; };
+		8BDC030F2CE5CCC200B118A0 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
+		8BDC03112CE5D28000B118A0 /* SettingVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingVM.swift; sourceTree = "<group>"; };
 		8BDC9F832CD460D400E94702 /* ChatVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatVC.swift; sourceTree = "<group>"; };
 		8BDC9F862CD4612E00E94702 /* SettingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingVC.swift; sourceTree = "<group>"; };
 		8BDC9F882CD4683800E94702 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
@@ -457,7 +461,9 @@
 		8BDC9F852CD4611B00E94702 /* Setting */ = {
 			isa = PBXGroup;
 			children = (
+				8BDC030F2CE5CCC200B118A0 /* SettingView.swift */,
 				8BDC9F862CD4612E00E94702 /* SettingVC.swift */,
+				8BDC03112CE5D28000B118A0 /* SettingVM.swift */,
 			);
 			path = Setting;
 			sourceTree = "<group>";
@@ -666,7 +672,9 @@
 				8B7F3BA32CD37DE900B6D34C /* AppleLogin.swift in Sources */,
 				8B2A75502CDA06E4000C6162 /* SignInVM.swift in Sources */,
 				8B7F3BB92CD3AF0D00B6D34C /* KakaoAuthVM.swift in Sources */,
+				8BDC03102CE5CCC200B118A0 /* SettingView.swift in Sources */,
 				8B2A75422CD8BBAC000C6162 /* PostView.swift in Sources */,
+				8BDC03122CE5D28000B118A0 /* SettingVM.swift in Sources */,
 				8B7F3B9A2CD1130600B6D34C /* MapVC.swift in Sources */,
 				8B2A75542CDEF81F000C6162 /* UITextField+.swift in Sources */,
 			);

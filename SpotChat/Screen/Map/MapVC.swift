@@ -21,6 +21,8 @@ final class MapVC: BaseVC {
     private let mapView = MapView()
     private var cancellables = Set<AnyCancellable>()
     private let temp = CLLocationCoordinate2D(latitude: 37.79181196691732, longitude: 128.9071798324585)
+    var geoResult: [PostModel] = []
+    
     var currentIndex: CGFloat = 0
     
     private var imageItems: [ImageItem] = (1...6).map { _ in
@@ -53,6 +55,7 @@ final class MapVC: BaseVC {
     
     private func setupCollectionView() {
         mapView.storyCollectionView.dataSource = self
+        mapView.storyCollectionView.delegate = self
         mapView.detailCollectionView.dataSource = self
         mapView.detailCollectionView.delegate = self
     }
@@ -71,7 +74,8 @@ final class MapVC: BaseVC {
             
             do {
                 let result = try await NetworkManager2.shared.performRequest(router: .geolocationBasedSearch(query: geolocationQuery), responseType: GeolocationBasedDataModel.self)
-                print(result, "🥶🥶🥶🥶🥶🥶🥶🥶🥶🥶")
+                geoResult = result.data
+
                 for i in 0..<result.data.count {  // `locations`는 GeolocationBasedDataModel 내의 위치 배열이라고 가정합니다.
                     let annotation = MKPointAnnotation()
                     annotation.coordinate = CLLocationCoordinate2D(latitude: result.data[i].geolocation.latitude, longitude: result.data[i].geolocation.longitude)
@@ -80,6 +84,7 @@ final class MapVC: BaseVC {
                     
                     mapView.map.addAnnotation(annotation)
                 }
+                mapView.detailCollectionView.reloadData()
             } catch {
                 print("Error fetching geolocation data: \(error)")
             }
@@ -121,37 +126,25 @@ extension MapVC: MKMapViewDelegate {
 
 extension MapVC: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return imageItems.count
+        return geoResult.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let imageItem = imageItems[indexPath.item]
+//        let imageItem = imageItems[indexPath.item]
         
         if collectionView == mapView.storyCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: StoryCollectionViewCell.identifier, for: indexPath) as! StoryCollectionViewCell
-            cell.configureCell(with: imageItem.image)
+//            cell.configureCell(with: imageItem.image)
             return cell
         } else if collectionView == mapView.detailCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DetailCollectionViewCell.identifier, for: indexPath) as! DetailCollectionViewCell
-            cell.storyCircleBtn.setImage(imageItem.image, for: .normal)
+//            cell.storyCircleBtn.setImage(imageItem.image, for: .normal)
+            cell.configureCell(geoModel: geoResult[indexPath.item])
             return cell
         }
         
         return UICollectionViewCell()
     }
-//    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-//          guard let collectionView = scrollView as? UICollectionView else { return }
-//          let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
-//          let cellWidthIncludingSpacing = layout.itemSize.width + layout.minimumLineSpacing
-//          
-//          var offset = targetContentOffset.pointee
-//          let index = (offset.x + scrollView.contentInset.left) / cellWidthIncludingSpacing
-//          let roundedIndex = round(index)
-//          
-//          offset = CGPoint(x: roundedIndex * cellWidthIncludingSpacing - scrollView.contentInset.left, y: -scrollView.contentInset.top)
-//          targetContentOffset.pointee = offset
-//      }
-//    
 }
 
 extension MapVC : UIScrollViewDelegate {
