@@ -83,11 +83,11 @@ extension SignInVM {
         
         print("😶😶😶😶😶😶😶저장!!")
         
-        UserDefaultManager.accessToken = success.accessToken
-        UserDefaultManager.refreshToken = success.refreshToken
-        UserDefaultManager.userId = success.user_id
-        UserDefaultManager.userNickname = success.nick
-        UserDefaultManager.userEmail = success.email
+        UserDefaultsManager.accessToken = success.accessToken
+        UserDefaultsManager.refreshToken = success.refreshToken
+        UserDefaultsManager.userId = success.user_id
+        UserDefaultsManager.userNickname = success.nick
+        UserDefaultsManager.userEmail = success.email
     }
     
 }

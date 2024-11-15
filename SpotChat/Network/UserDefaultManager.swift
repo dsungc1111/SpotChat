@@ -24,7 +24,7 @@ struct UserDefault<T> {
     }
 }
 
-final class UserDefaultManager {
+final class UserDefaultsManager {
     
     private enum UserDefaultKey: String {
         case access
@@ -38,7 +38,7 @@ final class UserDefaultManager {
     }
     
     
-    static let shared = UserDefaultManager()
+    static let shared = UserDefaultsManager()
     
     private init() {}
     

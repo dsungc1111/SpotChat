@@ -93,7 +93,7 @@ extension Router: TargetType {
                 APIKey.HTTPHeaderName.sesacKey.rawValue : APIKey.developerKey,
                 APIKey.HTTPHeaderName.contentType.rawValue : APIKey.HTTPHeaderName.json.rawValue,
                 APIKey.HTTPHeaderName.productID.rawValue : APIKey.HTTPHeaderName.productIDContent.rawValue,
-                APIKey.HTTPHeaderName.authorization.rawValue : UserDefaultManager.accessToken
+                APIKey.HTTPHeaderName.authorization.rawValue : UserDefaultsManager.accessToken
                 
             ]
             // 키, 컨텐츠타입 - 멀티파트, 프로덕트아이디, 액세스토큰
@@ -102,21 +102,21 @@ extension Router: TargetType {
                 APIKey.HTTPHeaderName.sesacKey.rawValue : APIKey.developerKey,
                 APIKey.HTTPHeaderName.contentType.rawValue : APIKey.HTTPHeaderName.mutipart.rawValue,
                 APIKey.HTTPHeaderName.productID.rawValue : APIKey.HTTPHeaderName.productIDContent.rawValue,
-                APIKey.HTTPHeaderName.authorization.rawValue : UserDefaultManager.accessToken
+                APIKey.HTTPHeaderName.authorization.rawValue : UserDefaultsManager.accessToken
             ]
             // 키, 컨텐츠타입 - 제이슨, 프로덕트아이디, 토큰 2개
         case .refreshToken:
             return [
                 APIKey.HTTPHeaderName.sesacKey.rawValue : APIKey.developerKey,
-                APIKey.HTTPHeaderName.authorization.rawValue : UserDefaultManager.accessToken,
+                APIKey.HTTPHeaderName.authorization.rawValue : UserDefaultsManager.accessToken,
                 APIKey.HTTPHeaderName.productID.rawValue : APIKey.HTTPHeaderName.productIDContent.rawValue,
-                APIKey.HTTPHeaderName.refresh.rawValue : UserDefaultManager.refreshToken
+                APIKey.HTTPHeaderName.refresh.rawValue : UserDefaultsManager.refreshToken
             ]
             // 토큰, 키, 프로덕트 아이디
         case .geolocationBasedSearch:
             return [
                 APIKey.HTTPHeaderName.sesacKey.rawValue : APIKey.developerKey,
-                APIKey.HTTPHeaderName.authorization.rawValue : UserDefaultManager.accessToken,
+                APIKey.HTTPHeaderName.authorization.rawValue : UserDefaultsManager.accessToken,
                 APIKey.HTTPHeaderName.productID.rawValue : APIKey.HTTPHeaderName.productIDContent.rawValue
             ]
         }

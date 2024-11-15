@@ -108,7 +108,7 @@ final class NetworkManager2 {
         switch httpResponse.statusCode {
         case 200..<300:
             print("성공인데유")
-            print("🍿🍿🍿🍿🍿액세스 토큰", UserDefaultManager.accessToken)
+            print("🍿🍿🍿🍿🍿액세스 토큰", UserDefaultsManager.accessToken)
             do {
                 let decodedResponse = try JSONDecoder().decode(responseType, from: data)
                 return decodedResponse
@@ -135,11 +135,11 @@ final class NetworkManager2 {
                 let refreshedToken = try await refreshAccessToken()
                 
                 // 갱신된 토큰으로 UserDefaultManager 업데이트
-                UserDefaultManager.accessToken = refreshedToken.accessToken
-                UserDefaultManager.refreshToken = refreshedToken.refreshToken
+                UserDefaultsManager.accessToken = refreshedToken.accessToken
+                UserDefaultsManager.refreshToken = refreshedToken.refreshToken
                 
-                print("🥶🥶🥶🥶🥶🥶토큰 갱신 후 액세스 토큰:", UserDefaultManager.accessToken)
-                print("🥶🥶🥶🥶🥶🥶토큰 갱신 후 리프레시 토큰:", UserDefaultManager.refreshToken)
+                print("🥶🥶🥶🥶🥶🥶토큰 갱신 후 액세스 토큰:", UserDefaultsManager.accessToken)
+                print("🥶🥶🥶🥶🥶🥶토큰 갱신 후 리프레시 토큰:", UserDefaultsManager.refreshToken)
                 
                 // 갱신된 토큰으로 원래 요청을 재시도
                 return try await self.performRequest(router: router, responseType: responseType, retrying: true)
@@ -161,19 +161,19 @@ final class NetworkManager2 {
     }
     
     
-    func loadImage(from path: String) async -> Data? {
-        // URL 생성
-        guard let url = URL(string: APIKey.baseURL + path) else {
-            return nil
-        }
-
-        do {
-            // URLSession을 통한 데이터 다운로드
-            let (data, _) = try await URLSession.shared.data(from: url)
-            return data
-        } catch {
-            print("데이터 로드 실패!!!!!!!!")
-            return nil
-        }
-    }
+//    func loadImage(from path: String) async -> Data? {
+//        // URL 생성
+//        guard let url = URL(string: APIKey.baseURL + path) else {
+//            return nil
+//        }
+//
+//        do {
+//            // URLSession을 통한 데이터 다운로드
+//            let (data, _) = try await URLSession.shared.data(from: url)
+//            return data
+//        } catch {
+//            print("데이터 로드 실패!!!!!!!!")
+//            return nil
+//        }
+//    }
 }

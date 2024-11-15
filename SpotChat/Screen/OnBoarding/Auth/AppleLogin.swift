@@ -62,11 +62,11 @@ extension AuthVC: ASAuthorizationControllerPresentationContextProviding {
             print("authorizationCode: \(authorizationCode!)")
             //eotjd0818@naver.com
             //대성 최
-            UserDefaultManager.userId = userIdentifier
+            UserDefaultsManager.userId = userIdentifier
             print("idToken", idToken)
-            UserDefaultManager.userNickname = fullName?.givenName ?? "킷캣" + (fullName?.familyName ?? "")
+            UserDefaultsManager.userNickname = fullName?.givenName ?? "킷캣" + (fullName?.familyName ?? "")
             
-            let appleLoginQuery = AppleLgoinQuery(idToken: idToken, nick: UserDefaultManager.userNickname)
+            let appleLoginQuery = AppleLgoinQuery(idToken: idToken, nick: UserDefaultsManager.userNickname)
             print(appleLoginQuery)
             print("여기는 아이디 관련?")
             NetworkManager.shared.performRequest(router: .appleLogin(query: appleLoginQuery), responseType: AppleLoginModel.self) { result in

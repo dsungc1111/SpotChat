@@ -7,86 +7,78 @@
 
 import UIKit
 import SnapKit
+import Kingfisher
 
 final class SettingView: BaseView {
     
-    private let profileImageView = UIImageView()
-    private let usernameLabel = UILabel()
+    private let profileImageView =  {
+        let view = UIImageView()
+        view.layer.cornerRadius = 40
+        view.clipsToBounds = true
+        view.backgroundColor = .lightGray
+        return view
+    }()
+    
+    private let usernameLabel = {
+        let label = UILabel()
+        label.text = "Username"
+        label.font = .boldSystemFont(ofSize: 16)
+        return label
+    }()
+    
     private let postCountLabel = UILabel()
     private let followersCountLabel = UILabel()
     private let followingCountLabel = UILabel()
-    private let bioLabel = UILabel()
-    private let editProfileButton = UIButton()
     
-    var images: [Data] = [] {
-        didSet {
-            postsCollectionView.reloadData()
-        }
-    }
-    
-    
-    private let postsCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        configureLayout()
-        layoutViews()
-        configureCollectionView()
-    }
-    
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        configureLayout()
-        layoutViews()
-        configureCollectionView()
-    }
-    
-    override func configureLayout() {
+    private let bioLabel =  {
+        let label = UILabel()
+        label.text = "This is the bio section where you can write something about yourself."
+        label.numberOfLines = 0
+        label.font = .systemFont(ofSize: 14)
+        return label
+    }()
+    private let editProfileButton = {
+        let btn = UIButton()
+        btn.setTitle("Edit Profile", for: .normal)
+        btn.setTitleColor(.white, for: .normal)
+        btn.backgroundColor = .black
+        btn.layer.cornerRadius = 5
         
+        return btn
+    }()
+    
+    
+    lazy var postsCollectionView = UICollectionView(frame: .zero, collectionViewLayout: postsCollectionViewLayout())
+    
+    private func postsCollectionViewLayout() -> UICollectionViewLayout {
+        let layout = UICollectionViewFlowLayout()
+        let width = UIScreen.main.bounds.width
+        let spacing: CGFloat = 1 // 셀 간의 간격
+        let numberOfItemsPerRow: CGFloat = 3
+        let totalSpacing = spacing * (numberOfItemsPerRow - 1)
         
-        // Profile Image
-        profileImageView.layer.cornerRadius = 40
-        profileImageView.clipsToBounds = true
-        profileImageView.backgroundColor = .lightGray
+        let itemWidth = (width - totalSpacing) / numberOfItemsPerRow
+        layout.scrollDirection = .vertical
+        layout.itemSize = CGSize(width: floor(itemWidth), height: floor(itemWidth))
+        layout.minimumInteritemSpacing = spacing
+        layout.minimumLineSpacing = spacing
+        
+        return layout
+    }
+    
+    override func configureHierarchy() {
         addSubview(profileImageView)
-        
-        // Username Label
-        usernameLabel.text = "Username"
-        usernameLabel.font = .boldSystemFont(ofSize: 16)
         addSubview(usernameLabel)
-        
-        // Counts
+        addSubview(bioLabel)
+        addSubview(editProfileButton)
         setupCountLabel(postCountLabel)
         setupCountLabel(followersCountLabel)
         setupCountLabel(followingCountLabel)
-        
-        // Bio
-        bioLabel.text = "This is the bio section where you can write something about yourself."
-        bioLabel.numberOfLines = 0
-        bioLabel.font = .systemFont(ofSize: 14)
-        addSubview(bioLabel)
-        
-        // Edit Profile Button
-        editProfileButton.setTitle("Edit Profile", for: .normal)
-        editProfileButton.setTitleColor(.white, for: .normal)
-        editProfileButton.backgroundColor = .black
-        editProfileButton.layer.cornerRadius = 5
-        addSubview(editProfileButton)
-        
-        
-        // Posts CollectionView
-        let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: frame.width / 3 - 1, height: frame.width / 3 - 1)
-        layout.minimumInteritemSpacing = 1
-        layout.minimumLineSpacing = 1
-        postsCollectionView.collectionViewLayout = layout
-        postsCollectionView.backgroundColor = .white
         addSubview(postsCollectionView)
+        postsCollectionView.register(UserPostCollectionViewCell.self, forCellWithReuseIdentifier: UserPostCollectionViewCell.identifier)
     }
-    private func configureCollectionView() {
-            postsCollectionView.dataSource = self
-            postsCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "imageCell")
-        }
+    
+ 
     
     private func setupCountLabel(_ label: UILabel) {
         label.textAlignment = .center
@@ -95,7 +87,9 @@ final class SettingView: BaseView {
         addSubview(label)
     }
     
-    private func layoutViews() {
+    
+    override func configureLayout() {
+        
         profileImageView.snp.makeConstraints { make in
             make.top.equalTo(safeAreaLayoutGuide.snp.top).offset(16)
             make.leading.equalToSuperview().offset(16)
@@ -150,34 +144,4 @@ final class SettingView: BaseView {
         profileImageView.image = info.profileImage == nil ? UIImage(systemName: "person") : UIImage(systemName: "star")
         
     }
-}
-
-
-extension SettingView: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        print("이미지 개수 레쓰고", images.count)
-           return images.count
-       }
-       
-       func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-           let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "imageCell", for: indexPath)
-           
-           
-           let imageData = images[indexPath.item]
-           if let image = UIImage(data: imageData) {
-               let imageView = UIImageView(image: image)
-               imageView.contentMode = .scaleAspectFill
-               imageView.clipsToBounds = true
-               cell.contentView.addSubview(imageView)
-               
-               imageView.snp.makeConstraints { make in
-                   make.edges.equalToSuperview()
-                   
-               }
-               imageView.backgroundColor = .black
-           }
-           return cell
-       }
-    
-    
 }

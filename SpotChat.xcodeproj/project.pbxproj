@@ -79,6 +79,8 @@
 		8BDC9F922CD4771600E94702 /* BaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDC9F912CD4771600E94702 /* BaseCollectionViewCell.swift */; };
 		8BDC9F952CD4CD8C00E94702 /* SignInVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDC9F942CD4CD8C00E94702 /* SignInVC.swift */; };
 		8BDC9F972CD4CE0D00E94702 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDC9F962CD4CE0D00E94702 /* SignInView.swift */; };
+		8BEB7BB82CE7327E0079D068 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 8BEB7BB72CE7327E0079D068 /* Kingfisher */; };
+		8BEB7BBA2CE7378F0079D068 /* UserPostCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BEB7BB92CE7378F0079D068 /* UserPostCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -168,6 +170,7 @@
 		8BDC9F912CD4771600E94702 /* BaseCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCollectionViewCell.swift; sourceTree = "<group>"; };
 		8BDC9F942CD4CD8C00E94702 /* SignInVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInVC.swift; sourceTree = "<group>"; };
 		8BDC9F962CD4CE0D00E94702 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
+		8BEB7BB92CE7378F0079D068 /* UserPostCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPostCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -189,6 +192,7 @@
 				8B3437352CD75A12003B3104 /* KakaoMapsSDK-SPM in Frameworks */,
 				8B7F3BAE2CD3967900B6D34C /* KakaoSDK in Frameworks */,
 				8B7F3BB02CD3967900B6D34C /* KakaoSDKAuth in Frameworks */,
+				8BEB7BB82CE7327E0079D068 /* Kingfisher in Frameworks */,
 				8B9F773E2CE0D903009887D4 /* CombineCocoa in Frameworks */,
 				8B7F3BB22CD3967900B6D34C /* KakaoSDKCert in Frameworks */,
 			);
@@ -464,6 +468,7 @@
 				8BDC030F2CE5CCC200B118A0 /* SettingView.swift */,
 				8BDC9F862CD4612E00E94702 /* SettingVC.swift */,
 				8BDC03112CE5D28000B118A0 /* SettingVM.swift */,
+				8BEB7BB92CE7378F0079D068 /* UserPostCollectionViewCell.swift */,
 			);
 			path = Setting;
 			sourceTree = "<group>";
@@ -504,6 +509,7 @@
 				8BDC9F8D2CD4719700E94702 /* IQKeyboardManagerSwift */,
 				8B3437342CD75A12003B3104 /* KakaoMapsSDK-SPM */,
 				8B9F773D2CE0D903009887D4 /* CombineCocoa */,
+				8BEB7BB72CE7327E0079D068 /* Kingfisher */,
 			);
 			productName = SpotChat;
 			productReference = 8B7424CF2CCA5A9600E198C3 /* SpotChat.app */;
@@ -583,6 +589,7 @@
 				8BDC9F8C2CD4719700E94702 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */,
 				8B3437332CD75A12003B3104 /* XCRemoteSwiftPackageReference "KakaoMapsSDK-SPM" */,
 				8B9F773C2CE0D903009887D4 /* XCRemoteSwiftPackageReference "CombineCocoa" */,
+				8BEB7BB62CE7327E0079D068 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			productRefGroup = 8B7424D02CCA5A9600E198C3 /* Products */;
 			projectDirPath = "";
@@ -638,6 +645,7 @@
 				8B2A753F2CD89F9C000C6162 /* BaseMapVC.swift in Sources */,
 				8B2A75522CDA30B2000C6162 /* PostDataSourceProvider.swift in Sources */,
 				8BDC9F972CD4CE0D00E94702 /* SignInView.swift in Sources */,
+				8BEB7BBA2CE7378F0079D068 /* UserPostCollectionViewCell.swift in Sources */,
 				8B7F3B6E2CCFA04D00B6D34C /* TargetType.swift in Sources */,
 				8B7F3B702CCFA51400B6D34C /* UserDefaultManager.swift in Sources */,
 				8B7F3BA12CD336CF00B6D34C /* BaseVMProtocol.swift in Sources */,
@@ -1069,6 +1077,14 @@
 				minimumVersion = 7.1.0;
 			};
 		};
+		8BEB7BB62CE7327E0079D068 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.1.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1116,6 +1132,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 8BDC9F8C2CD4719700E94702 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */;
 			productName = IQKeyboardManagerSwift;
+		};
+		8BEB7BB72CE7327E0079D068 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8BEB7BB62CE7327E0079D068 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

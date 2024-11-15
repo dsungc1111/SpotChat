@@ -17,13 +17,13 @@ final class SettingVM: BaseVMProtocol {
     
     struct Output {
         let myInfoList: PassthroughSubject<ProfileModel, Never>
-        let myImageList: PassthroughSubject<[Data], Never>
+        let myImageList: PassthroughSubject<[String], Never>
     }
     
     func transform(input: Input) -> Output {
         
         let myInfoList = PassthroughSubject<ProfileModel, Never>()
-        let myImageList = PassthroughSubject<[Data], Never>()
+        let myImageList = PassthroughSubject<[String], Never>()
         
         input.trigger
             .sink { userID in
@@ -38,13 +38,11 @@ final class SettingVM: BaseVMProtocol {
                         let query = GetPostQuery(next: nil, limit: nil, category: nil)
                         let postData = try await NetworkManager2.shared.performRequest(router: .findUserPost(userID, query), responseType: PostDataModel.self)
                         
-                        var imageDataList: [Data] = []
+                        var imageDataList: [String] = []
                         
                         for post in postData.data {
                             for path in post.files {
-                                if let data = await NetworkManager2.shared.loadImage(from: path) {
-                                    imageDataList.append(data)
-                                }
+                                imageDataList.append(path)
                             }
                         }
                         
