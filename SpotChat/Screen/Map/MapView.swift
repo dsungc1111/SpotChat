@@ -42,9 +42,8 @@ final class MapView: BaseView {
     private func storyCollectionViewLayout() -> UICollectionViewLayout {
         let layout = UICollectionViewFlowLayout()
         let sectionSpacing: CGFloat = 10
-        let cellSpacing: CGFloat = 10
         layout.scrollDirection = .horizontal
-        layout.itemSize = CGSize(width: 70, height: 100)
+        layout.itemSize = CGSize(width: 60, height: 90)
         layout.sectionInset = UIEdgeInsets(top: sectionSpacing, left: sectionSpacing, bottom: sectionSpacing, right: sectionSpacing)
         return layout
     }
@@ -102,7 +101,7 @@ final class MapView: BaseView {
             make.size.equalTo(40)
         }
         storyCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(searchBar.snp.bottom).offset(10)
+            make.top.equalTo(searchBar.snp.bottom).offset(5)
             make.horizontalEdges.equalTo(safeAreaLayoutGuide).inset(5)
             make.height.equalTo(140)
         }

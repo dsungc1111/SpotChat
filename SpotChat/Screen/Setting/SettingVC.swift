@@ -91,26 +91,20 @@ extension SettingVC: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: UserPostCollectionViewCell.identifier, for: indexPath) as? UserPostCollectionViewCell else { return UserPostCollectionViewCell() }
         
         
-        
         if let (url, modifier) = NetworkManager2.shared.fetchProfileImage(imageString: images[indexPath.item]) {
             
             cell.imageView.kf.setImage(
                 with: url,
                 options: [
                     .requestModifier(modifier),
-                    .transition(.fade(0.2)), // 로드 시 페이드 효과
-                    .cacheOriginalImage      // 캐시 저장
+                    .transition(.fade(0.2)),
+                    .cacheOriginalImage
                 ]
             )
             
         }
-        
         return cell
     }
-    
-    
-
-    
 }
 
 

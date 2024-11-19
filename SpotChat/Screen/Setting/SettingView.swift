@@ -32,7 +32,7 @@ final class SettingView: BaseView {
     
     private let bioLabel =  {
         let label = UILabel()
-        label.text = "This is the bio section where you can write something about yourself."
+        label.text = "Not bio yet."
         label.numberOfLines = 0
         label.font = .systemFont(ofSize: 14)
         return label
@@ -133,7 +133,7 @@ final class SettingView: BaseView {
     }
     
     func configureView(info: ProfileModel) {
-        bioLabel.text = info.info1
+        bioLabel.text = info.info1.isEmpty ? "Not bio yet." : info.info1
         
         postCountLabel.text = "\(info.posts.count)\nPosts"
         followersCountLabel.text = "\(info.followers.count)\nFollowers"

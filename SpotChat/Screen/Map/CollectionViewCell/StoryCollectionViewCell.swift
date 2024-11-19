@@ -14,7 +14,7 @@ final class StoryCollectionViewCell: BaseCollectionViewCell {
     
     private let storyCircleBtn: UIButton = {
         let btn = UIButton()
-        btn.layer.cornerRadius = 35
+        btn.layer.cornerRadius = 30
         btn.backgroundColor = .systemGray
         
         let gradientLayer = CAGradientLayer()
@@ -22,8 +22,8 @@ final class StoryCollectionViewCell: BaseCollectionViewCell {
         gradientLayer.colors = [UIColor(hexCode: "F4EC78").cgColor, UIColor(hexCode: "6AF4F7").cgColor]
         gradientLayer.startPoint = CGPoint(x: 0, y: 0.5)
         gradientLayer.endPoint = CGPoint(x: 1, y: 0.5)
-        gradientLayer.frame = CGRect(x: 0, y: 0, width: 70, height: 70)
-        gradientLayer.cornerRadius = 35
+        gradientLayer.frame = CGRect(x: 0, y: 0, width: 60, height: 60)
+        gradientLayer.cornerRadius = 30
         
         let shapeLayer = CAShapeLayer()
         shapeLayer.lineWidth = 3 // 보더의 두께를 설정
@@ -52,7 +52,7 @@ final class StoryCollectionViewCell: BaseCollectionViewCell {
     }
     override func configureLayout() {
         storyCircleBtn.snp.makeConstraints { make in
-            make.size.equalTo(70)
+            make.size.equalTo(60)
             make.centerX.equalTo(safeAreaLayoutGuide)
         }
         nicknameLabel.snp.makeConstraints { make in

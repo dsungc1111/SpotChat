@@ -96,7 +96,21 @@ final class MapVC: BaseVC {
             do {
                 let userInfo = try await NetworkManager2.shared.performRequest(router: .myProfile, responseType: ProfileModel.self)
                 
-                userFollower = userInfo.following
+                print("🚧🚧🚧🚧🚧🚧🚧🚧🚧 = ", userInfo.following)
+                print("dfsdfdsfdsfdf", geoResult.count)
+                for i in 0..<geoResult.count {
+                    dump(geoResult[i].creator)
+                    for j in 0..<userInfo.following.count {
+                        
+                        if userInfo.following[j].userID == geoResult[i].creator.userID {
+                            
+                            userFollower.append(userInfo.following[j])
+                        }
+                        
+                    }
+                    
+                }
+                
                 
                 print("🥶🥶🥶🥶🥶🥶🥶🥶🥶🥶팔로워 소개 드갑니다이 ~ ", userFollower)
                 
