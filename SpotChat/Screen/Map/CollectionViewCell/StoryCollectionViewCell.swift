@@ -7,11 +7,12 @@
 
 import UIKit
 import SnapKit
+import Kingfisher
 
 final class StoryCollectionViewCell: BaseCollectionViewCell {
     
     
-    let storyCircleBtn: UIButton = {
+    private let storyCircleBtn: UIButton = {
         let btn = UIButton()
         btn.layer.cornerRadius = 35
         btn.backgroundColor = .systemGray
@@ -33,6 +34,7 @@ final class StoryCollectionViewCell: BaseCollectionViewCell {
         
         // 버튼에 그라데이션 레이어 추가
         btn.layer.addSublayer(gradientLayer)
+        btn.clipsToBounds = true
         
         return btn
     }()
@@ -59,7 +61,31 @@ final class StoryCollectionViewCell: BaseCollectionViewCell {
             
         }
     }
-    func configureCell(with image: UIImage) {
-        storyCircleBtn.setImage(image, for: .normal)
+    func configureCell(following: Follow) {
+        
+        
+        
+        storyCircleBtn.setImage(following.profileImage == nil ? UIImage(systemName: "person") : UIImage(systemName: "star"), for: .normal)
+        
+        
+        let placeholderImage = UIImage(systemName: "person")
+        storyCircleBtn.setImage(placeholderImage, for: .normal)
+        
+        
+        nicknameLabel.text = following.nick
+        
+        if let profileImage = following.profileImage,
+           let (url, modifier) = NetworkManager2.shared.fetchProfileImage(imageString: profileImage) {
+            
+            storyCircleBtn.kf.setImage(
+                with: url,
+                for: .normal,
+                placeholder: placeholderImage,
+                options: [
+                    .requestModifier(modifier),
+                    .cacheOriginalImage
+                ]
+            )
+        }
     }
 }

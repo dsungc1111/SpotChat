@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import Kingfisher
 
 // 👉👉👉👉👉👉👉 클로저 형태 - URLSession
 final class NetworkManager {
@@ -161,19 +162,30 @@ final class NetworkManager2 {
     }
     
     
-//    func loadImage(from path: String) async -> Data? {
-//        // URL 생성
-//        guard let url = URL(string: APIKey.baseURL + path) else {
-//            return nil
-//        }
-//
-//        do {
-//            // URLSession을 통한 데이터 다운로드
-//            let (data, _) = try await URLSession.shared.data(from: url)
-//            return data
-//        } catch {
-//            print("데이터 로드 실패!!!!!!!!")
-//            return nil
-//        }
-//    }
+
+    func fetchProfileImage(imageString: String) -> ( URL, AnyModifier)? {
+        
+        guard let url = URL(string: APIKey.baseURL + "v1/" + imageString) else {
+            print("유효하지 않은 URL")
+            return nil
+        }
+        
+        
+        let header: [String : String] = [
+            APIKey.HTTPHeaderName.authorization.rawValue: UserDefaultsManager.accessToken,
+            APIKey.HTTPHeaderName.sesacKey.rawValue: APIKey.developerKey,
+            APIKey.HTTPHeaderName.productID.rawValue : APIKey.HTTPHeaderName.productIDContent.rawValue
+        ]
+        
+        let modifier = AnyModifier { request in
+            var request = request
+            header.forEach { (key, value) in
+                request.setValue(value, forHTTPHeaderField: key)
+            }
+            return request
+        }
+        
+        
+        return (url, modifier)
+    }
 }

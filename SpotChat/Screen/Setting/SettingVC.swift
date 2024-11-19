@@ -90,36 +90,27 @@ extension SettingVC: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: UserPostCollectionViewCell.identifier, for: indexPath) as? UserPostCollectionViewCell else { return UserPostCollectionViewCell() }
         
-        guard let url = URL(string: APIKey.baseURL + "v1/" + images[indexPath.item]) else {
-            print("유효하지 않은 URL")
-            return cell
-        }
-        print(url)
         
-        let header: [String : String] = [
-            APIKey.HTTPHeaderName.authorization.rawValue: UserDefaultsManager.accessToken,
-            APIKey.HTTPHeaderName.sesacKey.rawValue: APIKey.developerKey,
-            APIKey.HTTPHeaderName.productID.rawValue : APIKey.HTTPHeaderName.productIDContent.rawValue
-        ]
         
-        let modifier = AnyModifier { request in
-            var request = request
-            header.forEach { (key, value) in
-                request.setValue(value, forHTTPHeaderField: key)
-            }
-            return request
+        if let (url, modifier) = NetworkManager2.shared.fetchProfileImage(imageString: images[indexPath.item]) {
+            
+            cell.imageView.kf.setImage(
+                with: url,
+                options: [
+                    .requestModifier(modifier),
+                    .transition(.fade(0.2)), // 로드 시 페이드 효과
+                    .cacheOriginalImage      // 캐시 저장
+                ]
+            )
+            
         }
         
-        cell.imageView.kf.setImage(
-            with: url,
-            options: [
-                .requestModifier(modifier),
-                .transition(.fade(0.2)), // 로드 시 페이드 효과
-                .cacheOriginalImage      // 캐시 저장
-            ]
-        )
         return cell
     }
     
     
+
+    
 }
+
+

@@ -23,11 +23,13 @@ final class MapVC: BaseVC {
     private let temp = CLLocationCoordinate2D(latitude: 37.79181196691732, longitude: 128.9071798324585)
     var geoResult: [PostModel] = []
     
-    var currentIndex: CGFloat = 0
-    
-    private var imageItems: [ImageItem] = (1...6).map { _ in
-        ImageItem(image: UIImage(systemName: "person")!)
+    var userFollower: [Follow] = [] {
+        didSet {
+            mapView.storyCollectionView.reloadData()
+        }
     }
+    
+    var currentIndex: CGFloat = 0
     
     override func loadView() {
         view = mapView
@@ -76,6 +78,7 @@ final class MapVC: BaseVC {
                 let result = try await NetworkManager2.shared.performRequest(router: .geolocationBasedSearch(query: geolocationQuery), responseType: PostDataModel.self)
                 geoResult = result.data
                 
+                
                 for i in 0..<result.data.count {  // `locations`는 GeolocationBasedDataModel 내의 위치 배열이라고 가정합니다.
                     let annotation = MKPointAnnotation()
                     annotation.coordinate = CLLocationCoordinate2D(latitude: result.data[i].geolocation.latitude, longitude: result.data[i].geolocation.longitude)
@@ -88,8 +91,19 @@ final class MapVC: BaseVC {
             } catch {
                 print("Error fetching geolocation data: \(error)")
             }
+            
+            
+            do {
+                let userInfo = try await NetworkManager2.shared.performRequest(router: .myProfile, responseType: ProfileModel.self)
+                
+                userFollower = userInfo.following
+                
+                print("🥶🥶🥶🥶🥶🥶🥶🥶🥶🥶팔로워 소개 드갑니다이 ~ ", userFollower)
+                
+            } catch {
+                print("유저 에러")
+            }
         }
-        
     }
     func addTemporaryUserLocation() {
         let tempAnnotation = MKPointAnnotation()
@@ -126,19 +140,29 @@ extension MapVC: MKMapViewDelegate {
 
 extension MapVC: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return geoResult.count
+        
+        print("0000000000000", userFollower.count)
+        
+        if collectionView == mapView.storyCollectionView {
+            return userFollower.count
+        } else {
+            return geoResult.count
+        }
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        //        let imageItem = imageItems[indexPath.item]
         
         if collectionView == mapView.storyCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: StoryCollectionViewCell.identifier, for: indexPath) as! StoryCollectionViewCell
-            //            cell.configureCell(with: imageItem.image)
+            
+            cell.configureCell(following: userFollower[indexPath.item])
+            
             return cell
+            
         } else if collectionView == mapView.detailCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DetailCollectionViewCell.identifier, for: indexPath) as! DetailCollectionViewCell
-            //            cell.storyCircleBtn.setImage(imageItem.image, for: .normal)
+            
             cell.configureCell(geoModel: geoResult[indexPath.item])
             return cell
         }

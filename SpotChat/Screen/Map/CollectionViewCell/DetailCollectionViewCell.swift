@@ -12,7 +12,7 @@ import SnapKit
 final class DetailCollectionViewCell: BaseCollectionViewCell {
     
     
-    let storyCircleBtn: UIButton = {
+    let userCircleBtn: UIButton = {
         let btn = UIButton()
         btn.layer.cornerRadius = 35
         btn.backgroundColor = .systemGray
@@ -64,25 +64,25 @@ final class DetailCollectionViewCell: BaseCollectionViewCell {
     override func configureHierarchy() {
         backgroundColor = .lightGray
         layer.cornerRadius = 10
-        contentView.addSubview(storyCircleBtn)
+        contentView.addSubview(userCircleBtn)
         contentView.addSubview(nicknameLabel)
         contentView.addSubview(titleLabel)
         contentView.addSubview(contentLabel)
         contentView.addSubview(timeLabel)
     }
     override func configureLayout() {
-        storyCircleBtn.snp.makeConstraints { make in
+        userCircleBtn.snp.makeConstraints { make in
             make.size.equalTo(70)
             make.leading.equalTo(safeAreaLayoutGuide).inset(10)
             make.centerY.equalTo(safeAreaLayoutGuide)
         }
         titleLabel.snp.makeConstraints { make in
             make.top.equalTo(safeAreaLayoutGuide).inset(10)
-            make.leading.equalTo(storyCircleBtn.snp.trailing).offset(10)
+            make.leading.equalTo(userCircleBtn.snp.trailing).offset(10)
         }
         nicknameLabel.snp.makeConstraints { make in
             make.top.equalTo( titleLabel.snp.bottom).offset(10)
-            make.leading.equalTo(storyCircleBtn.snp.trailing).offset(10)
+            make.leading.equalTo(userCircleBtn.snp.trailing).offset(10)
         }
         timeLabel.snp.makeConstraints { make in
             make.top.equalTo( titleLabel.snp.bottom).offset(10)
@@ -91,7 +91,7 @@ final class DetailCollectionViewCell: BaseCollectionViewCell {
         
         contentLabel.snp.makeConstraints { make in
             make.bottom.equalTo(safeAreaLayoutGuide).inset(10)
-            make.leading.equalTo(storyCircleBtn.snp.trailing).offset(10)
+            make.leading.equalTo(userCircleBtn.snp.trailing).offset(10)
         }
 
         

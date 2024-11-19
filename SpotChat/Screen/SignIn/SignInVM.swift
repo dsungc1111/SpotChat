@@ -88,6 +88,7 @@ extension SignInVM {
         UserDefaultsManager.userId = success.user_id
         UserDefaultsManager.userNickname = success.nick
         UserDefaultsManager.userEmail = success.email
+        print(UserDefaultsManager.userNickname)
     }
     
 }

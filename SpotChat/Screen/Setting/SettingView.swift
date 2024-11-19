@@ -97,25 +97,25 @@ final class SettingView: BaseView {
         }
         
         usernameLabel.snp.makeConstraints { make in
-            make.top.equalTo(profileImageView.snp.top)
+            make.top.equalTo(profileImageView.snp.top).offset(8)
             make.leading.equalTo(profileImageView.snp.trailing).offset(16)
         }
         
         postCountLabel.snp.makeConstraints { make in
-            make.top.equalTo(usernameLabel.snp.bottom).offset(8)
-            make.leading.equalTo(usernameLabel.snp.leading)
+            make.top.equalTo(usernameLabel.snp.bottom).offset(12)
+            make.leading.equalTo(profileImageView.snp.trailing).offset(16)
+            make.width.equalTo(50)
         }
-        
+        followingCountLabel.snp.makeConstraints { make in
+            make.top.equalTo(postCountLabel.snp.top)
+            make.trailing.equalTo(safeAreaLayoutGuide).inset(30)
+            make.width.equalTo(70)
+        }
         followersCountLabel.snp.makeConstraints { make in
             make.top.equalTo(postCountLabel.snp.top)
             make.leading.equalTo(postCountLabel.snp.trailing).offset(16)
+            make.trailing.equalTo(followingCountLabel.snp.leading).offset(-16)
         }
-        
-        followingCountLabel.snp.makeConstraints { make in
-            make.top.equalTo(postCountLabel.snp.top)
-            make.leading.equalTo(followersCountLabel.snp.trailing).offset(16)
-        }
-        
         bioLabel.snp.makeConstraints { make in
             make.top.equalTo(profileImageView.snp.bottom).offset(16)
             make.leading.trailing.equalToSuperview().inset(16)

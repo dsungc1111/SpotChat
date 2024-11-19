@@ -37,7 +37,7 @@ final class SettingVM: BaseVMProtocol {
                         // 사용자 게시물 이미지 불러오기
                         let query = GetPostQuery(next: nil, limit: nil, category: nil)
                         let postData = try await NetworkManager2.shared.performRequest(router: .findUserPost(userID, query), responseType: PostDataModel.self)
-                        
+                        print(UserDefaultsManager.userId)
                         var imageDataList: [String] = []
                         
                         for post in postData.data {
