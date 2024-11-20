@@ -11,10 +11,6 @@ import CoreLocation
 import MapKit
 
 
-struct ImageItem: Hashable {
-    let id = UUID()
-    let image: UIImage
-}
 
 final class MapVC: BaseVC {
     
@@ -53,6 +49,13 @@ final class MapVC: BaseVC {
                 mapView.map.setRegion(region, animated: true)
             }
             .store(in: &cancellables)
+        
+        mapView.radiusSetBtn.tapPublisher
+            .sink { [weak self] _ in
+                guard let self else { return }
+                showDistanceSelection()
+            }
+            .store(in: &cancellables)
     }
     
     private func setupCollectionView() {
@@ -69,9 +72,56 @@ final class MapVC: BaseVC {
         mapView.map.setRegion(region, animated: true)
     }
     
+    // 초기세팅 - 2000m 범위
     func setAnnotation() {
         
+        fetchGeolocationData(maxDistance: "2000")
+    }
+    
+    func addTemporaryUserLocation() {
+        let tempAnnotation = MKPointAnnotation()
+        tempAnnotation.coordinate = temp
+        tempAnnotation.title = "내 위치"
+        mapView.map.addAnnotation(tempAnnotation)
+    }
+}
+
+// MARK: - 네트워크
+extension MapVC {
+    
+    private func showDistanceSelection() {
+        let alert = UIAlertController(title: "거리 선택", message: "검색할 거리를 선택하세요.", preferredStyle: .actionSheet)
+        
+        // 거리 옵션 배열
+        let distances = [500, 1000, 2000, 3000]
+        
+        
+        distances.forEach { distance in
+            alert.addAction(UIAlertAction(title: "\(distance)m", style: .default, handler: { [weak self] _ in
+                
+                self?.fetchGeolocationData(maxDistance: "\(distance)")
+            }))
+        }
+        
+        alert.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
+        
+        if let popoverController = alert.popoverPresentationController {
+            popoverController.sourceView = mapView.radiusSetBtn
+            popoverController.sourceRect = mapView.radiusSetBtn.bounds
+        }
+        
+        present(alert, animated: true, completion: nil)
+    }
+    
+    private func fetchGeolocationData(maxDistance: String) {
+        
         Task {
+            
+            guard let maxDistance = Double(maxDistance) else { return }
+            
+            let region = MKCoordinateRegion(center: temp, latitudinalMeters: maxDistance, longitudinalMeters: maxDistance)
+            mapView.map.setRegion(region, animated: true)
+            
             let geolocationQuery = GeolocationQuery(longitude: "128.90782356262207", latitude: "37.805477856609954", maxDistance: "2000")
             
             do {
@@ -79,15 +129,16 @@ final class MapVC: BaseVC {
                 geoResult = result.data
                 
                 
-                for i in 0..<result.data.count {  // `locations`는 GeolocationBasedDataModel 내의 위치 배열이라고 가정합니다.
+                for i in 0..<result.data.count {
                     let annotation = MKPointAnnotation()
                     annotation.coordinate = CLLocationCoordinate2D(latitude: result.data[i].geolocation.latitude, longitude: result.data[i].geolocation.longitude)
-                    //                    annotation.title = result.data[i].content.
-                    annotation.subtitle = result.data[i].content1  // `description`은 위치에 대한 설명
+                    
+                    annotation.subtitle = result.data[i].content1
                     
                     mapView.map.addAnnotation(annotation)
                 }
                 mapView.detailCollectionView.reloadData()
+                
             } catch {
                 print("Error fetching geolocation data: \(error)")
             }
@@ -98,19 +149,20 @@ final class MapVC: BaseVC {
                 
                 print("🚧🚧🚧🚧🚧🚧🚧🚧🚧 = ", userInfo.following)
                 print("dfsdfdsfdsfdf", geoResult.count)
-                for i in 0..<geoResult.count {
-                    dump(geoResult[i].creator)
-                    for j in 0..<userInfo.following.count {
-                        
-                        if userInfo.following[j].userID == geoResult[i].creator.userID {
-                            
-                            userFollower.append(userInfo.following[j])
-                        }
-                        
-                    }
-                    
-                }
                 
+                let followingSet = Set(userInfo.following.map { $0.userID })
+                var addedUserIDs = Set(userFollower.map { $0.userID })
+
+                for geo in geoResult {
+                    let creatorID = geo.creator.userID
+
+                    if followingSet.contains(creatorID) && !addedUserIDs.contains(creatorID) {
+                        if let matchingUser = userInfo.following.first(where: { $0.userID == creatorID }) {
+                            userFollower.append(matchingUser)
+                            addedUserIDs.insert(creatorID)
+                        }
+                    }
+                }
                 
                 print("🥶🥶🥶🥶🥶🥶🥶🥶🥶🥶팔로워 소개 드갑니다이 ~ ", userFollower)
                 
@@ -119,15 +171,9 @@ final class MapVC: BaseVC {
             }
         }
     }
-    func addTemporaryUserLocation() {
-        let tempAnnotation = MKPointAnnotation()
-        tempAnnotation.coordinate = temp
-        tempAnnotation.title = "내 위치"
-        mapView.map.addAnnotation(tempAnnotation)
-    }
 }
 
-
+// MARK: - 어노테이션
 extension MapVC: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, viewFor annotation: any MKAnnotation) -> MKAnnotationView? {
@@ -151,11 +197,11 @@ extension MapVC: MKMapViewDelegate {
     
 }
 
-
+// MARK: - 컬렉션뷰
 extension MapVC: UICollectionViewDelegate, UICollectionViewDataSource {
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        print("0000000000000", userFollower.count)
         
         if collectionView == mapView.storyCollectionView {
             return userFollower.count
@@ -185,6 +231,8 @@ extension MapVC: UICollectionViewDelegate, UICollectionViewDataSource {
     }
 }
 
+
+// MARK: - 컬렉션뷰 페이징
 extension MapVC : UIScrollViewDelegate {
     
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
