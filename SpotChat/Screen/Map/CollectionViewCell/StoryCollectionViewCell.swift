@@ -14,6 +14,7 @@ final class StoryCollectionViewCell: BaseCollectionViewCell {
     
     private let storyCircleBtn: UIButton = {
         let btn = UIButton()
+        btn.isEnabled = false
         btn.layer.cornerRadius = 30
         btn.backgroundColor = .systemGray
         
@@ -35,7 +36,6 @@ final class StoryCollectionViewCell: BaseCollectionViewCell {
         // 버튼에 그라데이션 레이어 추가
         btn.layer.addSublayer(gradientLayer)
         btn.clipsToBounds = true
-        
         return btn
     }()
     

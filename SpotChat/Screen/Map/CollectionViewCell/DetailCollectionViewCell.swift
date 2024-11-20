@@ -98,6 +98,10 @@ final class DetailCollectionViewCell: BaseCollectionViewCell {
         
     }
     func configureCell(geoModel: PostModel) {
+        
+        
+        print(geoModel)
+        
         titleLabel.text = geoModel.title
         contentLabel.text = geoModel.content1
         timeLabel.text = geoModel.content2

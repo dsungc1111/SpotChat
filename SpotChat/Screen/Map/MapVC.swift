@@ -17,15 +17,23 @@ final class MapVC: BaseVC {
     private let mapView = MapView()
     private var cancellables = Set<AnyCancellable>()
     private let temp = CLLocationCoordinate2D(latitude: 37.79181196691732, longitude: 128.9071798324585)
-    var geoResult: [PostModel] = []
     
-    var userFollower: [Follow] = [] {
+    private var sampleGeoResult: [PostModel] = []
+    
+    private var geoResult: [PostModel] = [] {
+        didSet {
+            mapView.detailCollectionView.reloadData()
+        }
+    }
+    
+    private var userFollower: [Follow] = [] {
         didSet {
             mapView.storyCollectionView.reloadData()
         }
     }
     
     var currentIndex: CGFloat = 0
+    
     
     override func loadView() {
         view = mapView
@@ -75,7 +83,7 @@ final class MapVC: BaseVC {
     // 초기세팅 - 2000m 범위
     func setAnnotation() {
         
-        fetchGeolocationData(maxDistance: "2000")
+        fetchGeolocationData(maxDistance: "1000")
     }
     
     func addTemporaryUserLocation() {
@@ -122,11 +130,11 @@ extension MapVC {
             let region = MKCoordinateRegion(center: temp, latitudinalMeters: maxDistance, longitudinalMeters: maxDistance)
             mapView.map.setRegion(region, animated: true)
             
-            let geolocationQuery = GeolocationQuery(longitude: "128.90782356262207", latitude: "37.805477856609954", maxDistance: "2000")
+            let geolocationQuery = GeolocationQuery(longitude: "128.90782356262207", latitude: "37.805477856609954", maxDistance: "\(maxDistance)")
             
             do {
                 let result = try await NetworkManager2.shared.performRequest(router: .geolocationBasedSearch(query: geolocationQuery), responseType: PostDataModel.self)
-                geoResult = result.data
+                
                 
                 
                 for i in 0..<result.data.count {
@@ -134,10 +142,10 @@ extension MapVC {
                     annotation.coordinate = CLLocationCoordinate2D(latitude: result.data[i].geolocation.latitude, longitude: result.data[i].geolocation.longitude)
                     
                     annotation.subtitle = result.data[i].content1
-                    
+                    geoResult.append(result.data[i])
+                    sampleGeoResult.append(result.data[i])
                     mapView.map.addAnnotation(annotation)
                 }
-                mapView.detailCollectionView.reloadData()
                 
             } catch {
                 print("Error fetching geolocation data: \(error)")
@@ -176,7 +184,7 @@ extension MapVC {
 // MARK: - 어노테이션
 extension MapVC: MKMapViewDelegate {
     
-    func mapView(_ mapView: MKMapView, viewFor annotation: any MKAnnotation) -> MKAnnotationView? {
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         guard !(annotation is MKUserLocation) else {
             return nil
         }
@@ -187,14 +195,47 @@ extension MapVC: MKMapViewDelegate {
         if annotationView == nil {
             annotationView = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: identifier)
             annotationView?.canShowCallout = true
-            annotationView?.markerTintColor =  AppColorSet.keyColor
         } else {
             annotationView?.annotation = annotation
         }
         
+        annotationView?.markerTintColor = AppColorSet.keyColor
         return annotationView
     }
     
+    func mapView(_ mapView: MKMapView, didSelect annotation: MKAnnotation) {
+        
+        guard let subtitle = annotation.subtitle as? String else { return }
+        
+        
+        
+        print("subtitle🔫🔫🔫🔫🔫🔫🔫🔫🔫🔫 = ", subtitle)
+        let filteredPosts = sampleGeoResult.filter { $0.content1 == subtitle }
+        
+        if let matchedPost = filteredPosts.first {
+            updateDetailCollectionView(with: matchedPost)
+        }
+    }
+    private func updateDetailCollectionView(with post: PostModel) {
+        // 선택된 포스트만 표시
+        geoResult = [post]  // `geoResult`를 재정의하여 컬렉션뷰를 업데이트
+        
+        
+//        Task {
+//            
+//            let geolocationQuery = GeolocationQuery(longitude: "128.90782356262207", latitude: "37.805477856609954", maxDistance: "\(2000)")
+//            
+//            do {
+//                let result = try await NetworkManager2.shared.performRequest(router: .geolocationBasedSearch(query: geolocationQuery), responseType: PostDataModel.self)
+//                
+//                geoResult = result.data
+//                
+//            } catch {
+//                print("업데이트 후 geomodel 원래로 복귀")
+//            }
+//        }
+        
+    }
 }
 
 // MARK: - 컬렉션뷰
@@ -218,6 +259,7 @@ extension MapVC: UICollectionViewDelegate, UICollectionViewDataSource {
             
             cell.configureCell(following: userFollower[indexPath.item])
             
+            
             return cell
             
         } else if collectionView == mapView.detailCollectionView {
@@ -228,6 +270,14 @@ extension MapVC: UICollectionViewDelegate, UICollectionViewDataSource {
         }
         
         return UICollectionViewCell()
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print(indexPath.item, "번 선택!!!!!!!!!")
+        
+        
+        
+        
     }
 }
 
