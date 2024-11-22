@@ -26,9 +26,9 @@ final class SettingView: BaseView {
         return label
     }()
     
-    private let postCountBtn = UIButton()
-    private let followersCountBtn = UIButton()
-    private let followingCountBtn = UIButton()
+    let postCountBtn = UIButton()
+    let followersCountBtn = UIButton()
+    let followingCountBtn = UIButton()
     
     private let bioLabel =  {
         let label = UILabel()

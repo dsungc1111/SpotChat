@@ -63,7 +63,7 @@ final class DetailCollectionViewCell: BaseCollectionViewCell {
     }()
     
     override func configureHierarchy() {
-        backgroundColor = .lightGray
+        backgroundColor = AppColorSet.backgroundColor
         layer.cornerRadius = 10
         contentView.addSubview(userCircleBtn)
         contentView.addSubview(nicknameLabel)
@@ -71,6 +71,7 @@ final class DetailCollectionViewCell: BaseCollectionViewCell {
         contentView.addSubview(contentLabel)
         contentView.addSubview(timeLabel)
     }
+    
     override func configureLayout() {
         userCircleBtn.snp.makeConstraints { make in
             make.size.equalTo(70)

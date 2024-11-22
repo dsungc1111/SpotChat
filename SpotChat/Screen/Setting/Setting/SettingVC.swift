@@ -16,6 +16,8 @@ final class SettingVC: BaseVC {
     private let settingView = SettingView()
     
     private let settingVM = SettingVM()
+    private var followingList: [Follow] = []
+    private var followerList: [Follow] = []
     
     private var cancellables = Set<AnyCancellable>()
     
@@ -24,7 +26,6 @@ final class SettingVC: BaseVC {
             settingView.postsCollectionView.reloadData()
         }
     }
-    
     
     override func loadView() {
         view = settingView
@@ -37,7 +38,6 @@ final class SettingVC: BaseVC {
     override func viewDidLoad() {
         super.viewDidLoad()
             settingView.postsCollectionView.dataSource = self
-        print("세팅뷰")
         
     }
     override func viewWillDisappear(_ animated: Bool) {
@@ -60,7 +60,8 @@ final class SettingVC: BaseVC {
         output.myInfoList
             .sink { [weak self] myInfo in
                 guard let self else { return }
-                print(Thread.isMainThread)
+                followingList = myInfo.following
+                followerList = myInfo.followers
                 DispatchQueue.main.async {
                     self.settingView.configureView(info: myInfo)
                 }
@@ -70,7 +71,7 @@ final class SettingVC: BaseVC {
         output.myImageList
             .sink { [weak self] imageList in
                 guard let self else { return }
-                print(imageList.count)
+
                 DispatchQueue.main.async {
                     self.images = imageList
                 }
@@ -85,8 +86,29 @@ final class SettingVC: BaseVC {
             }
             .store(in: &cancellables)
         
+        settingView.followersCountBtn.tapPublisher
+            .sink { [weak self] _ in
+                guard let self else { return }
+                
+                let vc = FollowVC()
+                vc.modalPresentationStyle = .fullScreen
+                vc.modalTransitionStyle = .crossDissolve
+                vc.followList = followerList
+                present(vc, animated: true)
+            }
+            .store(in: &cancellables)
         
-        
+        settingView.followingCountBtn.tapPublisher
+            .sink { [weak self] _ in
+                guard let self else { return }
+                let vc = FollowVC()
+                vc.modalPresentationStyle = .fullScreen
+                vc.modalTransitionStyle = .crossDissolve
+                vc.followList = followingList
+                vc.followView.FollowSegmentedControl.selectedSegmentIndex = 1
+                present(vc, animated: true)
+            }
+            .store(in: &cancellables)
         
         
     }

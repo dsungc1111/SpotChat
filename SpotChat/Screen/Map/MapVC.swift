@@ -224,7 +224,6 @@ extension MapVC: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        
         if collectionView == mapView.storyCollectionView {
             return userFollower.count
         } else {
