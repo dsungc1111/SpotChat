@@ -77,6 +77,17 @@ final class SettingVC: BaseVC {
             }
             .store(in: &cancellables)
         
+        settingView.editProfileButton.tapPublisher
+            .sink { [weak self] _ in
+                guard let self else { return }
+                let vc = EditUserVC()
+                present(vc, animated: true)
+            }
+            .store(in: &cancellables)
+        
+        
+        
+        
         
     }
 }

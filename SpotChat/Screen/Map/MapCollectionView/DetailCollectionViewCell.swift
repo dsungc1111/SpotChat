@@ -41,6 +41,7 @@ final class DetailCollectionViewCell: BaseCollectionViewCell {
         let label = UILabel()
         label.text = "제목칸"
         label.textColor = .white
+        label.font = .boldSystemFont(ofSize: 16)
         return label
     }()
     private let nicknameLabel = {
@@ -90,20 +91,39 @@ final class DetailCollectionViewCell: BaseCollectionViewCell {
         }
         
         contentLabel.snp.makeConstraints { make in
-            make.bottom.equalTo(safeAreaLayoutGuide).inset(10)
+            make.top.equalTo(nicknameLabel.snp.bottom).offset(10)
             make.leading.equalTo(userCircleBtn.snp.trailing).offset(10)
         }
 
         
         
     }
+    
     func configureCell(geoModel: PostModel) {
         
-        
-        print(geoModel)
+        print("0000000", geoModel.content2)
         
         titleLabel.text = geoModel.title
         contentLabel.text = geoModel.content1
-        timeLabel.text = geoModel.content2
+        timeLabel.text = geoModel.content2.isEmpty ? "여기는 시간칸" : geoModel.content2
+        
+        let placeholderImage = UIImage(systemName: "person")
+        
+        if let profileImage = geoModel.creator.profileImage,
+           let (url, modifier) = NetworkManager2.shared.fetchProfileImage(imageString: profileImage) {
+            
+            userCircleBtn.kf.setImage(
+                with: url,
+                for: .normal,
+                placeholder: placeholderImage,
+                options: [
+                    .requestModifier(modifier),
+                    .cacheOriginalImage
+                ]
+            )
+        } else {
+            userCircleBtn.setImage(placeholderImage, for: .normal)
+            userCircleBtn.tintColor = .black
+        }
     }
 }

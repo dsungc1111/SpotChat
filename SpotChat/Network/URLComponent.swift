@@ -22,6 +22,7 @@ enum Router {
     case login(query: LoginQuery)
     case myProfile
     case refreshToken
+    case editProfile(query: EditUserQuery)
     
     //MARK: POST ROUTER
     case newPost(query: PostQuery)
@@ -42,6 +43,8 @@ extension Router: TargetType {
             return "POST"
         case .refreshToken, .geolocationBasedSearch, .myProfile, .findUserPost:
             return "GET"
+        case .editProfile:
+            return "PUT"
         }
     }
     
@@ -69,6 +72,8 @@ extension Router: TargetType {
             return "users/me/profile"
         case .findUserPost(let query, _):
             return "posts/users/\(query)"
+        case .editProfile:
+            return "users/me/profile"
         }
     }
     
@@ -97,7 +102,7 @@ extension Router: TargetType {
                 
             ]
             // 키, 컨텐츠타입 - 멀티파트, 프로덕트아이디, 액세스토큰
-        case .newPostImage, .myProfile, .findUserPost:
+        case .newPostImage, .myProfile, .findUserPost, .editProfile:
             return [
                 APIKey.HTTPHeaderName.sesacKey.rawValue : APIKey.developerKey,
                 APIKey.HTTPHeaderName.contentType.rawValue : APIKey.HTTPHeaderName.mutipart.rawValue,
@@ -172,6 +177,8 @@ extension Router: TargetType {
             return try? encoder.encode(query)
         case .newPostImage(let postImage):
             return encodeMultipartData(postImage)
+        case .editProfile(let query):
+            return editUserProfile(query)
             
         default:
             return nil
@@ -183,6 +190,8 @@ extension Router: TargetType {
         switch self {
         case .newPostImage(let postImage):
             return postImage.boundary
+        case .editProfile(let editUser):
+            return editUser.boundary
             
         default: return nil
         }
@@ -217,7 +226,35 @@ extension Router: TargetType {
         body.append(postImage.imageData ?? body)
         body.append("\r\n".data(using: .utf8)!)
         body.append("--\(postImage.boundary)--\r\n".data(using: .utf8)!)
+        
         return body
     }
     
+    private func editUserProfile(_ editProfile: EditUserQuery) -> Data {
+        var body = Data()
+        
+        // `nick`
+        body.append("--\(editProfile.boundary)\r\n".data(using: .utf8)!)
+        body.append("Content-Disposition: form-data; name=\"nick\"\r\n\r\n".data(using: .utf8)!)
+        body.append("\(editProfile.nick)\r\n".data(using: .utf8)!)
+        
+        // `info1`
+        body.append("--\(editProfile.boundary)\r\n".data(using: .utf8)!)
+        body.append("Content-Disposition: form-data; name=\"info1\"\r\n\r\n".data(using: .utf8)!)
+        body.append("\(editProfile.info1)\r\n".data(using: .utf8)!)
+        
+        // `profile` (이미지)
+        if let profileData = editProfile.profile {
+            body.append("--\(editProfile.boundary)\r\n".data(using: .utf8)!)
+            body.append("Content-Disposition: form-data; name=\"profile\"; filename=\"profile.png\"\r\n".data(using: .utf8)!)
+            body.append("Content-Type: image/png\r\n\r\n".data(using: .utf8)!)
+            body.append(profileData)
+            body.append("\r\n".data(using: .utf8)!)
+        }
+        
+        // 종료 boundary
+        body.append("--\(editProfile.boundary)--\r\n".data(using: .utf8)!)
+        
+        return body
+    }
 }

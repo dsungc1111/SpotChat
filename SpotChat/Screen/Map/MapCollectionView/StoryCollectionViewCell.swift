@@ -14,7 +14,7 @@ final class StoryCollectionViewCell: BaseCollectionViewCell {
     
     private let storyCircleBtn: UIButton = {
         let btn = UIButton()
-        btn.isEnabled = false
+        btn.isUserInteractionEnabled = false
         btn.layer.cornerRadius = 30
         btn.backgroundColor = .systemGray
         

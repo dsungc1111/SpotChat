@@ -26,18 +26,17 @@ final class SettingView: BaseView {
         return label
     }()
     
-    private let postCountLabel = UILabel()
-    private let followersCountLabel = UILabel()
-    private let followingCountLabel = UILabel()
+    private let postCountBtn = UIButton()
+    private let followersCountBtn = UIButton()
+    private let followingCountBtn = UIButton()
     
     private let bioLabel =  {
         let label = UILabel()
-        label.text = "Not bio yet."
         label.numberOfLines = 0
         label.font = .systemFont(ofSize: 14)
         return label
     }()
-    private let editProfileButton = {
+    let editProfileButton = {
         let btn = UIButton()
         btn.setTitle("Edit Profile", for: .normal)
         btn.setTitleColor(.white, for: .normal)
@@ -71,20 +70,21 @@ final class SettingView: BaseView {
         addSubview(usernameLabel)
         addSubview(bioLabel)
         addSubview(editProfileButton)
-        setupCountLabel(postCountLabel)
-        setupCountLabel(followersCountLabel)
-        setupCountLabel(followingCountLabel)
+        setupCountLabel(postCountBtn)
+        setupCountLabel(followersCountBtn)
+        setupCountLabel(followingCountBtn)
         addSubview(postsCollectionView)
         postsCollectionView.register(UserPostCollectionViewCell.self, forCellWithReuseIdentifier: UserPostCollectionViewCell.identifier)
     }
     
  
     
-    private func setupCountLabel(_ label: UILabel) {
-        label.textAlignment = .center
-        label.numberOfLines = 2
-        label.font = .systemFont(ofSize: 14)
-        addSubview(label)
+    private func setupCountLabel(_ btn: UIButton) {
+        btn.titleLabel?.numberOfLines = 2
+        btn.titleLabel?.textAlignment = .center
+//        label.numberOfLines = 2
+//        label.font = .systemFont(ofSize: 14)
+        addSubview(btn)
     }
     
     
@@ -101,21 +101,23 @@ final class SettingView: BaseView {
             make.leading.equalTo(profileImageView.snp.trailing).offset(16)
         }
         
-        postCountLabel.snp.makeConstraints { make in
+        postCountBtn.snp.makeConstraints { make in
             make.top.equalTo(usernameLabel.snp.bottom).offset(12)
             make.leading.equalTo(profileImageView.snp.trailing).offset(16)
             make.width.equalTo(50)
+            make.height.equalTo(50)
         }
-        followingCountLabel.snp.makeConstraints { make in
-            make.top.equalTo(postCountLabel.snp.top)
+        followingCountBtn.snp.makeConstraints { make in
+            make.top.equalTo(postCountBtn.snp.top)
             make.trailing.equalTo(safeAreaLayoutGuide).inset(30)
-            make.width.equalTo(70)
+            make.width.equalTo(80)
         }
-        followersCountLabel.snp.makeConstraints { make in
-            make.top.equalTo(postCountLabel.snp.top)
-            make.leading.equalTo(postCountLabel.snp.trailing).offset(16)
-            make.trailing.equalTo(followingCountLabel.snp.leading).offset(-16)
+        followersCountBtn.snp.makeConstraints { make in
+            make.top.equalTo(postCountBtn.snp.top)
+            make.leading.equalTo(postCountBtn.snp.trailing).offset(16)
+            make.trailing.equalTo(followingCountBtn.snp.leading).offset(-16)
         }
+        
         bioLabel.snp.makeConstraints { make in
             make.top.equalTo(profileImageView.snp.bottom).offset(16)
             make.leading.trailing.equalToSuperview().inset(16)
@@ -133,15 +135,34 @@ final class SettingView: BaseView {
     }
     
     func configureView(info: ProfileModel) {
-        bioLabel.text = info.info1.isEmpty ? "Not bio yet." : info.info1
+        bioLabel.text = info.info1
         
-        postCountLabel.text = "\(info.posts.count)\nPosts"
-        followersCountLabel.text = "\(info.followers.count)\nFollowers"
-        followingCountLabel.text = "\(info.following.count)\nFollowing"
+        postCountBtn.setTitle("\(info.posts.count)\nPosts", for: .normal)
+        followersCountBtn.setTitle("\(info.followers.count)\nFollowers", for: .normal)
+        followingCountBtn.setTitle("\(info.following.count)\nFollowing", for: .normal)
+        
         
         usernameLabel.text = (info.nick ?? "" ).isEmpty ? "아무개" : info.nick
         
-        profileImageView.image = info.profileImage == nil ? UIImage(systemName: "person") : UIImage(systemName: "star")
-        
+        if let profileImage = info.profileImage,
+           let (url, modifier) = NetworkManager2.shared.fetchProfileImage(imageString: profileImage) {
+
+            profileImageView.kf.setImage(
+                with: url,
+                placeholder: UIImage(systemName: "person"),
+                options: [
+                    .requestModifier(modifier),
+                    .cacheOriginalImage
+                ],
+                completionHandler: { result in
+                    switch result {
+                    case .success(let value):
+                        print("이미지 로드 성공: \(value.source.url?.absoluteString ?? "")")
+                    case .failure(let error):
+                        print("이미지 로드 실패: \(error.localizedDescription)")
+                    }
+                }
+            )
+        }
     }
 }

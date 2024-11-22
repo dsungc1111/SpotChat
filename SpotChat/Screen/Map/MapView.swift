@@ -103,12 +103,12 @@ final class MapView: BaseView {
         storyCollectionView.snp.makeConstraints { make in
             make.top.equalTo(searchBar.snp.bottom).offset(5)
             make.horizontalEdges.equalTo(safeAreaLayoutGuide).inset(5)
-            make.height.equalTo(140)
+            make.height.equalTo(100)
         }
         detailCollectionView.snp.makeConstraints { make in
             make.bottom.equalTo(safeAreaLayoutGuide).inset(10)
             make.horizontalEdges.equalTo(safeAreaLayoutGuide).inset(5)
-            make.height.equalTo(140)
+            make.height.equalTo(160)
         }
     }
 }

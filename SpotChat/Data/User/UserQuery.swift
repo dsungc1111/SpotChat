@@ -14,6 +14,7 @@ struct SigninQuery: Encodable {
     let email: String
     let password: String
     let nick: String
+//    let profile: String?
     let phoneNum: String
     let birthDay: String
     let gender: String
@@ -35,4 +36,18 @@ struct LoginQuery: Encodable {
 
 struct KakaoLoginQuery: Encodable {
     let oauthToken: String
+}
+
+struct EditUserQuery: Encodable {
+    let boundary = UUID().uuidString
+    let nick: String
+//    let phoneNum: String?
+//    let birthDay: String?
+    let profile: Data?
+//    let gender: String?
+    var info1: String = "Not bio yet."
+    let info2: String = ""
+    let info3: String = ""
+    let info4: String = ""
+    let info5: String = ""
 }

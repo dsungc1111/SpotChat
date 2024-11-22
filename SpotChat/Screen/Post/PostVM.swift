@@ -77,7 +77,7 @@ final class PostVM: BaseVMProtocol {
             .sink { [weak self] _ in
                 guard let self = self else { return }
                 Task {
-                    await self.performPostSequence(postQuery: self.postQuery)
+                    await self.performPostSequence(self.postQuery)
                 }
             }
             .store(in: &cancellables)
@@ -85,7 +85,7 @@ final class PostVM: BaseVMProtocol {
         return Output()
     }
     
-    func performPostSequence(postQuery: PostQuery) async {
+    func performPostSequence(_ postQuery: PostQuery) async {
         
         var post = postQuery
         do {
