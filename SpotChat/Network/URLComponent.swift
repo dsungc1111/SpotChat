@@ -23,6 +23,7 @@ enum Router {
     case myProfile
     case refreshToken
     case editProfile(query: EditUserQuery)
+    case searchUser(query: String)
     
     //MARK: POST ROUTER
     case newPost(query: PostQuery)
@@ -41,7 +42,7 @@ extension Router: TargetType {
         switch self {
         case .emailValidation, .signin, .appleLogin, .kakaoLogin, .login, .newPost, .newPostImage:
             return "POST"
-        case .refreshToken, .geolocationBasedSearch, .myProfile, .findUserPost:
+        case .refreshToken, .geolocationBasedSearch, .myProfile, .findUserPost, .searchUser:
             return "GET"
         case .editProfile:
             return "PUT"
@@ -74,6 +75,8 @@ extension Router: TargetType {
             return "posts/users/\(query)"
         case .editProfile:
             return "users/me/profile"
+        case .searchUser(let query):
+            return "users/search"
         }
     }
     
@@ -118,7 +121,7 @@ extension Router: TargetType {
                 APIKey.HTTPHeaderName.refresh.rawValue : UserDefaultsManager.refreshToken
             ]
             // 토큰, 키, 프로덕트 아이디
-        case .geolocationBasedSearch:
+        case .geolocationBasedSearch, .searchUser:
             return [
                 APIKey.HTTPHeaderName.sesacKey.rawValue : APIKey.developerKey,
                 APIKey.HTTPHeaderName.authorization.rawValue : UserDefaultsManager.accessToken,
@@ -154,6 +157,14 @@ extension Router: TargetType {
             ].compactMap { $0 }
             print("===========", param)
             return param.isEmpty ? nil : param
+            
+        case .searchUser(let query):
+            
+            let param = [
+                URLQueryItem(name: "nick", value: query)
+            ]
+            
+            return param
             
         default:
             return nil

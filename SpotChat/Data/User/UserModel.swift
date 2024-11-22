@@ -60,3 +60,9 @@ struct Follow: Codable {
         case nick, profileImage
     }
 }
+
+
+
+struct UserSearchResult: Codable {
+    let data: [Follow]
+}

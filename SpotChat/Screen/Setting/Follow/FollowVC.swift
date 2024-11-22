@@ -20,7 +20,6 @@ final class FollowVC: BaseVC {
         }
     }
     
-    
     override func loadView() {
         view = followView
     }
@@ -42,6 +41,21 @@ final class FollowVC: BaseVC {
         followView.FollowSegmentedControl.selectedSegmentIndexPublisher
             .sink { value in
                 print(value)
+            }
+            .store(in: &cancellables)
+        
+        let list = followList
+        
+        followView.searchBar.textDidChangePublisher
+            .debounce(for: 0.5, scheduler: RunLoop.main)
+            .sink { [weak self] value in
+                guard let self else { return }
+                
+                for i in 0..<list.count {
+                    if list[i].nick == value {
+                        followList = [list[i]]
+                    }
+                }
             }
             .store(in: &cancellables)
     }
