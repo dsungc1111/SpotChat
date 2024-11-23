@@ -10,6 +10,18 @@ import Combine
 import CoreLocation
 import MapKit
 
+class CustomAnnotation: NSObject, MKAnnotation {
+    
+    var coordinate: CLLocationCoordinate2D
+    var title: String?
+    var subtitle: String?
+    
+    init(coordinate: CLLocationCoordinate2D, title: String? = nil, subtitle: String? = nil) {
+        self.coordinate = coordinate
+        self.title = title
+        self.subtitle = subtitle
+    }
+}
 
 
 final class MapVC: BaseVC {
@@ -18,9 +30,11 @@ final class MapVC: BaseVC {
     private var cancellables = Set<AnyCancellable>()
     private let temp = CLLocationCoordinate2D(latitude: 37.79181196691732, longitude: 128.9071798324585)
     
+    // 여기에 반경에 따른 서치결과 다 담고
     private var sampleGeoResult: [PostModel] = []
     
-    private var geoResult: [PostModel] = [] {
+    // 반경을 바꿨을 때의 List
+    private var specifiedPostList: [PostModel] = [] {
         didSet {
             mapView.detailCollectionView.reloadData()
         }
@@ -33,7 +47,6 @@ final class MapVC: BaseVC {
     }
     
     var currentIndex: CGFloat = 0
-    
     
     override func loadView() {
         view = mapView
@@ -80,11 +93,8 @@ final class MapVC: BaseVC {
         mapView.map.setRegion(region, animated: true)
     }
     
-    // 초기세팅 - 2000m 범위
-    func setAnnotation() {
-        
-        fetchGeolocationData(maxDistance: "1000")
-    }
+    // 초기세팅 - 5000m 범위
+    func setAnnotation() { fetchGeolocationData(maxDistance: "5000") }
     
     func addTemporaryUserLocation() {
         let tempAnnotation = MKPointAnnotation()
@@ -98,15 +108,14 @@ final class MapVC: BaseVC {
 extension MapVC {
     
     private func showDistanceSelection() {
+        
         let alert = UIAlertController(title: "거리 선택", message: "검색할 거리를 선택하세요.", preferredStyle: .actionSheet)
         
         // 거리 옵션 배열
         let distances = [500, 1000, 2000, 3000]
         
-        
         distances.forEach { distance in
             alert.addAction(UIAlertAction(title: "\(distance)m", style: .default, handler: { [weak self] _ in
-                
                 self?.fetchGeolocationData(maxDistance: "\(distance)")
             }))
         }
@@ -123,11 +132,13 @@ extension MapVC {
     
     private func fetchGeolocationData(maxDistance: String) {
         
+        userFollower = []
+        
         Task {
             
             guard let maxDistance = Double(maxDistance) else { return }
             
-            let region = MKCoordinateRegion(center: temp, latitudinalMeters: maxDistance, longitudinalMeters: maxDistance)
+            let region = MKCoordinateRegion(center: temp, latitudinalMeters: maxDistance / 2 , longitudinalMeters: maxDistance / 2)
             mapView.map.setRegion(region, animated: true)
             
             let geolocationQuery = GeolocationQuery(longitude: "128.90782356262207", latitude: "37.805477856609954", maxDistance: "\(maxDistance)")
@@ -137,13 +148,10 @@ extension MapVC {
                 
                 
                 
-                for i in 0..<result.data.count {
-                    let annotation = MKPointAnnotation()
-                    annotation.coordinate = CLLocationCoordinate2D(latitude: result.data[i].geolocation.latitude, longitude: result.data[i].geolocation.longitude)
+                for post in result.data {
+                    let annotation = CustomAnnotation(coordinate: CLLocationCoordinate2D(latitude: post.geolocation.latitude, longitude: post.geolocation.longitude))
                     
-                    annotation.subtitle = result.data[i].content1
-                    geoResult.append(result.data[i])
-                    sampleGeoResult.append(result.data[i])
+                    sampleGeoResult.append(post)
                     mapView.map.addAnnotation(annotation)
                 }
                 
@@ -155,25 +163,22 @@ extension MapVC {
             do {
                 let userInfo = try await NetworkManager2.shared.performRequest(router: .myProfile, responseType: ProfileModel.self)
                 
-                print("🚧🚧🚧🚧🚧🚧🚧🚧🚧 = ", userInfo.following)
-                print("dfsdfdsfdsfdf", geoResult.count)
                 
                 let followingSet = Set(userInfo.following.map { $0.userID })
                 var addedUserIDs = Set(userFollower.map { $0.userID })
-
-                for geo in geoResult {
+                
+                for geo in sampleGeoResult {
                     let creatorID = geo.creator.userID
-
+                    
                     if followingSet.contains(creatorID) && !addedUserIDs.contains(creatorID) {
                         if let matchingUser = userInfo.following.first(where: { $0.userID == creatorID }) {
+                            
                             userFollower.append(matchingUser)
                             addedUserIDs.insert(creatorID)
+                            
                         }
                     }
                 }
-                
-                print("🥶🥶🥶🥶🥶🥶🥶🥶🥶🥶팔로워 소개 드갑니다이 ~ ", userFollower)
-                
             } catch {
                 print("유저 에러")
             }
@@ -185,18 +190,17 @@ extension MapVC {
 extension MapVC: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        guard !(annotation is MKUserLocation) else {
-            return nil
-        }
+        guard let customAnnotation = annotation as? CustomAnnotation else { return nil }
         
         let identifier = "CustomAnnotationView"
         var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKMarkerAnnotationView
         
         if annotationView == nil {
-            annotationView = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+            annotationView = MKMarkerAnnotationView(annotation: customAnnotation, reuseIdentifier: identifier)
             annotationView?.canShowCallout = true
+            annotationView?.subtitleVisibility = .adaptive
         } else {
-            annotationView?.annotation = annotation
+            annotationView?.annotation = customAnnotation
         }
         
         annotationView?.markerTintColor = AppColorSet.keyColor
@@ -205,15 +209,31 @@ extension MapVC: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, didSelect annotation: MKAnnotation) {
         
-        guard let subtitle = annotation.subtitle as? String else { return }
+        guard let customAnnotation = annotation as? CustomAnnotation else { return }
         
+        specifiedPostList = []
         
+        let latitude = annotation.coordinate.latitude
+        let longitude = annotation.coordinate.longitude
+        let geolocationQuery = GeolocationQuery(longitude: "\(longitude)", latitude: "\(latitude)", maxDistance: "0")
         
-        print("subtitle🔫🔫🔫🔫🔫🔫🔫🔫🔫🔫 = ", subtitle)
-        let filteredPosts = sampleGeoResult.filter { $0.content1 == subtitle }
+        Task {
+            do {
+                let result = try await NetworkManager2.shared.performRequest(router: .geolocationBasedSearch(query: geolocationQuery), responseType: PostDataModel.self)
+                
+                specifiedPostList = result.data
+                customAnnotation.subtitle = "\(result.data.count)개의 게시물"
+                mapView.addAnnotation(customAnnotation)
+                
+            } catch {
+                print("Error fetching posts: \(error)")
+            }
+        }
+        
+        let filteredPosts = sampleGeoResult.filter { $0.content1 == customAnnotation.subtitle }
         
         if let matchedPost = filteredPosts.first {
-            geoResult = [matchedPost]
+            specifiedPostList = [matchedPost]
         }
     }
     
@@ -227,7 +247,7 @@ extension MapVC: UICollectionViewDelegate, UICollectionViewDataSource {
         if collectionView == mapView.storyCollectionView {
             return userFollower.count
         } else {
-            return geoResult.count
+            return specifiedPostList.count
         }
         
     }
@@ -245,7 +265,7 @@ extension MapVC: UICollectionViewDelegate, UICollectionViewDataSource {
         } else if collectionView == mapView.detailCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DetailCollectionViewCell.identifier, for: indexPath) as! DetailCollectionViewCell
             
-            cell.configureCell(geoModel: geoResult[indexPath.item])
+            cell.configureCell(geoModel: specifiedPostList[indexPath.item])
             return cell
         }
         

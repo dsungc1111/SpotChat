@@ -48,28 +48,60 @@ final class DetailCollectionViewCell: BaseCollectionViewCell {
         let label = UILabel()
         label.text = "닉네임칸"
         label.textColor = .white
+        label.font = .systemFont(ofSize: 12)
         return label
     }()
     private let contentLabel = {
         let label = UILabel()
         label.text = "내용칸"
         label.textColor = .white
+        label.font = .systemFont(ofSize: 12)
+        return label
+    }()
+    private let DMLabel = {
+        let label = UILabel()
+        label.text = "DM"
+        label.backgroundColor = AppColorSet.backgroundColor
+        label.textColor = AppColorSet.backgroundColor
+        label.font = .boldSystemFont(ofSize: 12)
+        label.layer.cornerRadius = 5
+        label.textAlignment = .center
+        label.clipsToBounds = true
+        return label
+    }()
+    private let JoinLabel = {
+        let label = UILabel()
+        label.text = "Join"
+        label.backgroundColor = AppColorSet.backgroundColor
+        label.textColor = AppColorSet.backgroundColor
+        label.font = .boldSystemFont(ofSize: 12)
+        label.layer.cornerRadius = 5
+        label.textAlignment = .center
+        label.clipsToBounds = true
         return label
     }()
     private let timeLabel = {
         let label = UILabel()
         label.text = "시간칸"
+        label.font = .systemFont(ofSize: 8)
+        return label
+    }()
+    private let distanceLabel = {
+        let label = UILabel()
+        
         return label
     }()
     
     override func configureHierarchy() {
         backgroundColor = AppColorSet.backgroundColor
-        layer.cornerRadius = 10
+        layer.cornerRadius = 20
         contentView.addSubview(userCircleBtn)
         contentView.addSubview(nicknameLabel)
         contentView.addSubview(titleLabel)
         contentView.addSubview(contentLabel)
         contentView.addSubview(timeLabel)
+        contentView.addSubview(DMLabel)
+        contentView.addSubview(JoinLabel)
     }
     
     override func configureLayout() {
@@ -83,32 +115,36 @@ final class DetailCollectionViewCell: BaseCollectionViewCell {
             make.leading.equalTo(userCircleBtn.snp.trailing).offset(10)
         }
         nicknameLabel.snp.makeConstraints { make in
-            make.top.equalTo( titleLabel.snp.bottom).offset(10)
+            make.top.equalTo(titleLabel.snp.bottom).offset(10)
             make.leading.equalTo(userCircleBtn.snp.trailing).offset(10)
         }
-        timeLabel.snp.makeConstraints { make in
-            make.top.equalTo( titleLabel.snp.bottom).offset(10)
-            make.leading.equalTo(nicknameLabel.snp.trailing).offset(10)
+       
+        DMLabel.snp.makeConstraints { make in
+            make.top.equalTo(safeAreaLayoutGuide).inset(10)
+            make.trailing.equalTo(safeAreaLayoutGuide).inset(70)
+            make.width.equalTo(30)
         }
-        
+        JoinLabel.snp.makeConstraints { make in
+            make.top.equalTo(safeAreaLayoutGuide).inset(10)
+            make.trailing.equalTo(safeAreaLayoutGuide).inset(30)
+            make.width.equalTo(30)
+        }
         contentLabel.snp.makeConstraints { make in
             make.top.equalTo(nicknameLabel.snp.bottom).offset(10)
             make.leading.equalTo(userCircleBtn.snp.trailing).offset(10)
         }
-
-        
-        
+        timeLabel.snp.makeConstraints { make in
+            make.top.equalTo(contentLabel.snp.bottom).offset(5)
+            make.leading.equalTo(userCircleBtn.snp.trailing).offset(10)
+        }
     }
     
     func configureCell(geoModel: PostModel) {
         
-        print("0000000", geoModel.content2)
-        
         titleLabel.text = geoModel.title
         contentLabel.text = geoModel.content1
-        timeLabel.text = geoModel.content2.isEmpty ? "여기는 시간칸" : geoModel.content2
-        
-        let placeholderImage = UIImage(systemName: "person")
+        timeLabel.text = geoModel.content2.isEmpty ? "여기는 시간칸" : geoModel.content2 + " 분 전"   /*String(format: "%f", geoModel.distance ?? 0.0)*/
+        nicknameLabel.text = "작성자: " + (geoModel.creator.nick ?? "닉네임이좌나")
         
         if let profileImage = geoModel.creator.profileImage,
            let (url, modifier) = NetworkManager2.shared.fetchProfileImage(imageString: profileImage) {
@@ -116,15 +152,26 @@ final class DetailCollectionViewCell: BaseCollectionViewCell {
             userCircleBtn.kf.setImage(
                 with: url,
                 for: .normal,
-                placeholder: placeholderImage,
                 options: [
                     .requestModifier(modifier),
                     .cacheOriginalImage
                 ]
             )
         } else {
-            userCircleBtn.setImage(placeholderImage, for: .normal)
+            userCircleBtn.setImage(UIImage(systemName: "person"), for: .normal)
             userCircleBtn.tintColor = .black
         }
+        
+        if geoModel.content3 == "on" {
+            DMLabel.backgroundColor = AppColorSet.keyColor
+            DMLabel.textColor = AppColorSet.backgroundColor
+        }
+        if geoModel.content3 == "on" {
+            JoinLabel.backgroundColor = AppColorSet.keyColor
+            JoinLabel.textColor = AppColorSet.backgroundColor
+        }
+        
+        
+        
     }
 }

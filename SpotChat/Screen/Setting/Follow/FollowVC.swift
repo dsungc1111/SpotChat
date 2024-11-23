@@ -56,6 +56,8 @@ final class FollowVC: BaseVC {
                         followList = [list[i]]
                     }
                 }
+                if followList.count == 0 { followList = list }
+                if value.isEmpty { followList = list }
             }
             .store(in: &cancellables)
     }
