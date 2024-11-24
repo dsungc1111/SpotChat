@@ -112,8 +112,10 @@ final class NetworkManager2 {
             print("🍿🍿🍿🍿🍿액세스 토큰", UserDefaultsManager.accessToken)
             do {
                 let decodedResponse = try JSONDecoder().decode(responseType, from: data)
+                print("성공")
                 return decodedResponse
             } catch {
+                print("실패", error)
                 throw error
             }
         

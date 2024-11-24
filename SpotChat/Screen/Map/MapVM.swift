@@ -17,10 +17,13 @@ final class MapVM: BaseVMProtocol {
     
     struct Input {
         let trigger = PassthroughSubject<String,Never>()
+        let searchText = CurrentValueSubject<String, Never>("")
+        let searchBtnClicked = PassthroughSubject<Void,Never>()
     }
     struct Output {
         let geoResult: PassthroughSubject<[PostModel], Never>
         let userFollower: PassthroughSubject<[Follow], Never>
+        let searchList: PassthroughSubject<[Follow], Never>
     }
     
     @Published
@@ -40,6 +43,7 @@ extension MapVM {
         
         let geoResult = PassthroughSubject<[PostModel], Never>()
         let followingResult = PassthroughSubject<[Follow], Never>()
+        let searchList = PassthroughSubject<[Follow], Never>()
         
         input.trigger
             .sink { [weak self] distance in
@@ -52,16 +56,52 @@ extension MapVM {
             }
             .store(in: &cancellables)
         
+        input.searchText
+            .sink { value in
+                print(value)
+            }
+            .store(in: &cancellables)
         
-        return Output(geoResult: geoResult, userFollower: followingResult)
+        
+        input.searchBtnClicked
+            .sink { [weak self] _ in
+                guard let self else { return }
+                Task {
+                    let result = await self.fetchSearchResult(text: self.input.searchText.value)
+                    searchList.send(result)
+                }
+            }
+            .store(in: &cancellables)
+        
+        
+        return Output(geoResult: geoResult, 
+                      userFollower: followingResult,
+                      searchList: searchList)
     }
     
 }
 
 
+// 검색
 extension MapVM {
     
+    private func fetchSearchResult(text: String) async -> [Follow] {
+        do {
+            let searchList = try await NetworkManager2.shared.performRequest(router: .searchUser(query: text), responseType: UserSearchResult.self)
+            
+            return searchList.data
+        } catch {
+            print("유저 검색 실패")
+            return []
+        }
+    }
     
+}
+
+
+
+// 컬렉션뷰
+extension MapVM {
     
     private func fetchGeolocationData(maxDistance: String) async -> ([PostModel], [Follow]) {
         var geoResult: [PostModel] = []

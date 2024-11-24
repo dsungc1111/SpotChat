@@ -30,6 +30,12 @@ enum Router {
     case newPostImage(query: PostImageQuery)
     case geolocationBasedSearch(query: GeolocationQuery)
     case findUserPost(String, GetPostQuery?)
+    
+    //MARK: Chat Router
+    case openChattingRoom(query: ChatQuery)
+    case getChattingList
+    case sendChat(String, SendChatQuery)
+    case getChatContent(String, String?)
 }
 
 
@@ -40,9 +46,9 @@ extension Router: TargetType {
     
     var method: String {
         switch self {
-        case .emailValidation, .signin, .appleLogin, .kakaoLogin, .login, .newPost, .newPostImage:
+        case .emailValidation, .signin, .appleLogin, .kakaoLogin, .login, .newPost, .newPostImage, .openChattingRoom, .sendChat:
             return "POST"
-        case .refreshToken, .geolocationBasedSearch, .myProfile, .findUserPost, .searchUser:
+        case .refreshToken, .geolocationBasedSearch, .myProfile, .findUserPost, .searchUser, .getChattingList, .getChatContent:
             return "GET"
         case .editProfile:
             return "PUT"
@@ -75,8 +81,15 @@ extension Router: TargetType {
             return "posts/users/\(query)"
         case .editProfile:
             return "users/me/profile"
-        case .searchUser(let query):
+        case .searchUser:
             return "users/search"
+        case .openChattingRoom:
+            return "chats"
+        case .getChattingList:
+            return "chats"
+        case .sendChat(let query, _), .getChatContent(let query, _):
+            return "chats/\(query)"
+     
         }
     }
     
@@ -96,7 +109,7 @@ extension Router: TargetType {
                 APIKey.HTTPHeaderName.productID.rawValue : APIKey.HTTPHeaderName.productIDContent.rawValue
             ]
             // 키, 컨텐츠타입 - 제이슨, 프로덕트아이디, 액세[스토큰
-        case .newPost:
+        case .newPost, .openChattingRoom, .getChattingList, .sendChat, .getChatContent:
             return [
                 APIKey.HTTPHeaderName.sesacKey.rawValue : APIKey.developerKey,
                 APIKey.HTTPHeaderName.contentType.rawValue : APIKey.HTTPHeaderName.json.rawValue,
@@ -166,6 +179,24 @@ extension Router: TargetType {
             
             return param
             
+        case .sendChat(let query, _):
+            
+            let param = [
+                URLQueryItem(name: "room_id", value: query)
+            ]
+            
+            return param
+            
+        case .getChatContent(let roodId, let cursor):
+            
+            let param = [
+                URLQueryItem(name: "room_id", value: roodId),
+                URLQueryItem(name: "cursor_date", value: cursor)
+            ]
+            
+            
+            return param
+            
         default:
             return nil
         }
@@ -190,6 +221,12 @@ extension Router: TargetType {
             return encodeMultipartData(postImage)
         case .editProfile(let query):
             return editUserProfile(query)
+            
+        case .openChattingRoom(let query):
+            return try? encoder.encode(query)
+            
+        case .sendChat(_, let sendQeury):
+            return try? encoder.encode(sendQeury)
             
         default:
             return nil

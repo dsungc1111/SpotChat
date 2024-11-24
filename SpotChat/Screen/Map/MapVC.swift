@@ -7,21 +7,8 @@
 
 import UIKit
 import Combine
-import CoreLocation
+//import CoreLocation
 import MapKit
-
-class CustomAnnotation: NSObject, MKAnnotation {
-    
-    var coordinate: CLLocationCoordinate2D
-    var title: String?
-    var subtitle: String?
-    
-    init(coordinate: CLLocationCoordinate2D, title: String? = nil, subtitle: String? = nil) {
-        self.coordinate = coordinate
-        self.title = title
-        self.subtitle = subtitle
-    }
-}
 
 
 final class MapVC: BaseVC {
@@ -49,6 +36,8 @@ final class MapVC: BaseVC {
         }
     }
     
+    var maxDistance = "5000"
+    
     var currentIndex: CGFloat = 0
     
     override func loadView() {
@@ -57,9 +46,7 @@ final class MapVC: BaseVC {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setMapView()
-//        setAnnotation()
         mapView.map.delegate = self
         addTemporaryUserLocation()
         setupCollectionView()
@@ -82,13 +69,17 @@ final class MapVC: BaseVC {
             }
             .store(in: &cancellables)
         
+        mapView.searchBar.textDidChangePublisher
+            .subscribe(mapVM.input.searchText)
+            .store(in: &cancellables)
+            
+        mapView.searchBar.searchButtonClickedPublisher
+            .subscribe(mapVM.input.searchBtnClicked)
+            .store(in: &cancellables)
+        
         
         let input = mapVM.input
-        
         let output = mapVM.transform(input: input)
-        
-        let maxDistance = "5000"
-        
         input.trigger.send(maxDistance)
         
         
@@ -97,7 +88,6 @@ final class MapVC: BaseVC {
             .sink { [weak self] postModel in
                 guard let self else { return }
                 guard let maxDistance = Double(maxDistance) else { return }
-                print("!!!!!!!!!!!!!", Thread.isMainThread)
                 
                 
                 let region = MKCoordinateRegion(center: temp, latitudinalMeters: maxDistance / 2 , longitudinalMeters: maxDistance / 2)
@@ -121,6 +111,18 @@ final class MapVC: BaseVC {
             .sink { [weak self] following in
                 guard let self else { return }
                 userFollower = following
+            }
+            .store(in: &cancellables)
+        
+        
+        output.searchList
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] result in
+                print(result)
+                guard let self else { return }
+                let vc = SearchVC()
+                vc.resultList = result
+                present(vc, animated: true)
             }
             .store(in: &cancellables)
         
@@ -149,9 +151,8 @@ final class MapVC: BaseVC {
     }
 }
 
-// MARK: - 네트워크
+// MARK: - 반경 변경 기능
 extension MapVC {
-    
     private func showDistanceSelection() {
         
         let alert = UIAlertController(title: "거리 선택", message: "검색할 거리를 선택하세요.", preferredStyle: .actionSheet)
@@ -159,11 +160,15 @@ extension MapVC {
         // 거리 옵션 배열
         let distances = [500, 1000, 2000, 3000]
         
-//        distances.forEach { distance in
-//            alert.addAction(UIAlertAction(title: "\(distance)m", style: .default, handler: { [weak self] _ in
-////                self?.fetchGeolocationData(maxDistance: "\(distance)")
-//            }))
-//        }
+
+        distances.forEach { distance in
+               alert.addAction(UIAlertAction(title: "\(distance)m", style: .default, handler: { [weak self] _ in
+                   guard let self else { return }
+                   // 선택한 거리를 ViewModel의 trigger로 전송
+                   mapVM.input.trigger.send("\(distance)")
+                   maxDistance = "\(distance)"
+               }))
+           }
         
         alert.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
         
@@ -174,7 +179,6 @@ extension MapVC {
         
         present(alert, animated: true, completion: nil)
     }
-    
 }
 
 // MARK: - 어노테이션
