@@ -27,6 +27,9 @@ class CustomAnnotation: NSObject, MKAnnotation {
 final class MapVC: BaseVC {
     
     private let mapView = MapView()
+    private let mapVM = MapVM()
+    
+    
     private var cancellables = Set<AnyCancellable>()
     private let temp = CLLocationCoordinate2D(latitude: 37.79181196691732, longitude: 128.9071798324585)
     
@@ -56,13 +59,14 @@ final class MapVC: BaseVC {
         super.viewDidLoad()
         
         setMapView()
-        setAnnotation()
+//        setAnnotation()
         mapView.map.delegate = self
         addTemporaryUserLocation()
         setupCollectionView()
     }
     
     override func bind() {
+        
         mapView.myPinBtn.tapPublisher
             .sink { [weak self] _ in
                 guard let self else { return }
@@ -77,6 +81,49 @@ final class MapVC: BaseVC {
                 showDistanceSelection()
             }
             .store(in: &cancellables)
+        
+        
+        let input = mapVM.input
+        
+        let output = mapVM.transform(input: input)
+        
+        let maxDistance = "5000"
+        
+        input.trigger.send(maxDistance)
+        
+        
+        output.geoResult
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] postModel in
+                guard let self else { return }
+                guard let maxDistance = Double(maxDistance) else { return }
+                print("!!!!!!!!!!!!!", Thread.isMainThread)
+                
+                
+                let region = MKCoordinateRegion(center: temp, latitudinalMeters: maxDistance / 2 , longitudinalMeters: maxDistance / 2)
+                mapView.map.setRegion(region, animated: true)
+                
+                
+                for post in postModel {
+                    let annotation = CustomAnnotation(coordinate: CLLocationCoordinate2D(latitude: post.geolocation.latitude, longitude: post.geolocation.longitude))
+                    annotation.title = "게시물"
+                    annotation.subtitle = "확인"
+                    
+                    mapView.map.addAnnotation(annotation)
+                }
+                specifiedPostList = postModel
+            }
+            .store(in: &cancellables)
+        
+        
+        output.userFollower
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] following in
+                guard let self else { return }
+                userFollower = following
+            }
+            .store(in: &cancellables)
+        
     }
     
     private func setupCollectionView() {
@@ -93,8 +140,6 @@ final class MapVC: BaseVC {
         mapView.map.setRegion(region, animated: true)
     }
     
-    // 초기세팅 - 5000m 범위
-    func setAnnotation() { fetchGeolocationData(maxDistance: "5000") }
     
     func addTemporaryUserLocation() {
         let tempAnnotation = MKPointAnnotation()
@@ -114,11 +159,11 @@ extension MapVC {
         // 거리 옵션 배열
         let distances = [500, 1000, 2000, 3000]
         
-        distances.forEach { distance in
-            alert.addAction(UIAlertAction(title: "\(distance)m", style: .default, handler: { [weak self] _ in
-                self?.fetchGeolocationData(maxDistance: "\(distance)")
-            }))
-        }
+//        distances.forEach { distance in
+//            alert.addAction(UIAlertAction(title: "\(distance)m", style: .default, handler: { [weak self] _ in
+////                self?.fetchGeolocationData(maxDistance: "\(distance)")
+//            }))
+//        }
         
         alert.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
         
@@ -130,60 +175,6 @@ extension MapVC {
         present(alert, animated: true, completion: nil)
     }
     
-    private func fetchGeolocationData(maxDistance: String) {
-        
-        userFollower = []
-        
-        Task {
-            
-            guard let maxDistance = Double(maxDistance) else { return }
-            
-            let region = MKCoordinateRegion(center: temp, latitudinalMeters: maxDistance / 2 , longitudinalMeters: maxDistance / 2)
-            mapView.map.setRegion(region, animated: true)
-            
-            let geolocationQuery = GeolocationQuery(longitude: "128.90782356262207", latitude: "37.805477856609954", maxDistance: "\(maxDistance)")
-            
-            do {
-                let result = try await NetworkManager2.shared.performRequest(router: .geolocationBasedSearch(query: geolocationQuery), responseType: PostDataModel.self)
-                
-                
-                
-                for post in result.data {
-                    let annotation = CustomAnnotation(coordinate: CLLocationCoordinate2D(latitude: post.geolocation.latitude, longitude: post.geolocation.longitude))
-                    
-                    sampleGeoResult.append(post)
-                    mapView.map.addAnnotation(annotation)
-                }
-                
-            } catch {
-                print("Error fetching geolocation data: \(error)")
-            }
-            
-            
-            do {
-                let userInfo = try await NetworkManager2.shared.performRequest(router: .myProfile, responseType: ProfileModel.self)
-                
-                
-                let followingSet = Set(userInfo.following.map { $0.userID })
-                var addedUserIDs = Set(userFollower.map { $0.userID })
-                
-                for geo in sampleGeoResult {
-                    let creatorID = geo.creator.userID
-                    
-                    if followingSet.contains(creatorID) && !addedUserIDs.contains(creatorID) {
-                        if let matchingUser = userInfo.following.first(where: { $0.userID == creatorID }) {
-                            
-                            userFollower.append(matchingUser)
-                            addedUserIDs.insert(creatorID)
-                            
-                        }
-                    }
-                }
-            } catch {
-                print("유저 에러")
-            }
-        }
-    }
 }
 
 // MARK: - 어노테이션
@@ -222,7 +213,7 @@ extension MapVC: MKMapViewDelegate {
                 let result = try await NetworkManager2.shared.performRequest(router: .geolocationBasedSearch(query: geolocationQuery), responseType: PostDataModel.self)
                 
                 specifiedPostList = result.data
-                customAnnotation.subtitle = "\(result.data.count)개의 게시물"
+                customAnnotation.title = "\(result.data.count)개의 게시물"
                 mapView.addAnnotation(customAnnotation)
                 
             } catch {

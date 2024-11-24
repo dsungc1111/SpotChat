@@ -88,6 +88,7 @@
 		8BF8D26C2CF046900046786F /* FollowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF8D26B2CF046900046786F /* FollowView.swift */; };
 		8BF8D26E2CF07CD70046786F /* FollowTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF8D26D2CF07CD70046786F /* FollowTableViewCell.swift */; };
 		8BF8D2702CF07D940046786F /* BaseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF8D26F2CF07D940046786F /* BaseTableViewCell.swift */; };
+		8BF8D2722CF2E9BA0046786F /* MapVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF8D2712CF2E9BA0046786F /* MapVM.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -185,6 +186,7 @@
 		8BF8D26B2CF046900046786F /* FollowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowView.swift; sourceTree = "<group>"; };
 		8BF8D26D2CF07CD70046786F /* FollowTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowTableViewCell.swift; sourceTree = "<group>"; };
 		8BF8D26F2CF07D940046786F /* BaseTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTableViewCell.swift; sourceTree = "<group>"; };
+		8BF8D2712CF2E9BA0046786F /* MapVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapVM.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -465,6 +467,7 @@
 				8B3970202CE4BBD400069824 /* MapCollectionView */,
 				8BDC9F882CD4683800E94702 /* MapView.swift */,
 				8B7F3B992CD1130600B6D34C /* MapVC.swift */,
+				8BF8D2712CF2E9BA0046786F /* MapVM.swift */,
 			);
 			path = Map;
 			sourceTree = "<group>";
@@ -735,6 +738,7 @@
 				8B2A75422CD8BBAC000C6162 /* PostView.swift in Sources */,
 				8BDC03122CE5D28000B118A0 /* SettingVM.swift in Sources */,
 				8B7F3B9A2CD1130600B6D34C /* MapVC.swift in Sources */,
+				8BF8D2722CF2E9BA0046786F /* MapVM.swift in Sources */,
 				8BF8D2632CEF54780046786F /* EditUserView.swift in Sources */,
 				8B2A75542CDEF81F000C6162 /* UITextField+.swift in Sources */,
 			);
