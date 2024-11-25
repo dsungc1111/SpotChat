@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 final class ChattingListTableViewCell: BaseTableViewCell {
 
@@ -39,6 +40,20 @@ final class ChattingListTableViewCell: BaseTableViewCell {
     private let nicknameLabel = {
         let label = UILabel()
         label.text = "닉네임칸"
+        label.font = .boldSystemFont(ofSize: 12)
+        return label
+    }()
+    private let contentLabel = {
+        let label = UILabel()
+        label.text = "마지막 대회에요"
+        label.font = .boldSystemFont(ofSize: 12)
+        label.numberOfLines = 2
+        return label
+    }()
+    private let timeLabel = {
+        let label = UILabel()
+        label.text = "마지막 대화 시간이에요"
+        label.font = .boldSystemFont(ofSize: 8)
         return label
     }()
     
@@ -47,6 +62,8 @@ final class ChattingListTableViewCell: BaseTableViewCell {
         
         addSubview(profileImageView)
         addSubview(nicknameLabel)
+        addSubview(contentLabel)
+        addSubview(timeLabel)
     }
     
     override func configureLayout() {
@@ -57,28 +74,41 @@ final class ChattingListTableViewCell: BaseTableViewCell {
             make.size.equalTo(60)
         }
         nicknameLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(safeAreaLayoutGuide)
+            make.top.equalTo(safeAreaLayoutGuide).inset(20)
             make.leading.equalTo(profileImageView.snp.trailing).offset(20)
         }
+        contentLabel.snp.makeConstraints { make in
+            make.top.equalTo(nicknameLabel.snp.bottom).offset(10)
+            make.leading.equalTo(profileImageView.snp.trailing).offset(20)
+            make.trailing.equalTo(safeAreaLayoutGuide).inset(30)
+        }
+        timeLabel.snp.makeConstraints { make in
+            make.top.equalTo(safeAreaLayoutGuide).inset(20)
+            make.trailing.equalTo(safeAreaLayoutGuide).inset(10)
+        }
+        
     }
     
-//    func configureCell(_ follow: Follow) {
-//        nicknameLabel.text = follow.nick
-//        
-//        
-//        if let profileImage = follow.profileImage,
-//           let (url, modifier) = NetworkManager2.shared.fetchProfileImage(imageString: profileImage) {
-//
-//            profileImageView.kf.setImage(
-//                with: url,
-//                options: [
-//                    .requestModifier(modifier),
-//                    .cacheOriginalImage
-//                ]
-//            )
-//        } else {
-//            profileImageView.image = UIImage(systemName: "person")
-//        }
-//    }
-
+    func configureCell(_ chat: OpenChatModel) {
+        
+        nicknameLabel.text = chat.lastChat?.sender.nick
+        
+        if let profileImage = chat.lastChat?.sender.profileImage,
+           let (url, modifier) = NetworkManager2.shared.fetchProfileImage(imageString: profileImage) {
+            
+            profileImageView.kf.setImage(
+                with: url,
+                options: [
+                    .requestModifier(modifier),
+                    .cacheOriginalImage
+                ]
+            )
+        } else {
+            profileImageView.image = UIImage(systemName: "person")
+        }
+        
+        contentLabel.text = chat.lastChat?.content
+        timeLabel.text = chat.updatedAt
+        
+    }
 }

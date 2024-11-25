@@ -11,30 +11,30 @@ import SnapKit
 
 final class ChatListView: BaseView {
     
-    private let ChatListLabel = {
+    private let chatListLabel = {
         let label = UILabel()
         label.text = "채팅"
         label.font = .boldSystemFont(ofSize: 20)
         label.textColor = .white
-        
         return label
     }()
     
     let chatListTableView = {
         let view = UITableView()
-        view.backgroundColor = .red
+        view.rowHeight = 100
         return view
     }()
     
     
     
     override func configureHierarchy() {
-        addSubview(ChatListLabel)
+        chatListTableView.register(ChattingListTableViewCell.self, forCellReuseIdentifier: ChattingListTableViewCell.identifier)
+        addSubview(chatListLabel)
         addSubview(chatListTableView)
     }
     
     override func configureLayout() {
-        ChatListLabel.snp.makeConstraints { make in
+        chatListLabel.snp.makeConstraints { make in
             make.top.equalTo(safeAreaLayoutGuide)
             make.leading.equalTo(safeAreaLayoutGuide).inset(10)
             make.trailing.equalToSuperview()
@@ -42,7 +42,7 @@ final class ChatListView: BaseView {
         }
         
         chatListTableView.snp.makeConstraints { make in
-            make.top.equalTo(ChatListLabel.snp.bottom)
+            make.top.equalTo(chatListLabel.snp.bottom)
             make.horizontalEdges.bottom.equalToSuperview()
         }
     }

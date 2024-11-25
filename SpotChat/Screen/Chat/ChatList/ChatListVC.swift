@@ -6,6 +6,7 @@
 
 import UIKit
 import Combine
+import CombineCocoa
 
 
 
@@ -19,20 +20,31 @@ final class ChatListVC: BaseVC {
     
     lazy var dataSource: UITableViewDiffableDataSource<Int, OpenChatModel> = {
         UITableViewDiffableDataSource<Int, OpenChatModel>(tableView: chatListView.chatListTableView) { tableView, indexPath, chat in
-            let cell = tableView.dequeueReusableCell(withIdentifier: "ChatCell", for: indexPath)
-            cell.textLabel?.text = chat.lastChat?.content
-            return cell
+            
+            
+            let sender = chat.lastChat?.sender.userID
+            
+            if sender != UserDefaultsManager.userId {
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: ChattingListTableViewCell.identifier, for: indexPath) as? ChattingListTableViewCell else { return UITableViewCell() }
+                
+                cell.configureCell(chat)
+                return cell
+            }
+            
+            
+            return UITableViewCell()
         }
     }()
+    
     
     override func loadView() {
         view = chatListView
     }
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         print("ChatListVC임 ㅋ.ㅋ")
+        print(UserDefaultsManager.userId)
         
     }
     
@@ -48,7 +60,6 @@ final class ChatListVC: BaseVC {
             .receive(on: DispatchQueue.main) // UI 작업은 메인 스레드에서 실행
             .sink { [weak self] chats in
                 guard let self = self else { return }
-                
                 // DiffableDataSource의 Snapshot 생성 및 적용
                 var snapshot = NSDiffableDataSourceSnapshot<Int, OpenChatModel>()
                 snapshot.appendSections([0]) // 섹션 추가
@@ -57,8 +68,12 @@ final class ChatListVC: BaseVC {
             }
             .store(in: &cancellables)
         
+        chatListView.chatListTableView.didSelectRowPublisher
+            .sink { [weak self] indexPath in
+                guard let self else { return }
+                chatListView.chatListTableView.deselectRow(at: indexPath, animated: true)
+            }
+            .store(in: &cancellables)
     }
-    
-    
     
 }

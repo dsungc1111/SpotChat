@@ -50,11 +50,22 @@ extension ChatListVM {
     
     private func getChattingList() async -> [OpenChatModel] {
         
+        var list: [OpenChatModel] = []
         
         do {
             let chattingList = try await NetworkManager2.shared.performRequest(router: .getChattingList, responseType: ChattingList.self)
             
-            return chattingList.data
+            
+            
+            for chat in chattingList.data {
+                let sender = chat.lastChat?.sender.userID
+                
+                if sender != UserDefaultsManager.userId {
+                    print("😡😡😡😡😡😡😡😡😡😡 =====", chat)
+                    list.append(chat)
+                }
+            }
+            return list
         } catch {
             print("채팅리스트 로드 실패")
             return []
