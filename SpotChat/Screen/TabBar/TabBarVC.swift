@@ -23,7 +23,7 @@ final class TabBarVC: UITabBarController {
     private func setTabBar() {
         let postView = PostView()
         let mapVC = MapVC()
-        let chatVC =  ChatVC()
+        let chatVC =  ChatListVC()
         
         let postVC = PostVC(postView: postView,
                             postVM: PostVM(),

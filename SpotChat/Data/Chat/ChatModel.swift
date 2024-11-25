@@ -14,7 +14,8 @@ struct ChattingList: Decodable {
 }
 
 
-struct OpenChatModel: Decodable {
+struct OpenChatModel: Decodable, Hashable {
+    let id: UUID = UUID()
     let roomID, createdAt, updatedAt: String
     let participants: [Sender]
     let lastChat: LastChat?
@@ -26,7 +27,7 @@ struct OpenChatModel: Decodable {
 }
 
 // MARK: - LastChat
-struct LastChat: Decodable {
+struct LastChat: Decodable, Hashable {
     let chatID, roomID, content: String
     let sender: Sender
     let files: [String]
@@ -39,7 +40,7 @@ struct LastChat: Decodable {
 }
 
 // MARK: - Sender
-struct Sender: Decodable {
+struct Sender: Decodable, Hashable {
     let userID, nick: String
     let profileImage: String?
     

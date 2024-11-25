@@ -27,6 +27,10 @@
 		8B3437422CD76D2A003B3104 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3437412CD76D2A003B3104 /* libxml2.tbd */; };
 		8B3437442CD76D37003B3104 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3437432CD76D37003B3104 /* libsqlite3.tbd */; };
 		8B3970222CE4BBEB00069824 /* DetailCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3970212CE4BBEB00069824 /* DetailCollectionViewCell.swift */; };
+		8B5F31642CF45ACB0059BAC3 /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = 8B5F31632CF45ACB0059BAC3 /* SocketIO */; };
+		8B5F31662CF45CD00059BAC3 /* ChatListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5F31652CF45CD00059BAC3 /* ChatListView.swift */; };
+		8B5F31682CF46B1D0059BAC3 /* ChatListVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5F31672CF46B1D0059BAC3 /* ChatListVM.swift */; };
+		8B5F316A2CF476CF0059BAC3 /* ChattingListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5F31692CF476CF0059BAC3 /* ChattingListTableViewCell.swift */; };
 		8B7424D32CCA5A9600E198C3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7424D22CCA5A9600E198C3 /* AppDelegate.swift */; };
 		8B7424D52CCA5A9600E198C3 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7424D42CCA5A9600E198C3 /* SceneDelegate.swift */; };
 		8B7424DC2CCA5A9800E198C3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8B7424DB2CCA5A9800E198C3 /* Assets.xcassets */; };
@@ -69,7 +73,7 @@
 		8B9F77452CE0E70A009887D4 /* PostImagePickerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9F77442CE0E70A009887D4 /* PostImagePickerManager.swift */; };
 		8BDC03102CE5CCC200B118A0 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDC030F2CE5CCC200B118A0 /* SettingView.swift */; };
 		8BDC03122CE5D28000B118A0 /* SettingVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDC03112CE5D28000B118A0 /* SettingVM.swift */; };
-		8BDC9F842CD460D400E94702 /* ChatVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDC9F832CD460D400E94702 /* ChatVC.swift */; };
+		8BDC9F842CD460D400E94702 /* ChatListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDC9F832CD460D400E94702 /* ChatListVC.swift */; };
 		8BDC9F872CD4612E00E94702 /* SettingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDC9F862CD4612E00E94702 /* SettingVC.swift */; };
 		8BDC9F892CD4683900E94702 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDC9F882CD4683800E94702 /* MapView.swift */; };
 		8BDC9F8B2CD46CE100E94702 /* AppColorSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDC9F8A2CD46CE100E94702 /* AppColorSet.swift */; };
@@ -133,6 +137,9 @@
 		8B3437412CD76D2A003B3104 /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
 		8B3437432CD76D37003B3104 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		8B3970212CE4BBEB00069824 /* DetailCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCollectionViewCell.swift; sourceTree = "<group>"; };
+		8B5F31652CF45CD00059BAC3 /* ChatListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListView.swift; sourceTree = "<group>"; };
+		8B5F31672CF46B1D0059BAC3 /* ChatListVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListVM.swift; sourceTree = "<group>"; };
+		8B5F31692CF476CF0059BAC3 /* ChattingListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChattingListTableViewCell.swift; sourceTree = "<group>"; };
 		8B7424CF2CCA5A9600E198C3 /* SpotChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpotChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B7424D22CCA5A9600E198C3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8B7424D42CCA5A9600E198C3 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -174,7 +181,7 @@
 		8B9F77442CE0E70A009887D4 /* PostImagePickerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostImagePickerManager.swift; sourceTree = "<group>"; };
 		8BDC030F2CE5CCC200B118A0 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
 		8BDC03112CE5D28000B118A0 /* SettingVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingVM.swift; sourceTree = "<group>"; };
-		8BDC9F832CD460D400E94702 /* ChatVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatVC.swift; sourceTree = "<group>"; };
+		8BDC9F832CD460D400E94702 /* ChatListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListVC.swift; sourceTree = "<group>"; };
 		8BDC9F862CD4612E00E94702 /* SettingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingVC.swift; sourceTree = "<group>"; };
 		8BDC9F882CD4683800E94702 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		8BDC9F8A2CD46CE100E94702 /* AppColorSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColorSet.swift; sourceTree = "<group>"; };
@@ -221,6 +228,7 @@
 				8BEB7BB82CE7327E0079D068 /* Kingfisher in Frameworks */,
 				8B9F773E2CE0D903009887D4 /* CombineCocoa in Frameworks */,
 				8B7F3BB22CD3967900B6D34C /* KakaoSDKCert in Frameworks */,
+				8B5F31642CF45ACB0059BAC3 /* SocketIO in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -294,6 +302,24 @@
 				8BF8D25E2CEE4A190046786F /* CollectionViewPaging.swift */,
 			);
 			path = MapCollectionView;
+			sourceTree = "<group>";
+		};
+		8B5F31602CF459540059BAC3 /* ChatList */ = {
+			isa = PBXGroup;
+			children = (
+				8B5F31652CF45CD00059BAC3 /* ChatListView.swift */,
+				8BDC9F832CD460D400E94702 /* ChatListVC.swift */,
+				8B5F31672CF46B1D0059BAC3 /* ChatListVM.swift */,
+				8B5F31692CF476CF0059BAC3 /* ChattingListTableViewCell.swift */,
+			);
+			path = ChatList;
+			sourceTree = "<group>";
+		};
+		8B5F31612CF4595C0059BAC3 /* ChatRoom */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ChatRoom;
 			sourceTree = "<group>";
 		};
 		8B7424C62CCA5A9600E198C3 = {
@@ -488,7 +514,8 @@
 		8BDC9F822CD460C400E94702 /* Chat */ = {
 			isa = PBXGroup;
 			children = (
-				8BDC9F832CD460D400E94702 /* ChatVC.swift */,
+				8B5F31602CF459540059BAC3 /* ChatList */,
+				8B5F31612CF4595C0059BAC3 /* ChatRoom */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -589,6 +616,7 @@
 				8B3437342CD75A12003B3104 /* KakaoMapsSDK-SPM */,
 				8B9F773D2CE0D903009887D4 /* CombineCocoa */,
 				8BEB7BB72CE7327E0079D068 /* Kingfisher */,
+				8B5F31632CF45ACB0059BAC3 /* SocketIO */,
 			);
 			productName = SpotChat;
 			productReference = 8B7424CF2CCA5A9600E198C3 /* SpotChat.app */;
@@ -669,6 +697,7 @@
 				8B3437332CD75A12003B3104 /* XCRemoteSwiftPackageReference "KakaoMapsSDK-SPM" */,
 				8B9F773C2CE0D903009887D4 /* XCRemoteSwiftPackageReference "CombineCocoa" */,
 				8BEB7BB62CE7327E0079D068 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				8B5F31622CF45ACB0059BAC3 /* XCRemoteSwiftPackageReference "socket.io-client-swift" */,
 			);
 			productRefGroup = 8B7424D02CCA5A9600E198C3 /* Products */;
 			projectDirPath = "";
@@ -751,11 +780,12 @@
 				8BF8D2772CF30D000046786F /* SearchVC.swift in Sources */,
 				8B2A75462CD8D915000C6162 /* PostVM.swift in Sources */,
 				8BF8D2702CF07D940046786F /* BaseTableViewCell.swift in Sources */,
-				8BDC9F842CD460D400E94702 /* ChatVC.swift in Sources */,
+				8BDC9F842CD460D400E94702 /* ChatListVC.swift in Sources */,
 				8B9F77432CE0DE37009887D4 /* PostBindManager.swift in Sources */,
 				8B7F3B862CD0CDBB00B6D34C /* BaseView.swift in Sources */,
 				8BF8D25F2CEE4A190046786F /* CollectionViewPaging.swift in Sources */,
 				8BDC9F8B2CD46CE100E94702 /* AppColorSet.swift in Sources */,
+				8B5F316A2CF476CF0059BAC3 /* ChattingListTableViewCell.swift in Sources */,
 				8B7424D52CCA5A9600E198C3 /* SceneDelegate.swift in Sources */,
 				8B3970222CE4BBEB00069824 /* DetailCollectionViewCell.swift in Sources */,
 				8BDC9F922CD4771600E94702 /* BaseCollectionViewCell.swift in Sources */,
@@ -764,6 +794,8 @@
 				8BF8D2792CF329370046786F /* SearchView.swift in Sources */,
 				8BF8D26A2CF02EBF0046786F /* FollowVC.swift in Sources */,
 				8B7F3B8B2CD0CF4D00B6D34C /* SignUpView.swift in Sources */,
+				8B5F31662CF45CD00059BAC3 /* ChatListView.swift in Sources */,
+				8B5F31682CF46B1D0059BAC3 /* ChatListVM.swift in Sources */,
 				8BF8D2742CF306AB0046786F /* CustomAnnotation.swift in Sources */,
 				8B7F3B642CCF846A00B6D34C /* APIKey.swift in Sources */,
 				8B7F3B892CD0CE6E00B6D34C /* UIColor+.swift in Sources */,
@@ -1137,6 +1169,14 @@
 				minimumVersion = 2.12.0;
 			};
 		};
+		8B5F31622CF45ACB0059BAC3 /* XCRemoteSwiftPackageReference "socket.io-client-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/socketio/socket.io-client-swift.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 		8B7F3B542CCE0DED00B6D34C /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
@@ -1184,6 +1224,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 8B3437332CD75A12003B3104 /* XCRemoteSwiftPackageReference "KakaoMapsSDK-SPM" */;
 			productName = "KakaoMapsSDK-SPM";
+		};
+		8B5F31632CF45ACB0059BAC3 /* SocketIO */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8B5F31622CF45ACB0059BAC3 /* XCRemoteSwiftPackageReference "socket.io-client-swift" */;
+			productName = SocketIO;
 		};
 		8B7F3B552CCE0DED00B6D34C /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
