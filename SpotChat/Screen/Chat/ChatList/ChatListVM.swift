@@ -36,6 +36,7 @@ final class ChatListVM: BaseVMProtocol {
                 Task {
                     let result = await self.getChattingList()
                     chattingList.send(result)
+                    
                 }
             }
             .store(in: &cancellables)
@@ -55,16 +56,19 @@ extension ChatListVM {
         do {
             let chattingList = try await NetworkManager2.shared.performRequest(router: .getChattingList, responseType: ChattingList.self)
             
-            
-            
-            for chat in chattingList.data {
-                let sender = chat.lastChat?.sender.userID
-                
-                if sender != UserDefaultsManager.userId {
-                    print("😡😡😡😡😡😡😡😡😡😡 =====", chat)
-                    list.append(chat)
-                }
-            }
+//            for chat in chattingList.data {
+//                
+//                
+//                
+//                
+//                let sender = chat.lastChat?.sender.userID
+//                
+//                if sender != UserDefaultsManager.userId {
+//                    list.append(chat)
+//                    print(list)
+//                }
+//            }
+            list = chattingList.data
             return list
         } catch {
             print("채팅리스트 로드 실패")

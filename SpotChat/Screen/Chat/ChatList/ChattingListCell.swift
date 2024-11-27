@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-final class ChattingListTableViewCell: BaseTableViewCell {
+final class ChattingListCell: BaseTableViewCell {
 
     
     private let profileImageView = {
@@ -91,24 +91,28 @@ final class ChattingListTableViewCell: BaseTableViewCell {
     
     func configureCell(_ chat: OpenChatModel) {
         
-        nicknameLabel.text = chat.lastChat?.sender.nick
-        
-        if let profileImage = chat.lastChat?.sender.profileImage,
-           let (url, modifier) = NetworkManager2.shared.fetchProfileImage(imageString: profileImage) {
-            
-            profileImageView.kf.setImage(
-                with: url,
-                options: [
-                    .requestModifier(modifier),
-                    .cacheOriginalImage
-                ]
-            )
-        } else {
-            profileImageView.image = UIImage(systemName: "person")
+        for person in chat.participants {
+            if person.userID != UserDefaultsManager.userId {
+                nicknameLabel.text = person.nick
+                
+                if let profileImage = person.profileImage,
+                   let (url, modifier) = NetworkManager2.shared.fetchProfileImage(imageString: profileImage) {
+                    
+                    profileImageView.kf.setImage(
+                        with: url,
+                        options: [
+                            .requestModifier(modifier),
+                            .cacheOriginalImage
+                        ]
+                    )
+                } else {
+                    profileImageView.image = UIImage(systemName: "person")
+                }
+                
+                contentLabel.text = chat.lastChat?.content
+                timeLabel.text = Date.formatDate(from: chat.updatedAt)
+                
+            }
         }
-        
-        contentLabel.text = chat.lastChat?.content
-        timeLabel.text = chat.updatedAt
-        
     }
 }

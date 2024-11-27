@@ -119,7 +119,7 @@ final class NetworkManager2 {
                 throw error
             }
         
-        case 401, 403, 418:
+        case 403, 418:
             print("로그인 화면으로 이동 (401 or 403 or 418 상태)")
             NotificationCenter.default.post(
                 name: NSNotification.Name("ExpiredRefreshToken"),
@@ -160,7 +160,7 @@ final class NetworkManager2 {
     
     private func refreshAccessToken() async throws -> TokenModel {
         // 리프레시 토큰으로 새로운 액세스 토큰 요청
-        return try await performRequest(router: .refreshToken, responseType: TokenModel.self, retrying: false)
+        return try await performRequest(router: .refreshToken, responseType: TokenModel.self, retrying: true)
     }
     
     

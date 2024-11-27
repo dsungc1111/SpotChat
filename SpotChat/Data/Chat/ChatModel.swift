@@ -40,7 +40,7 @@ struct LastChat: Decodable, Hashable {
 }
 
 // MARK: - Sender
-struct Sender: Decodable, Hashable {
+struct Sender: Codable, Hashable {
     let userID, nick: String
     let profileImage: String?
     
@@ -53,4 +53,3 @@ struct Sender: Decodable, Hashable {
 struct GetChattingContentModel: Decodable {
     let data: [LastChat]
 }
-
