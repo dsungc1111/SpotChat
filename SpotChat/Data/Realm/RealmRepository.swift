@@ -6,3 +6,11 @@
 //
 
 import Foundation
+import RealmSwift
+
+final class RealmRepository {
+    
+    
+    
+    
+}

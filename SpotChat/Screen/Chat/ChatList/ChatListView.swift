@@ -28,7 +28,7 @@ final class ChatListView: BaseView {
     
     
     override func configureHierarchy() {
-        chatListTableView.register(ChattingListTableViewCell.self, forCellReuseIdentifier: ChattingListTableViewCell.identifier)
+        chatListTableView.register(ChattingListCell.self, forCellReuseIdentifier: ChattingListCell.identifier)
         addSubview(chatListLabel)
         addSubview(chatListTableView)
     }
