@@ -51,7 +51,9 @@ extension MapVM {
                 Task {
                     let (posts, following) = await self.fetchGeolocationData(maxDistance: distance)
                     geoResult.send(posts)
+                    
                     followingResult.send(following)
+                    
                 }
             }
             .store(in: &cancellables)
@@ -72,7 +74,6 @@ extension MapVM {
                 }
             }
             .store(in: &cancellables)
-        
         
         return Output(geoResult: geoResult, 
                       userFollower: followingResult,
@@ -124,19 +125,9 @@ extension MapVM {
 
         // 유저 정보 가져오기
         do {
-            let userInfo = try await NetworkManager2.shared.performRequest(router: .myProfile, responseType: ProfileModel.self)
-
-            let followingSet = Set(userInfo.following.map { $0.userID })
-
-            for geo in geoResult {
-                let creatorID = geo.creator.userID
-
-                if followingSet.contains(creatorID) {
-                    if let matchingUser = userInfo.following.first(where: { $0.userID == creatorID }) {
-                        userFollower.append(matchingUser)
-                    }
-                }
-            }
+            let followList = try await NetworkManager2.shared.performRequest(router: .myProfile, responseType: ProfileModel.self).following
+            
+            userFollower = followList
         } catch {
             print("유저 에러")
         }

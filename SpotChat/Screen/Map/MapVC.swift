@@ -90,7 +90,7 @@ final class MapVC: BaseVC {
                 guard let maxDistance = Double(maxDistance) else { return }
                 
                 
-                let region = MKCoordinateRegion(center: temp, latitudinalMeters: maxDistance / 2 , longitudinalMeters: maxDistance / 2)
+                let region = MKCoordinateRegion(center: temp, latitudinalMeters: maxDistance  , longitudinalMeters: maxDistance )
                 mapView.map.setRegion(region, animated: true)
                 
                 
@@ -110,6 +110,7 @@ final class MapVC: BaseVC {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] following in
                 guard let self else { return }
+                print("🐷🐷🐷🐷🐷🐷🐷", following)
                 userFollower = following
             }
             .store(in: &cancellables)
