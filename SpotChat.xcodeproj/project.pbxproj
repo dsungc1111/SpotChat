@@ -79,6 +79,7 @@
 		8B7F3BB62CD3967900B6D34C /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = 8B7F3BB52CD3967900B6D34C /* KakaoSDKCommon */; };
 		8B7F3BB92CD3AF0D00B6D34C /* KakaoAuthVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7F3BB82CD3AF0D00B6D34C /* KakaoAuthVM.swift */; };
 		8B7F3BBD2CD45FA300B6D34C /* TabBarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7F3BBC2CD45FA300B6D34C /* TabBarVC.swift */; };
+		8B8266132CF8A242004E4C1A /* ChatRoomDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8266122CF8A242004E4C1A /* ChatRoomDataSource.swift */; };
 		8B9F773E2CE0D903009887D4 /* CombineCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 8B9F773D2CE0D903009887D4 /* CombineCocoa */; };
 		8B9F77432CE0DE37009887D4 /* PostBindManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9F77422CE0DE37009887D4 /* PostBindManager.swift */; };
 		8B9F77452CE0E70A009887D4 /* PostImagePickerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9F77442CE0E70A009887D4 /* PostImagePickerManager.swift */; };
@@ -211,6 +212,7 @@
 		8B7F3BB82CD3AF0D00B6D34C /* KakaoAuthVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoAuthVM.swift; sourceTree = "<group>"; };
 		8B7F3BBA2CD3B8A800B6D34C /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		8B7F3BBC2CD45FA300B6D34C /* TabBarVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarVC.swift; sourceTree = "<group>"; };
+		8B8266122CF8A242004E4C1A /* ChatRoomDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomDataSource.swift; sourceTree = "<group>"; };
 		8B9F77422CE0DE37009887D4 /* PostBindManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostBindManager.swift; sourceTree = "<group>"; };
 		8B9F77442CE0E70A009887D4 /* PostImagePickerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostImagePickerManager.swift; sourceTree = "<group>"; };
 		8BDC030F2CE5CCC200B118A0 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
@@ -357,6 +359,7 @@
 				8B5F316B2CF58C530059BAC3 /* ChatRoomVC.swift */,
 				8B5F31762CF5F1830059BAC3 /* ChatRoomVM.swift */,
 				8B5F31712CF5A6300059BAC3 /* ChatMessageCell.swift */,
+				8B8266122CF8A242004E4C1A /* ChatRoomDataSource.swift */,
 			);
 			path = ChatRoom;
 			sourceTree = "<group>";
@@ -826,6 +829,7 @@
 				8BDC9F972CD4CE0D00E94702 /* SignInView.swift in Sources */,
 				8B5F31722CF5A6300059BAC3 /* ChatMessageCell.swift in Sources */,
 				8BEB7BBA2CE7378F0079D068 /* UserPostCollectionViewCell.swift in Sources */,
+				8B8266132CF8A242004E4C1A /* ChatRoomDataSource.swift in Sources */,
 				8B5F318F2CF6F08F0059BAC3 /* RealmRepository.swift in Sources */,
 				8B7F3B6E2CCFA04D00B6D34C /* TargetType.swift in Sources */,
 				8B7F3B702CCFA51400B6D34C /* UserDefaultManager.swift in Sources */,

@@ -27,6 +27,8 @@ final class ChatMessageCell: UITableViewCell {
     }
     
     private func configureUI() {
+        
+        
         selectionStyle = .none
         backgroundColor = .clear
         

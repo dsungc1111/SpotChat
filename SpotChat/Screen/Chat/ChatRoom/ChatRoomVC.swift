@@ -16,7 +16,7 @@ struct Message {
 }
 
 final class ChatRoomVC: BaseVC {
-
+    
     private var chatRoomView = ChatRoomView()
     private var cancellables = Set<AnyCancellable>()
 
@@ -24,15 +24,17 @@ final class ChatRoomVC: BaseVC {
         didSet {
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
-                self.chatRoomView.chatTableView.reloadData()
-                self.scrollToBottom()
+                dataSource.updateMessage(message: messages, tableView: chatRoomView.chatTableView)
+                scrollToBottom()
             }
         }
     }
+    private var dataSource: ChatRoomDataSource!
 
     var list: [OpenChatModel] = []
-    private lazy var socketManager = SocketNetworkManager(roomID: list.first?.roomID ?? "")
-    private let chatRoomVM = ChatRoomVM()
+    
+    
+    private lazy var chatRoomVM = ChatRoomVM(socketManager: SocketNetworkManager(roomID: list.first?.roomID ?? ""))
 
     override func loadView() {
         view = chatRoomView
@@ -53,20 +55,12 @@ final class ChatRoomVC: BaseVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureTableView()
-        socketManager.connect()
-        chatRoomView.messageTextView.delegate = self 
     }
 
     override func bind() {
         chatRoomView.backBtn.tapPublisher
             .sink { [weak self] _ in
                 self?.dismiss(animated: true)
-            }
-            .store(in: &cancellables)
-
-        chatRoomView.sendButton.tapPublisher
-            .sink { [weak self] _ in
-                self?.sendMessage()
             }
             .store(in: &cancellables)
 
@@ -79,7 +73,7 @@ final class ChatRoomVC: BaseVC {
 
         output.chatList
             .sink { [weak self] chatList in
-                guard let self = self else { return }
+                guard let self else { return }
                 DispatchQueue.main.async {
                     let newMessages = chatList.map {
                         Message(content: $0.content, isSentByUser: $0.sender.userID == UserDefaultsManager.userId)
@@ -88,45 +82,43 @@ final class ChatRoomVC: BaseVC {
                 }
             }
             .store(in: &cancellables)
+        
+        output.socketChatList
+            .sink { [weak self] chatList in
+                guard let self else { return }
+                
+                let newMessages = Message(content: chatList.content, isSentByUser: chatList.sender.userID == UserDefaultsManager.userId)
+                
+                messages.append(newMessages)
+            }
+            .store(in: &cancellables)
+        
+        
+        
+        chatRoomView.sendButton.tapPublisher
+            .sink { [weak self] _ in
+                guard let self else { return }
+                guard let text = chatRoomView.messageTextView.text else { return }
+                
+                let sendModel = SocketDMModel(chatID: list.first?.lastChat?.chatID ?? "",
+                                              roomID: list.first?.roomID ?? "",
+                                              content: text,
+                                              createdAt: list.first?.createdAt ?? "",
+                                              files: [],
+                                              sender: list.first?.lastChat?.sender ?? Sender(userID: "", nick: "", profileImage: "")
+                                              )
+                input.sendMessage.send(sendModel)
+            }
+            .store(in: &cancellables)
     }
 
     private func configureTableView() {
-        
+        dataSource = ChatRoomDataSource(messages: messages)
+        chatRoomView.messageTextView.delegate = self
         chatRoomView.chatTableView.delegate = self
-        chatRoomView.chatTableView.dataSource = self
-        chatRoomView.chatTableView.register(ChatMessageCell.self, forCellReuseIdentifier: ChatMessageCell.identifier)
+        chatRoomView.chatTableView.dataSource = dataSource
     }
 
-    private func sendMessage() {
-        guard let text = chatRoomView.messageTextView.text, !text.isEmpty, text != "메시지를 입력하세요..." else { return }
-        
-        let message = Message(content: text, isSentByUser: true)
-        messages.append(message)
-        
-        let sendModel = SocketDMModel(chatID: list.first?.lastChat?.chatID ?? "",
-                                      roomID: list.first?.roomID ?? "",
-                                      content: text,
-                                      createdAt: list.first?.createdAt ?? "",
-                                      files: [],
-                                      sender: list.first?.lastChat?.sender ?? Sender(userID: "", nick: "", profileImage: "")
-        )
-
-        let sendChatModel = SendChatQuery(content: text, files: [])
-        Task {
-            do {
-                let result = try await NetworkManager2.shared.performRequest(
-                    router: .sendChat(list.first?.roomID ?? "", sendChatModel),
-                    responseType: LastChat.self
-                )
-                print("⚫️ 메시지 전송 성공: \(result)")
-            } catch {
-                print("🔴 메시지 전송 실패: \(error)")
-            }
-        }
-        
-        socketManager.sendMessage(sendModel)
-        chatRoomView.messageTextView.text = ""
-    }
 
     private func scrollToBottom() {
         guard !messages.isEmpty else { return }
@@ -150,7 +142,7 @@ extension ChatRoomVC {
         guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
         
         let keyboardHeight = keyboardFrame.height
-        //현재 기기의 안전 영역(Safe Area) 하단에 있는 공간 크기입니다.
+        //현재 기기의 안전 영역(Safe Area) 하단에 있는 공간 크기
         let safeAreaBottomInset = view.safeAreaInsets.bottom
         
         let adjustedHeight = keyboardHeight - safeAreaBottomInset
@@ -159,16 +151,14 @@ extension ChatRoomVC {
         chatRoomView.messageInputContainer.snp.updateConstraints { make in
             make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-adjustedHeight)
         }
-        
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
         }
-        
         scrollToBottom()
     }
 
     @objc private func keyboardWillHide(notification: Notification) {
-        // 입력창 컨테이너 복구
+        
         chatRoomView.messageInputContainer.snp.updateConstraints { make in
             make.bottom.equalTo(view.safeAreaLayoutGuide)
         }
@@ -179,51 +169,23 @@ extension ChatRoomVC {
     }
 }
 
-// MARK: - TableView Delegate & DataSource
-extension ChatRoomVC: UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return messages.count
-    }
+//// MARK: - 테이블뷰
+extension ChatRoomVC: UITableViewDelegate {}
 
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: ChatMessageCell.identifier, for: indexPath) as? ChatMessageCell else {
-            return UITableViewCell()
-        }
-        
-        let message = messages[indexPath.row]
-        cell.configureCell(message: message)
-        return cell
-    }
-}
-
+// MARK: - UITextView
 extension ChatRoomVC: UITextViewDelegate {
     
     func textViewDidBeginEditing(_ textView: UITextView) {
         
         if textView.text == "메시지를 입력" && textView.textColor == .lightGray {
-            textView.text = "" // 텍스트를 비움
-            textView.textColor = .white // 텍스트 색상 변경
-        }
-    }
-    
-    func textViewDidChange(_ textView: UITextView) {
-        // 텍스트뷰 높이를 동적으로 변경
-        let size = CGSize(width: textView.frame.width, height: CGFloat.greatestFiniteMagnitude)
-        let estimatedSize = textView.sizeThatFits(size)
-        
-        chatRoomView.messageInputContainer.snp.updateConstraints { make in
-            make.height.equalTo(max(50, estimatedSize.height + 10)) // 최소 높이 50
-        }
-                         
-        UIView.animate(withDuration: 0.5) {
-            self.view.layoutIfNeeded()
+            textView.text = ""
+            textView.textColor = .white
         }
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
-        // 텍스트뷰가 비어 있는 경우 기본 텍스트를 복원
         if textView.text.isEmpty {
-            textView.text = "메시지를 입력하세요..."
+            textView.text = "메시지를 입력"
             textView.textColor = .lightGray
         }
     }

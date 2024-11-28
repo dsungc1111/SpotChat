@@ -22,7 +22,7 @@ final class SocketNetworkManager: SocketProvider {
     
     private var manager: SocketManager
     private var socket: SocketIOClient
-    private var messages: [Message] = []
+//    private var messages: [Message] = []
     
     var socketSubject = PassthroughSubject<SocketDMModel, Never>()
     
@@ -70,12 +70,8 @@ final class SocketNetworkManager: SocketProvider {
             let decodedData = try JSONDecoder().decode(SocketDMModel.self, from: jsonData)
             print("👇 Decoded Chat Message: \(decodedData)")
             
-            let isSentByUser = decodedData.sender.userID == UserDefaultsManager.userId
-            let message = Message(content: decodedData.content, isSentByUser: isSentByUser)
+            socketSubject.send(decodedData)
             
-            DispatchQueue.main.async { [weak self] in
-                self?.messages.append(message)
-            }
         } catch {
             print("🚨 Failed to decode chat message: \(error)")
         }

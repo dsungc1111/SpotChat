@@ -15,7 +15,7 @@ final class ChatRoomView: BaseView {
         let btn = UIButton()
         btn.setImage(UIImage(systemName: "chevron.backward"), for: .normal)
         btn.tintColor = .white
-        btn.contentHorizontalAlignment = .leading
+        btn.contentHorizontalAlignment = .center
         return btn
     }()
     
@@ -64,6 +64,7 @@ final class ChatRoomView: BaseView {
     }()
     
     override func configureHierarchy() {
+        chatTableView.register(ChatMessageCell.self, forCellReuseIdentifier: ChatMessageCell.identifier)
         addSubview(headerContainer)
         headerContainer.addSubview(backBtn)
         headerContainer.addSubview(titleLabel)
@@ -76,12 +77,12 @@ final class ChatRoomView: BaseView {
     override func configureLayout() {
         headerContainer.snp.makeConstraints { make in
             make.top.leading.trailing.equalTo(safeAreaLayoutGuide)
-            make.height.equalTo(30)
+            make.height.equalTo(40)
         }
         
         backBtn.snp.makeConstraints { make in
-            make.top.leading.equalTo(headerContainer).inset(10)
-            make.height.equalTo(30)
+            make.top.leading.equalTo(headerContainer).inset(8)
+            make.height.equalTo(20)
             make.width.equalTo(60)
         }
         
