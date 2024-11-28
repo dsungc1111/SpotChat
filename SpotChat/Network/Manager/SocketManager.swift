@@ -27,40 +27,43 @@ final class SocketNetworkManager: SocketProvider {
     var socketSubject = PassthroughSubject<SocketDMModel, Never>()
     
     init(roomID: String) {
-        guard let url = URL(string: APIKey.socketBaseURL + roomID) else {
+        guard let url = URL(string: APIKey.socketBaseURL) else {
             fatalError("Invalid Socket URL")
         }
-        print("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴", url)
+        print("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴\(url)")
         print("🟤🟤🟤🟤🟤🟤🟤🟤🟤🟤🟤🟤🟤🟤\(roomID)")
         manager = SocketManager(socketURL: url, config: [.log(true), .compress])
-        socket = manager.defaultSocket
+        socket = manager.socket(forNamespace: "/chats-\(roomID)")
+        
     }
     
     func configureSocketEvent() {
-        print("✅✅✅✅✅✅✅")
         // 소켓 연결 이벤트
         socket.on(clientEvent: .connect) { data, ack in
+            print("✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅")
             print("✨ Socket 연결!!!!!!")
         }
         // 서버에서 전달된 데이터 출력 이벤트
         socket.on("chat") { [weak self] dataArr, ack in
+            print("✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅")
             print("📮 Chat Message Received: \(dataArr)")
             self?.handleIncomingMessage(dataArr)
         }
         
         // 소켓 연결 해제 이벤트
         socket.on(clientEvent: .disconnect) { data, ack in
+            print("✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅")
             print("⛓️‍💥 Socket XXXXXXX")
         }
         
         // 소켓 재연결 이벤트
         socket.on(clientEvent: .reconnect) { data, ack in
+            print("✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅")
             print("🔄 Socket Reconnecting")
         }
     }
     
     private func handleIncomingMessage(_ dataArr: [Any]) {
-        print(#function, "그럼 여기라도 🥺🥺🥺🥺🥺🥺🥺🥺🥺🥺🥺🥺🥺")
         do {
             guard let data = dataArr.first else { return }
             let jsonData = try JSONSerialization.data(withJSONObject: data)
@@ -82,7 +85,7 @@ final class SocketNetworkManager: SocketProvider {
         do {
             let jsonData = try JSONEncoder().encode(message)
             if let jsonObject = try JSONSerialization.jsonObject(with: jsonData) as? [String: Any] {
-                socket.emit("chat", jsonObject) // 서버에 "send_chat" 이벤트로 전송
+                socket.emit("chat", jsonObject)
                 print("📤 Sent Message: \(message)")
             }
         } catch {

@@ -4,11 +4,12 @@
 //
 //  Created by 최대성 on 11/26/24.
 //
-
 import UIKit
 import SnapKit
 
 final class ChatRoomView: BaseView {
+    
+    private let headerContainer = UIView()
     
     let backBtn = {
         let btn = UIButton()
@@ -34,22 +35,24 @@ final class ChatRoomView: BaseView {
         return tableView
     }()
     
-    private let messageInputContainer = {
+    let messageInputContainer = {
         let container = UIView()
         container.backgroundColor = UIColor.systemGray6
         container.layer.cornerRadius = 10
         return container
     }()
     
-    let messageTextField = {
-        let textField = UITextField()
-        textField.placeholder = "메시지를 입력하세요..."
-        textField.font = .systemFont(ofSize: 16)
-        textField.borderStyle = .none
-        textField.returnKeyType = .send
-        textField.autocorrectionType = .no
-        textField.clearButtonMode = .whileEditing
-        return textField
+    let messageTextView: UITextView = {
+        let textView = UITextView()
+        textView.isScrollEnabled = false
+        textView.font = .systemFont(ofSize: 16)
+        textView.text = "메시지를 입력"
+        textView.textColor = .lightGray
+        textView.layer.cornerRadius = 10
+        textView.layer.borderWidth = 1
+        textView.layer.borderColor = UIColor.lightGray.cgColor
+        textView.textContainerInset = UIEdgeInsets(top: 8, left: 10, bottom: 0, right: 10)
+        return textView
     }()
     
     let sendButton = {
@@ -61,47 +64,55 @@ final class ChatRoomView: BaseView {
     }()
     
     override func configureHierarchy() {
-        addSubview(backBtn)
-        addSubview(titleLabel)
+        addSubview(headerContainer)
+        headerContainer.addSubview(backBtn)
+        headerContainer.addSubview(titleLabel)
         addSubview(chatTableView)
         addSubview(messageInputContainer)
-        messageInputContainer.addSubview(messageTextField)
+        messageInputContainer.addSubview(messageTextView)
         messageInputContainer.addSubview(sendButton)
     }
     
     override func configureLayout() {
+        headerContainer.snp.makeConstraints { make in
+            make.top.leading.trailing.equalTo(safeAreaLayoutGuide)
+            make.height.equalTo(30)
+        }
+        
         backBtn.snp.makeConstraints { make in
-            make.top.leading.equalTo(safeAreaLayoutGuide).inset(10)
+            make.top.leading.equalTo(headerContainer).inset(10)
+            make.height.equalTo(30)
             make.width.equalTo(60)
         }
         
         titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(safeAreaLayoutGuide).inset(10)
-            make.centerX.equalTo(safeAreaLayoutGuide)
+            make.top.equalTo(headerContainer).inset(10)
+            make.centerX.equalTo(headerContainer)
         }
         
         chatTableView.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(10)
+            make.top.equalTo(headerContainer.snp.bottom).offset(5)
             make.leading.trailing.equalToSuperview()
             make.bottom.equalTo(messageInputContainer.snp.top).offset(-10)
         }
         
         messageInputContainer.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(10)
-            make.bottom.equalTo(safeAreaLayoutGuide).inset(10)
+            make.bottom.equalTo(safeAreaLayoutGuide).offset(-10)
             make.height.equalTo(50)
         }
         
-        messageTextField.snp.makeConstraints { make in
-            make.leading.equalTo(messageInputContainer).inset(16)
-            make.centerY.equalTo(messageInputContainer)
-            make.trailing.equalTo(sendButton.snp.leading).offset(-10)
+        messageTextView.snp.makeConstraints { make in
+            make.verticalEdges.equalTo(messageInputContainer).inset(8)
+            make.leading.equalTo(messageInputContainer).inset(8)
+            make.trailing.equalTo(sendButton.snp.leading).offset(-4)
         }
         
         sendButton.snp.makeConstraints { make in
-            make.trailing.equalTo(messageInputContainer).inset(16)
-            make.centerY.equalTo(messageInputContainer)
-            make.width.equalTo(50)
+            make.trailing.equalTo(messageInputContainer).inset(10)
+            make.centerY.equalTo(messageTextView)
+            make.width.equalTo(30)
         }
     }
+    
 }

@@ -15,6 +15,15 @@ struct SocketDMModel: Codable {
     let createdAt: String
     let files: [String]
     let sender: Sender
+    
+    enum CodingKeys: String, CodingKey {
+        case chatID = "chat_id"
+        case roomID = "room_id"
+        case content
+        case createdAt
+        case files
+        case sender
+    }
 }
 
 

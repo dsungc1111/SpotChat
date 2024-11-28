@@ -7,7 +7,6 @@
 
 import UIKit
 
-
 protocol PostDataSourceProviderProtocol {
     
     associatedtype Snapshot
