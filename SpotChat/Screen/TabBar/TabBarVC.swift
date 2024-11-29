@@ -29,7 +29,7 @@ final class TabBarVC: UITabBarController {
                             postVM: PostVM(),
                             bindManager: PostBindingManager(),
                             imagePickerManager: PostImagePickerManager(),
-                            dataSourceProvider: PostDataSourceProvider(collectionView: postView.collectionView))
+                            dataSourceProvider: PostDataSourceProvider(collectionView: postView.collectionView, cellSize: CGSize(width: 80, height: 80)))
         let settingVC = SettingVC()
         
         chatVC.tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: "message"), selectedImage: UIImage(systemName: "message.fill"))

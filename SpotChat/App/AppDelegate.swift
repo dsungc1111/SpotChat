@@ -9,8 +9,7 @@ import UIKit
 import AuthenticationServices
 import KakaoSDKCommon
 import KakaoSDKAuth
-import IQKeyboardManagerSwift
-import KakaoMapsSDK
+//import KakaoMapsSDK
 
 
 @main
@@ -27,14 +26,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         let nativeAppKey = Bundle.main.infoDictionary?["KAKAO_NATIVE_APP_KEY"] ?? APIKey.kakaoKEY
-        
-        IQKeyboardManager.shared.enable = true
-        IQKeyboardManager.shared.enableAutoToolbar = false
-        IQKeyboardManager.shared.resignOnTouchOutside = true
-        
+       
         print("네이티브 앱키", nativeAppKey)
         KakaoSDK.initSDK(appKey: nativeAppKey as! String)
-        SDKInitializer.InitSDK(appKey: nativeAppKey as! String)
+//        SDKInitializer.InitSDK(appKey: nativeAppKey as! String)
         
         return true
     }

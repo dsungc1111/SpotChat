@@ -15,9 +15,11 @@ protocol PostDataSourceProviderProtocol {
     func configureDataSource()
     func applyInitialSnapshot()
     func updateDataSource(with images: [UIImage])
+    func deleteImage(at index: Int)
 }
 
 class PostDataSourceProvider: PostDataSourceProviderProtocol {
+    
     
     typealias Snapshot = NSDiffableDataSourceSnapshot<Section, UIImage>
     
@@ -26,26 +28,25 @@ class PostDataSourceProvider: PostDataSourceProviderProtocol {
     }
     
     private let collectionView: UICollectionView
+    private let btnSize: CGSize
     private var dataSource: UICollectionViewDiffableDataSource<Section, UIImage>!
+    var imageList: [UIImage] = []
     
-    init(collectionView: UICollectionView) {
+    init(collectionView: UICollectionView, cellSize: CGSize) {
         self.collectionView = collectionView
+        self.btnSize = cellSize
         configureDataSource()
     }
     
     func configureDataSource() {
-        dataSource = UICollectionViewDiffableDataSource<Section, UIImage>(collectionView: collectionView) { collectionView, indexPath, image in
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath)
-            let imageView = UIImageView(image: image)
-            imageView.contentMode = .scaleAspectFill
-            imageView.clipsToBounds = true
-            imageView.layer.cornerRadius = 10
-            cell.contentView.addSubview(imageView)
-            imageView.snp.makeConstraints { $0.edges.equalToSuperview() }
+        dataSource = UICollectionViewDiffableDataSource<Section, UIImage>(collectionView: collectionView) { [weak self] collectionView, indexPath, image in
+            guard let self else { return UICollectionViewCell() }
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageCollectionViewCell.identifier, for: indexPath) as? ImageCollectionViewCell else { return UICollectionViewCell() }
+            cell.configureCell(image: image, btnSize: btnSize)
+            
             return cell
         }
         
-        // 초기 스냅샷 설정
         applyInitialSnapshot()
     }
     
@@ -59,6 +60,13 @@ class PostDataSourceProvider: PostDataSourceProviderProtocol {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
         snapshot.appendItems(images)
+        imageList = images
         dataSource.apply(snapshot, animatingDifferences: true)
+    }
+    
+    func deleteImage(at index: Int) {
+        
+        imageList.remove(at: index)
+        updateDataSource(with: imageList)
     }
 }

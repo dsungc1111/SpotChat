@@ -8,18 +8,19 @@
 import UIKit
 import Combine
 import CombineCocoa
-import IQKeyboardManagerSwift
 
 struct Message {
     let content: String
     let isSentByUser: Bool
 }
 
-final class ChatRoomVC: BaseVC {
+final class ChatRoomVC: BaseVC, UITableViewDelegate {
     
     private var chatRoomView = ChatRoomView()
     private var cancellables = Set<AnyCancellable>()
-
+    private var imagePicker = PostImagePickerManager()
+    private lazy var dataSourceProvider = PostDataSourceProvider(collectionView: chatRoomView.imageContainer, cellSize: CGSize(width: 40, height: 40))
+    
     private var messages: [Message] = [] {
         didSet {
             DispatchQueue.main.async { [weak self] in
@@ -30,47 +31,38 @@ final class ChatRoomVC: BaseVC {
         }
     }
     private var dataSource: ChatRoomDataSource!
-
+    
     var list: [OpenChatModel] = []
     
     
     private lazy var chatRoomVM = ChatRoomVM(socketManager: SocketNetworkManager(roomID: list.first?.roomID ?? ""))
-
+    
     override func loadView() {
         view = chatRoomView
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        IQKeyboardManager.shared.enable = false
         setupKeyboardObservers()
     }
-
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        IQKeyboardManager.shared.enable = true
         NotificationCenter.default.removeObserver(self)
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureTableView()
     }
-
+    
     override func bind() {
-        chatRoomView.backBtn.tapPublisher
-            .sink { [weak self] _ in
-                self?.dismiss(animated: true)
-            }
-            .store(in: &cancellables)
-
-        chatRoomView.titleLabel.text = "채팅방"
-
+        
         let input = chatRoomVM.input
         let output = chatRoomVM.transform(input: input)
-
+        
         input.trigger.send(list.first?.roomID ?? "")
-
+        
         output.chatList
             .sink { [weak self] chatList in
                 guard let self else { return }
@@ -78,6 +70,7 @@ final class ChatRoomVC: BaseVC {
                     let newMessages = chatList.map {
                         Message(content: $0.content, isSentByUser: $0.sender.userID == UserDefaultsManager.userId)
                     }
+                    print("✅✅✅✅✅✅✅✅✅✅✅✅저기야??????????????")
                     self.messages.append(contentsOf: newMessages)
                 }
             }
@@ -86,13 +79,11 @@ final class ChatRoomVC: BaseVC {
         output.socketChatList
             .sink { [weak self] chatList in
                 guard let self else { return }
-                
                 let newMessages = Message(content: chatList.content, isSentByUser: chatList.sender.userID == UserDefaultsManager.userId)
                 
                 messages.append(newMessages)
             }
             .store(in: &cancellables)
-        
         
         
         chatRoomView.sendButton.tapPublisher
@@ -106,20 +97,48 @@ final class ChatRoomVC: BaseVC {
                                               createdAt: list.first?.createdAt ?? "",
                                               files: [],
                                               sender: list.first?.lastChat?.sender ?? Sender(userID: "", nick: "", profileImage: "")
-                                              )
+                )
                 input.sendMessage.send(sendModel)
+                chatRoomView.messageTextView.text = ""
+                chatRoomView.sendButton.setTitleColor(.lightGray, for: .normal)
+                chatRoomView.sendButton.isEnabled = false
             }
             .store(in: &cancellables)
-    }
+        
+        chatRoomView.backBtn.tapPublisher
+            .sink { [weak self] _ in
+                self?.dismiss(animated: true)
+            }
+            .store(in: &cancellables)
+        
+        chatRoomView.imageAddBtn.tapPublisher
+            .sink { [weak self] _ in
+                guard let self else { return }
+                imagePicker.openGallery(in: self)
+            }
+            .store(in: &cancellables)
+        
+        chatRoomView.titleLabel.text = "채팅방"
+        
+        
+        imagePicker.finishImagePick = { [weak self] images in
+            guard let self else { return }
+            dataSourceProvider.updateDataSource(with: images)
+            let hasImages = !images.isEmpty
+            self.chatRoomView.updateMessageInputContainer(forTextView: self.chatRoomView.messageTextView, hasImages: hasImages)
+        }
 
+    }
+    
     private func configureTableView() {
         dataSource = ChatRoomDataSource(messages: messages)
         chatRoomView.messageTextView.delegate = self
         chatRoomView.chatTableView.delegate = self
         chatRoomView.chatTableView.dataSource = dataSource
+        chatRoomView.imageContainer.delegate = self
     }
-
-
+    
+    // 메시지가 있을 때만
     private func scrollToBottom() {
         guard !messages.isEmpty else { return }
         let lastRowIndex = max(messages.count - 1, 0)
@@ -156,7 +175,7 @@ extension ChatRoomVC {
         }
         scrollToBottom()
     }
-
+    
     @objc private func keyboardWillHide(notification: Notification) {
         
         chatRoomView.messageInputContainer.snp.updateConstraints { make in
@@ -169,18 +188,26 @@ extension ChatRoomVC {
     }
 }
 
-//// MARK: - 테이블뷰
-extension ChatRoomVC: UITableViewDelegate {}
-
 // MARK: - UITextView
 extension ChatRoomVC: UITextViewDelegate {
     
     func textViewDidBeginEditing(_ textView: UITextView) {
-        
-        if textView.text == "메시지를 입력" && textView.textColor == .lightGray {
+        if textView.text == "메시지 입력" && textView.textColor == .lightGray {
             textView.text = ""
             textView.textColor = .white
         }
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        if textView.text != "메시지 입력" && !textView.text.isEmpty {
+            chatRoomView.sendButton.setTitleColor(.systemBlue, for: .normal)
+            chatRoomView.sendButton.isEnabled = true
+        } else {
+            chatRoomView.sendButton.setTitleColor(.lightGray, for: .normal)
+            chatRoomView.sendButton.isEnabled = false
+        }
+        let hasImages = !dataSourceProvider.imageList.isEmpty
+        chatRoomView.updateMessageInputContainer(forTextView: textView, hasImages: hasImages)
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
@@ -188,5 +215,15 @@ extension ChatRoomVC: UITextViewDelegate {
             textView.text = "메시지를 입력"
             textView.textColor = .lightGray
         }
+    }
+}
+
+
+
+extension ChatRoomVC: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        dataSourceProvider.deleteImage(at: indexPath.row)
+        let hasImages = !dataSourceProvider.imageList.isEmpty
+        chatRoomView.updateMessageInputContainer(forTextView: chatRoomView.messageTextView, hasImages: hasImages)
     }
 }

@@ -36,6 +36,7 @@ enum Router {
     case getChattingList
     case sendChat(String, SendChatQuery)
     case getChatContent(String, String?)
+    case sendFiles(String, PostImageQuery)
 }
 
 
@@ -46,7 +47,7 @@ extension Router: TargetType {
     
     var method: String {
         switch self {
-        case .emailValidation, .signin, .appleLogin, .kakaoLogin, .login, .newPost, .newPostImage, .openChattingRoom, .sendChat:
+        case .emailValidation, .signin, .appleLogin, .kakaoLogin, .login, .newPost, .newPostImage, .openChattingRoom, .sendChat, .sendFiles:
             return "POST"
         case .refreshToken, .geolocationBasedSearch, .myProfile, .findUserPost, .searchUser, .getChattingList, .getChatContent:
             return "GET"
@@ -89,7 +90,8 @@ extension Router: TargetType {
             return "chats"
         case .sendChat(let query, _), .getChatContent(let query, _):
             return "chats/\(query)"
-     
+        case .sendFiles(let query, _):
+            return "chats/\(query)/files"
         }
     }
     
@@ -109,7 +111,7 @@ extension Router: TargetType {
                 APIKey.HTTPHeaderName.productID.rawValue : APIKey.HTTPHeaderName.productIDContent.rawValue
             ]
             // 키, 컨텐츠타입 - 제이슨, 프로덕트아이디, 액세[스토큰
-        case .newPost, .openChattingRoom, .getChattingList, .sendChat, .getChatContent:
+        case .newPost, .openChattingRoom, .getChattingList, .sendChat, .getChatContent, .sendFiles:
             return [
                 APIKey.HTTPHeaderName.sesacKey.rawValue : APIKey.developerKey,
                 APIKey.HTTPHeaderName.contentType.rawValue : APIKey.HTTPHeaderName.json.rawValue,
@@ -194,7 +196,6 @@ extension Router: TargetType {
                 URLQueryItem(name: "cursor_date", value: cursor)
             ]
             
-            
             return param
             
         default:
@@ -217,7 +218,7 @@ extension Router: TargetType {
             return try? encoder.encode(query)
         case .newPost(query: let query):
             return try? encoder.encode(query)
-        case .newPostImage(let postImage):
+        case .newPostImage(let postImage), .sendFiles(_, let postImage):
             return encodeMultipartData(postImage)
         case .editProfile(let query):
             return editUserProfile(query)
@@ -240,6 +241,8 @@ extension Router: TargetType {
             return postImage.boundary
         case .editProfile(let editUser):
             return editUser.boundary
+        case .sendFiles(_, let postImage):
+            return postImage.boundary
             
         default: return nil
         }
@@ -277,7 +280,6 @@ extension Router: TargetType {
         
         return body
     }
-    
     private func editUserProfile(_ editProfile: EditUserQuery) -> Data {
         var body = Data()
         
@@ -286,7 +288,7 @@ extension Router: TargetType {
         body.append("Content-Disposition: form-data; name=\"nick\"\r\n\r\n".data(using: .utf8)!)
         body.append("\(editProfile.nick)\r\n".data(using: .utf8)!)
         
-        // `info1`
+        // `info1` - bio
         body.append("--\(editProfile.boundary)\r\n".data(using: .utf8)!)
         body.append("Content-Disposition: form-data; name=\"info1\"\r\n\r\n".data(using: .utf8)!)
         body.append("\(editProfile.info1)\r\n".data(using: .utf8)!)

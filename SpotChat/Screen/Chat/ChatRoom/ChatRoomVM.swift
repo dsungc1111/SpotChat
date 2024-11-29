@@ -62,7 +62,6 @@ final class ChatRoomVM: BaseVMProtocol {
                     do {
                         let result = try await NetworkManager2.shared.performRequest(router: .sendChat(message.roomID, sendChatModel), responseType: LastChat.self)
                         self.socketManager.sendMessage(message)
-                        chatList.send([result])
                         print("⚫️⚫️⚫️⚫️⚫️⚫️ 메시지 전송 성공: \(result)")
                     } catch let error {
                         print("🔴🔴🔴🔴🔴🔴 메시지 전송 실패: \(error)")
@@ -80,7 +79,5 @@ final class ChatRoomVM: BaseVMProtocol {
         
         
         return Output(chatList: chatList, socketChatList: socketChatList)
-        
     }
-    
 }

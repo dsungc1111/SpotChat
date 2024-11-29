@@ -42,18 +42,7 @@ final class PostView: BaseView {
     }()
     
     
-    let collectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
-        layout.minimumLineSpacing = 8
-        layout.itemSize = CGSize(width: 80, height: 80)
-        
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.backgroundColor = .clear
-        collectionView.showsHorizontalScrollIndicator = false
-        
-        return collectionView
-    }()
+    let collectionView = ImageContainerCollectionView(itemSize: CGSize(width: 80, height: 80))
     
     let titleTextField: UITextField = {
         let textField = UITextField()
@@ -124,7 +113,7 @@ final class PostView: BaseView {
     override func configureHierarchy() {
         addSubview(scrollView)
         addSubview(createPostButton)
-        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "ImageCell")
+        collectionView.register(ImageCollectionViewCell.self, forCellWithReuseIdentifier: ImageCollectionViewCell.identifier)
     }
     
     override func configureLayout() {

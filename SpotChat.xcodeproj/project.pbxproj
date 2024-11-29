@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8B2A753F2CD89F9C000C6162 /* BaseMapVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2A753E2CD89F9C000C6162 /* BaseMapVC.swift */; };
 		8B2A75422CD8BBAC000C6162 /* PostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2A75412CD8BBAC000C6162 /* PostView.swift */; };
 		8B2A75442CD8BBB2000C6162 /* PostVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2A75432CD8BBB2000C6162 /* PostVC.swift */; };
 		8B2A75462CD8D915000C6162 /* PostVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2A75452CD8D915000C6162 /* PostVM.swift */; };
@@ -18,7 +17,6 @@
 		8B2A75522CDA30B2000C6162 /* PostDataSourceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2A75512CDA30B2000C6162 /* PostDataSourceProvider.swift */; };
 		8B2A75542CDEF81F000C6162 /* UITextField+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2A75532CDEF81F000C6162 /* UITextField+.swift */; };
 		8B2A75562CDF0CAD000C6162 /* UIButton+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2A75552CDF0CAD000C6162 /* UIButton+.swift */; };
-		8B3437352CD75A12003B3104 /* KakaoMapsSDK-SPM in Frameworks */ = {isa = PBXBuildFile; productRef = 8B3437342CD75A12003B3104 /* KakaoMapsSDK-SPM */; };
 		8B3437382CD76CD3003B3104 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3437372CD76CD3003B3104 /* OpenGLES.framework */; };
 		8B34373A2CD76CDE003B3104 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3437392CD76CDE003B3104 /* SystemConfiguration.framework */; };
 		8B34373C2CD76CED003B3104 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B34373B2CD76CED003B3104 /* CoreLocation.framework */; };
@@ -80,6 +78,7 @@
 		8B7F3BB92CD3AF0D00B6D34C /* KakaoAuthVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7F3BB82CD3AF0D00B6D34C /* KakaoAuthVM.swift */; };
 		8B7F3BBD2CD45FA300B6D34C /* TabBarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7F3BBC2CD45FA300B6D34C /* TabBarVC.swift */; };
 		8B8266132CF8A242004E4C1A /* ChatRoomDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8266122CF8A242004E4C1A /* ChatRoomDataSource.swift */; };
+		8B923F912CF9817300C4A016 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B923F902CF9817300C4A016 /* ImageCollectionViewCell.swift */; };
 		8B9F773E2CE0D903009887D4 /* CombineCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 8B9F773D2CE0D903009887D4 /* CombineCocoa */; };
 		8B9F77432CE0DE37009887D4 /* PostBindManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9F77422CE0DE37009887D4 /* PostBindManager.swift */; };
 		8B9F77452CE0E70A009887D4 /* PostImagePickerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9F77442CE0E70A009887D4 /* PostImagePickerManager.swift */; };
@@ -96,6 +95,7 @@
 		8BDC9F972CD4CE0D00E94702 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDC9F962CD4CE0D00E94702 /* SignInView.swift */; };
 		8BEB7BB82CE7327E0079D068 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 8BEB7BB72CE7327E0079D068 /* Kingfisher */; };
 		8BEB7BBA2CE7378F0079D068 /* UserPostCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BEB7BB92CE7378F0079D068 /* UserPostCollectionViewCell.swift */; };
+		8BECD88C2CF95588007CECD8 /* ImageCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BECD88B2CF95588007CECD8 /* ImageCollectionView.swift */; };
 		8BF8D25F2CEE4A190046786F /* CollectionViewPaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF8D25E2CEE4A190046786F /* CollectionViewPaging.swift */; };
 		8BF8D2632CEF54780046786F /* EditUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF8D2622CEF54780046786F /* EditUserView.swift */; };
 		8BF8D2652CEF54A10046786F /* EditVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BF8D2642CEF54A10046786F /* EditVC.swift */; };
@@ -144,7 +144,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		8B2A753E2CD89F9C000C6162 /* BaseMapVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseMapVC.swift; sourceTree = "<group>"; };
 		8B2A75412CD8BBAC000C6162 /* PostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostView.swift; sourceTree = "<group>"; };
 		8B2A75432CD8BBB2000C6162 /* PostVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostVC.swift; sourceTree = "<group>"; };
 		8B2A75452CD8D915000C6162 /* PostVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostVM.swift; sourceTree = "<group>"; };
@@ -213,6 +212,7 @@
 		8B7F3BBA2CD3B8A800B6D34C /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		8B7F3BBC2CD45FA300B6D34C /* TabBarVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarVC.swift; sourceTree = "<group>"; };
 		8B8266122CF8A242004E4C1A /* ChatRoomDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomDataSource.swift; sourceTree = "<group>"; };
+		8B923F902CF9817300C4A016 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		8B9F77422CE0DE37009887D4 /* PostBindManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostBindManager.swift; sourceTree = "<group>"; };
 		8B9F77442CE0E70A009887D4 /* PostImagePickerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostImagePickerManager.swift; sourceTree = "<group>"; };
 		8BDC030F2CE5CCC200B118A0 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
@@ -226,6 +226,7 @@
 		8BDC9F942CD4CD8C00E94702 /* SignInVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInVC.swift; sourceTree = "<group>"; };
 		8BDC9F962CD4CE0D00E94702 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		8BEB7BB92CE7378F0079D068 /* UserPostCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPostCollectionViewCell.swift; sourceTree = "<group>"; };
+		8BECD88B2CF95588007CECD8 /* ImageCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionView.swift; sourceTree = "<group>"; };
 		8BF8D25E2CEE4A190046786F /* CollectionViewPaging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewPaging.swift; sourceTree = "<group>"; };
 		8BF8D2622CEF54780046786F /* EditUserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditUserView.swift; sourceTree = "<group>"; };
 		8BF8D2642CEF54A10046786F /* EditVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditVC.swift; sourceTree = "<group>"; };
@@ -259,7 +260,6 @@
 				8B7F3BB62CD3967900B6D34C /* KakaoSDKCommon in Frameworks */,
 				8B7F3B562CCE0DED00B6D34C /* SnapKit in Frameworks */,
 				8B7F3BB42CD3967900B6D34C /* KakaoSDKCertCore in Frameworks */,
-				8B3437352CD75A12003B3104 /* KakaoMapsSDK-SPM in Frameworks */,
 				8B7F3BAE2CD3967900B6D34C /* KakaoSDK in Frameworks */,
 				8B7F3BB02CD3967900B6D34C /* KakaoSDKAuth in Frameworks */,
 				8BEB7BB82CE7327E0079D068 /* Kingfisher in Frameworks */,
@@ -515,7 +515,6 @@
 				8B7F3B832CD0CD8A00B6D34C /* BaseVC.swift */,
 				8B7F3BA02CD336CF00B6D34C /* BaseVMProtocol.swift */,
 				8BDC9F912CD4771600E94702 /* BaseCollectionViewCell.swift */,
-				8B2A753E2CD89F9C000C6162 /* BaseMapVC.swift */,
 				8BF8D26F2CF07D940046786F /* BaseTableViewCell.swift */,
 			);
 			path = Base;
@@ -547,6 +546,8 @@
 			children = (
 				8B7F3B962CD0FF3900B6D34C /* CustomSignTextField.swift */,
 				8BF8D2732CF306AB0046786F /* CustomAnnotation.swift */,
+				8BECD88B2CF95588007CECD8 /* ImageCollectionView.swift */,
+				8B923F902CF9817300C4A016 /* ImageCollectionViewCell.swift */,
 			);
 			path = Custom;
 			sourceTree = "<group>";
@@ -685,7 +686,6 @@
 				8B7F3BB32CD3967900B6D34C /* KakaoSDKCertCore */,
 				8B7F3BB52CD3967900B6D34C /* KakaoSDKCommon */,
 				8BDC9F8D2CD4719700E94702 /* IQKeyboardManagerSwift */,
-				8B3437342CD75A12003B3104 /* KakaoMapsSDK-SPM */,
 				8B9F773D2CE0D903009887D4 /* CombineCocoa */,
 				8BEB7BB72CE7327E0079D068 /* Kingfisher */,
 				8B5F31632CF45ACB0059BAC3 /* SocketIO */,
@@ -767,7 +767,6 @@
 				8B7F3B542CCE0DED00B6D34C /* XCRemoteSwiftPackageReference "SnapKit" */,
 				8B7F3BAC2CD3967900B6D34C /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
 				8BDC9F8C2CD4719700E94702 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */,
-				8B3437332CD75A12003B3104 /* XCRemoteSwiftPackageReference "KakaoMapsSDK-SPM" */,
 				8B9F773C2CE0D903009887D4 /* XCRemoteSwiftPackageReference "CombineCocoa" */,
 				8BEB7BB62CE7327E0079D068 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				8B5F31622CF45ACB0059BAC3 /* XCRemoteSwiftPackageReference "socket.io-client-swift" */,
@@ -823,7 +822,6 @@
 				8B2A75562CDF0CAD000C6162 /* UIButton+.swift in Sources */,
 				8B2A75492CD9FCDC000C6162 /* UserQuery.swift in Sources */,
 				8B7424D32CCA5A9600E198C3 /* AppDelegate.swift in Sources */,
-				8B2A753F2CD89F9C000C6162 /* BaseMapVC.swift in Sources */,
 				8B2A75522CDA30B2000C6162 /* PostDataSourceProvider.swift in Sources */,
 				8BF8D2652CEF54A10046786F /* EditVC.swift in Sources */,
 				8BDC9F972CD4CE0D00E94702 /* SignInView.swift in Sources */,
@@ -879,6 +877,7 @@
 				8B5F31662CF45CD00059BAC3 /* ChatListView.swift in Sources */,
 				8B5F31682CF46B1D0059BAC3 /* ChatListVM.swift in Sources */,
 				8BF8D2742CF306AB0046786F /* CustomAnnotation.swift in Sources */,
+				8B923F912CF9817300C4A016 /* ImageCollectionViewCell.swift in Sources */,
 				8B7F3B642CCF846A00B6D34C /* APIKey.swift in Sources */,
 				8B7F3B892CD0CE6E00B6D34C /* UIColor+.swift in Sources */,
 				8B7F3BA32CD37DE900B6D34C /* AppleLogin.swift in Sources */,
@@ -886,6 +885,7 @@
 				8B7F3BB92CD3AF0D00B6D34C /* KakaoAuthVM.swift in Sources */,
 				8BDC03102CE5CCC200B118A0 /* SettingView.swift in Sources */,
 				8B2A75422CD8BBAC000C6162 /* PostView.swift in Sources */,
+				8BECD88C2CF95588007CECD8 /* ImageCollectionView.swift in Sources */,
 				8BDC03122CE5D28000B118A0 /* SettingVM.swift in Sources */,
 				8B7F3B9A2CD1130600B6D34C /* MapVC.swift in Sources */,
 				8BF8D2722CF2E9BA0046786F /* MapVM.swift in Sources */,
@@ -1245,14 +1245,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		8B3437332CD75A12003B3104 /* XCRemoteSwiftPackageReference "KakaoMapsSDK-SPM" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/kakao-mapsSDK/KakaoMapsSDK-SPM.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.12.0;
-			};
-		};
 		8B5F31622CF45ACB0059BAC3 /* XCRemoteSwiftPackageReference "socket.io-client-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/socketio/socket.io-client-swift.git";
@@ -1312,11 +1304,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		8B3437342CD75A12003B3104 /* KakaoMapsSDK-SPM */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 8B3437332CD75A12003B3104 /* XCRemoteSwiftPackageReference "KakaoMapsSDK-SPM" */;
-			productName = "KakaoMapsSDK-SPM";
-		};
 		8B5F31632CF45ACB0059BAC3 /* SocketIO */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 8B5F31622CF45ACB0059BAC3 /* XCRemoteSwiftPackageReference "socket.io-client-swift" */;

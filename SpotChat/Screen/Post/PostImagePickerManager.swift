@@ -39,10 +39,7 @@ final class PostImagePickerManager: PHPickerViewControllerDelegate, PostImagePic
         results.forEach { result in
             dispatchGroup.enter()
             result.itemProvider.loadObject(ofClass: UIImage.self) { object, error in
-                if let image = object as? UIImage {
-                        selectedImages.append(image)
-//                        self?.dataSourceProvider.updateDataSource(with: self?.selectedImages ?? [])
-                }
+                if let image = object as? UIImage { selectedImages.append(image) }
                 dispatchGroup.leave()
             }
         }
