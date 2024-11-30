@@ -28,7 +28,8 @@ struct OpenChatModel: Decodable, Hashable {
 
 // MARK: - LastChat
 struct LastChat: Decodable, Hashable {
-    let chatID, roomID, content: String
+    let chatID, roomID: String
+    let content: String?
     let sender: Sender
     let files: [String]
 

@@ -11,9 +11,9 @@ import Foundation
 struct SocketDMModel: Codable {
     let chatID: String
     let roomID: String
-    let content: String
+    let content: String?
     let createdAt: String
-    let files: [String]
+    var files: [String]
     let sender: Sender
     
     enum CodingKeys: String, CodingKey {

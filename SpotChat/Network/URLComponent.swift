@@ -91,7 +91,7 @@ extension Router: TargetType {
         case .sendChat(let query, _), .getChatContent(let query, _):
             return "chats/\(query)"
         case .sendFiles(let query, _):
-            return "chats/\(query)/files"
+            return "chats/\(query)"
         }
     }
     
@@ -111,7 +111,7 @@ extension Router: TargetType {
                 APIKey.HTTPHeaderName.productID.rawValue : APIKey.HTTPHeaderName.productIDContent.rawValue
             ]
             // 키, 컨텐츠타입 - 제이슨, 프로덕트아이디, 액세[스토큰
-        case .newPost, .openChattingRoom, .getChattingList, .sendChat, .getChatContent, .sendFiles:
+        case .newPost, .openChattingRoom, .getChattingList, .sendChat, .getChatContent:
             return [
                 APIKey.HTTPHeaderName.sesacKey.rawValue : APIKey.developerKey,
                 APIKey.HTTPHeaderName.contentType.rawValue : APIKey.HTTPHeaderName.json.rawValue,
@@ -120,7 +120,7 @@ extension Router: TargetType {
                 
             ]
             // 키, 컨텐츠타입 - 멀티파트, 프로덕트아이디, 액세스토큰
-        case .newPostImage, .myProfile, .findUserPost, .editProfile:
+        case .newPostImage, .myProfile, .findUserPost, .editProfile, .sendFiles:
             return [
                 APIKey.HTTPHeaderName.sesacKey.rawValue : APIKey.developerKey,
                 APIKey.HTTPHeaderName.contentType.rawValue : APIKey.HTTPHeaderName.mutipart.rawValue,
@@ -268,18 +268,23 @@ extension Router: TargetType {
     
     // Multipart Data Encoding
     private func encodeMultipartData(_ postImage: PostImageQuery) -> Data {
+        guard let imageData = postImage.imageData else {
+            print("🔴 No image data provided")
+            return Data()
+        }
+        print("이미지 있아ㅓ요")
         var body = Data()
-        
-        
         body.append("--\(postImage.boundary)\r\n".data(using: .utf8)!)
-        body.append("Content-Disposition: form-data; name=\"files\"; filename=\"image.jpeg\"\r\n".data(using: .utf8)!)
+        body.append("Content-Disposition: form-data; name=\"files\"; filename=\"\(UUID().uuidString).jpeg\"\r\n".data(using: .utf8)!)
         body.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
-        body.append(postImage.imageData ?? body)
+        body.append(imageData)
         body.append("\r\n".data(using: .utf8)!)
         body.append("--\(postImage.boundary)--\r\n".data(using: .utf8)!)
         
         return body
     }
+    
+    
     private func editUserProfile(_ editProfile: EditUserQuery) -> Data {
         var body = Data()
         

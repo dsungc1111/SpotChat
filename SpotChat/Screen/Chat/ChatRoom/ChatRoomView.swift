@@ -31,7 +31,7 @@ final class ChatRoomView: BaseView {
         let tableView = UITableView()
         tableView.separatorStyle = .none
         tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = 80
+        tableView.estimatedRowHeight = 80 // 높이 추정값
         tableView.backgroundColor = .clear
         return tableView
     }()
@@ -75,6 +75,9 @@ final class ChatRoomView: BaseView {
     private var messageInputContainerHeightConstraint: Constraint?
 
     override func configureHierarchy() {
+        
+        
+        
         chatTableView.register(ChatMessageCell.self, forCellReuseIdentifier: ChatMessageCell.identifier)
         imageContainer.register(ImageCollectionViewCell.self, forCellWithReuseIdentifier: ImageCollectionViewCell.identifier)
         addSubview(headerContainer)
@@ -166,5 +169,6 @@ final class ChatRoomView: BaseView {
             self.layoutIfNeeded()
         }
     }
+    
     
 }

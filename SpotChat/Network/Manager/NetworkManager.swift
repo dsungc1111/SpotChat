@@ -96,26 +96,22 @@ final class NetworkManager2 {
             throw URLError(.badURL)
         }
         
-        print("요청 라우터: \(request)")
-        
         let (data, response) = try await URLSession.shared.data(for: request)
         
         guard let httpResponse = response as? HTTPURLResponse else {
             throw URLError(.badServerResponse)
         }
         
-        print("🔫🔫🔫🔫🔫응답 상태 코드: \(httpResponse.statusCode)🔫🔫🔫🔫🔫")
+        print("🔫🔫🔫🔫🔫응답 상태 코드: \(httpResponse.statusCode)🔫🔫🔫🔫🔫\(request)🔫🔫🔫🔫🔫🔫🔫🔫🔫🔫🔫🔫")
         
         switch httpResponse.statusCode {
         case 200..<300:
-            print("성공인데유")
-            print("🍿🍿🍿🍿🍿액세스 토큰", UserDefaultsManager.accessToken)
             do {
                 let decodedResponse = try JSONDecoder().decode(responseType, from: data)
-                print("성공")
                 return decodedResponse
             } catch {
-                print("실패", error)
+                print("👻👻👻👻👻👻실패", error)
+                print("👻👻👻👻👻👻", request)
                 throw error
             }
         
@@ -172,7 +168,6 @@ final class NetworkManager2 {
             return nil
         }
         
-        
         let header: [String : String] = [
             APIKey.HTTPHeaderName.authorization.rawValue: UserDefaultsManager.accessToken,
             APIKey.HTTPHeaderName.sesacKey.rawValue: APIKey.developerKey,
@@ -180,11 +175,11 @@ final class NetworkManager2 {
         ]
         
         let modifier = AnyModifier { request in
-            var request = request
+            var request1 = request
             header.forEach { (key, value) in
-                request.setValue(value, forHTTPHeaderField: key)
+                request1.setValue(value, forHTTPHeaderField: key)
             }
-            return request
+            return request1
         }
         
         

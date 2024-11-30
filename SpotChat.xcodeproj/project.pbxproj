@@ -357,8 +357,8 @@
 			children = (
 				8B5F316D2CF58E900059BAC3 /* ChatRoomView.swift */,
 				8B5F316B2CF58C530059BAC3 /* ChatRoomVC.swift */,
-				8B5F31762CF5F1830059BAC3 /* ChatRoomVM.swift */,
 				8B5F31712CF5A6300059BAC3 /* ChatMessageCell.swift */,
+				8B5F31762CF5F1830059BAC3 /* ChatRoomVM.swift */,
 				8B8266122CF8A242004E4C1A /* ChatRoomDataSource.swift */,
 			);
 			path = ChatRoom;

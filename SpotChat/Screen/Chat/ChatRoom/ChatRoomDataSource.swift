@@ -16,24 +16,17 @@ final class ChatRoomDataSource: NSObject, UITableViewDataSource {
         self.messages = messages
     }
     
-    
     func updateMessage(message: [Message], tableView: UITableView) {
         self.messages = message
         tableView.reloadData()
-        
     }
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return messages.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: ChatMessageCell.identifier, for: indexPath) as? ChatMessageCell else {
-            return UITableViewCell()
-        }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: ChatMessageCell.identifier, for: indexPath) as? ChatMessageCell else { return UITableViewCell() }
         cell.configureCell(message: messages[indexPath.row])
         return cell
     }
-    
-    
 }

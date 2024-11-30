@@ -8,56 +8,89 @@
 import UIKit
 import SnapKit
 
-final class ChatMessageCell: UITableViewCell {
+final class ChatMessageCell: BaseTableViewCell {
     
-    private let messageBubble = UIView()
-    private let messageLabel = UILabel()
+    private let messageBubble = {
+        let view = UIView()
+        view.layer.cornerRadius = 12
+        view.clipsToBounds = true
+        return view
+    }()
+    
+    private let messageLabel = {
+        let label = UILabel()
+        label.numberOfLines = 0
+        label.font = .systemFont(ofSize: 12)
+        return label
+    }()
     
     private var leadingConstraint: Constraint?
     private var trailingConstraint: Constraint?
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        configureUI()
-        configureLayout()
-    }
+    private let uploadedImage = {
+        let view = UIImageView()
+        view.backgroundColor = .systemRed
+        view.image = UIImage(systemName: "person")
+        view.clipsToBounds = true
+        view.layer.cornerRadius = 6
+        view.contentMode = .scaleAspectFill
+        view.isHidden = true
+        return view
+    }()
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    private var uploadedImageHeightConstraint: Constraint?
     
-    private func configureUI() {
-        
-        
+    override func configureHierarchy() {
         selectionStyle = .none
         backgroundColor = .clear
         
-        messageBubble.layer.cornerRadius = 15
-        messageBubble.clipsToBounds = true
-        
-        messageLabel.numberOfLines = 0
-        messageLabel.font = .systemFont(ofSize: 16)
-        messageBubble.addSubview(messageLabel)
-        
         contentView.addSubview(messageBubble)
+        messageBubble.addSubview(messageLabel)
+        messageBubble.addSubview(uploadedImage)
     }
     
-    private func configureLayout() {
+    override func configureLayout() {
         messageBubble.snp.makeConstraints { make in
-            make.top.bottom.equalToSuperview().inset(8)
+            make.top.equalToSuperview().inset(4)
             make.width.lessThanOrEqualToSuperview().multipliedBy(0.75)
-            
-            leadingConstraint = make.leading.equalToSuperview().inset(16).constraint
-            trailingConstraint = make.trailing.equalToSuperview().inset(16).constraint
+            make.bottom.equalToSuperview().inset(4).priority(.low)
+            leadingConstraint = make.leading.equalToSuperview().inset(10).constraint
+            trailingConstraint = make.trailing.equalToSuperview().inset(10).constraint
         }
         
         messageLabel.snp.makeConstraints { make in
-            make.edges.equalToSuperview().inset(10)
+            make.top.horizontalEdges.equalToSuperview().inset(8)
+        }
+        
+        uploadedImage.snp.makeConstraints { make in
+            make.top.equalTo(messageLabel.snp.bottom).offset(5).priority(.required)
+            make.leading.trailing.equalToSuperview().inset(8)
+            uploadedImageHeightConstraint = make.height.equalTo(60).priority(.required).constraint
+            make.bottom.equalToSuperview().inset(8).priority(.low)
         }
     }
-    
     func configureCell(message: Message) {
-        messageLabel.text = message.content
+        if let content = message.lastChat.first?.content, !content.isEmpty {
+            messageLabel.text = content
+            messageLabel.isHidden = false
+        } else {
+            messageLabel.text = nil
+            messageLabel.isHidden = true
+        }
+        
+        if message.lastChat.first?.files.isEmpty ?? true {
+            uploadedImage.isHidden = true
+            uploadedImageHeightConstraint?.update(offset: 0)
+        } else {
+            uploadedImage.isHidden = false
+            uploadedImageHeightConstraint?.update(offset: 60)
+        }
+        
+        if messageLabel.isHidden && uploadedImage.isHidden {
+            messageBubble.isHidden = true
+        } else {
+            messageBubble.isHidden = false
+        }
         
         if message.isSentByUser {
             messageBubble.backgroundColor = UIColor.systemBlue
@@ -71,6 +104,7 @@ final class ChatMessageCell: UITableViewCell {
             leadingConstraint?.activate()
         }
         
+        contentView.setNeedsLayout()
         contentView.layoutIfNeeded()
     }
 }

@@ -10,7 +10,7 @@ import Combine
 import CombineCocoa
 
 struct Message {
-    let content: String
+    let lastChat: [LastChat]
     let isSentByUser: Bool
 }
 
@@ -21,15 +21,19 @@ final class ChatRoomVC: BaseVC, UITableViewDelegate {
     private var imagePicker = PostImagePickerManager()
     private lazy var dataSourceProvider = PostDataSourceProvider(collectionView: chatRoomView.imageContainer, cellSize: CGSize(width: 40, height: 40))
     
+    private var uploadImageList: [UIImage] = []
+    
     private var messages: [Message] = [] {
         didSet {
             DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
+                guard let self else { return }
+                print(messages.count)
                 dataSource.updateMessage(message: messages, tableView: chatRoomView.chatTableView)
                 scrollToBottom()
             }
         }
     }
+    
     private var dataSource: ChatRoomDataSource!
     
     var list: [OpenChatModel] = []
@@ -66,20 +70,18 @@ final class ChatRoomVC: BaseVC, UITableViewDelegate {
         output.chatList
             .sink { [weak self] chatList in
                 guard let self else { return }
-                DispatchQueue.main.async {
-                    let newMessages = chatList.map {
-                        Message(content: $0.content, isSentByUser: $0.sender.userID == UserDefaultsManager.userId)
-                    }
-                    print("✅✅✅✅✅✅✅✅✅✅✅✅저기야??????????????")
-                    self.messages.append(contentsOf: newMessages)
+                let newMessages = chatList.map {
+                    Message(lastChat: [$0], isSentByUser: $0.sender.userID == UserDefaultsManager.userId)
                 }
+                messages.append(contentsOf: newMessages)
             }
             .store(in: &cancellables)
         
         output.socketChatList
             .sink { [weak self] chatList in
                 guard let self else { return }
-                let newMessages = Message(content: chatList.content, isSentByUser: chatList.sender.userID == UserDefaultsManager.userId)
+                let socketChat = LastChat(chatID: chatList.chatID, roomID: chatList.roomID, content: chatList.content, sender: chatList.sender, files: chatList.files)
+                let newMessages = Message(lastChat: [socketChat], isSentByUser: chatList.sender.userID == UserDefaultsManager.userId)
                 
                 messages.append(newMessages)
             }
@@ -91,6 +93,7 @@ final class ChatRoomVC: BaseVC, UITableViewDelegate {
                 guard let self else { return }
                 guard let text = chatRoomView.messageTextView.text else { return }
                 
+                
                 let sendModel = SocketDMModel(chatID: list.first?.lastChat?.chatID ?? "",
                                               roomID: list.first?.roomID ?? "",
                                               content: text,
@@ -99,11 +102,31 @@ final class ChatRoomVC: BaseVC, UITableViewDelegate {
                                               sender: list.first?.lastChat?.sender ?? Sender(userID: "", nick: "", profileImage: "")
                 )
                 input.sendMessage.send(sendModel)
+                uploadImageList = []
+                dataSourceProvider.updateDataSource(with: uploadImageList)
+                
                 chatRoomView.messageTextView.text = ""
                 chatRoomView.sendButton.setTitleColor(.lightGray, for: .normal)
                 chatRoomView.sendButton.isEnabled = false
             }
             .store(in: &cancellables)
+        
+        imagePicker.finishImagePick = { [weak self] images in
+            guard let self else { return }
+            dataSourceProvider.updateDataSource(with: images)
+            uploadImageList = images
+            let hasImages = !images.isEmpty
+            chatRoomView.updateMessageInputContainer(forTextView: self.chatRoomView.messageTextView, hasImages: hasImages)
+            
+            let imageDataList = images.compactMap { $0.jpegData(compressionQuality: 0.8)}
+            input.imageDataList.send(imageDataList)
+            
+            if uploadImageList.count != 0 {
+                chatRoomView.sendButton.isEnabled = true
+                chatRoomView.sendButton.setTitleColor(.systemBlue, for: .normal)
+            }
+        }
+        
         
         chatRoomView.backBtn.tapPublisher
             .sink { [weak self] _ in
@@ -121,14 +144,9 @@ final class ChatRoomVC: BaseVC, UITableViewDelegate {
         chatRoomView.titleLabel.text = "채팅방"
         
         
-        imagePicker.finishImagePick = { [weak self] images in
-            guard let self else { return }
-            dataSourceProvider.updateDataSource(with: images)
-            let hasImages = !images.isEmpty
-            self.chatRoomView.updateMessageInputContainer(forTextView: self.chatRoomView.messageTextView, hasImages: hasImages)
-        }
 
     }
+
     
     private func configureTableView() {
         dataSource = ChatRoomDataSource(messages: messages)
