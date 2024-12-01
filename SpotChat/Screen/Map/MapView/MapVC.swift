@@ -326,18 +326,21 @@ extension MapVC: UICollectionViewDelegate, UICollectionViewDataSource {
                             
                             let result = try await NetworkManager2.shared.performRequest(router: .openChattingRoom(query: chatQuery), responseType: OpenChatModel.self)
                             print(result)
+                            vc.list = [result]
+                            vc.modalPresentationStyle = .fullScreen
+                            vc.modalTransitionStyle = .crossDissolve
+                            self.present(vc, animated: true)
+                            
+                            
                         } catch let error {
                             print("에잉", error)
                         }
                         
                     }
-//                    
-//                    
-//                    
-////                    vc.list = [currenChatList[indexPath.row]]
-//                    vc.modalPresentationStyle = .fullScreen
-//                    vc.modalTransitionStyle = .crossDissolve
-//                    present(vc, animated: true)
+                    
+                    
+                    
+                    
                     
                     
                 }

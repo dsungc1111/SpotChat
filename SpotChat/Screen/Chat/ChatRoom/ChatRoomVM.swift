@@ -54,7 +54,7 @@ final class ChatRoomVM: BaseVMProtocol {
         
         input.sendMessage
             .sink { [weak self] message in
-                guard let self else { return }
+                
                 print(input.imageDataList.value.count)
                 Task {
                     do {
