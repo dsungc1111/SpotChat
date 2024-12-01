@@ -313,6 +313,36 @@ extension MapVC: UICollectionViewDelegate, UICollectionViewDataSource {
                 }
             }
             
+            popupView.DMBtn.tapPublisher
+                .sink { [weak self] _ in
+                    guard let self else { return }
+                    
+                    let vc = ChatRoomVC()
+                    
+                    Task {
+                        
+                        do {
+                            let chatQuery = ChatQuery(opponent_id: popupView.DMBtn.associatedValue ?? "")
+                            
+                            let result = try await NetworkManager2.shared.performRequest(router: .openChattingRoom(query: chatQuery), responseType: OpenChatModel.self)
+                            print(result)
+                        } catch let error {
+                            print("에잉", error)
+                        }
+                        
+                    }
+//                    
+//                    
+//                    
+////                    vc.list = [currenChatList[indexPath.row]]
+//                    vc.modalPresentationStyle = .fullScreen
+//                    vc.modalTransitionStyle = .crossDissolve
+//                    present(vc, animated: true)
+                    
+                    
+                }
+                .store(in: &cancellables)
+            
             // 제스처 추가
             let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handleSwipe(_:)))
             popupView.addGestureRecognizer(panGesture)
@@ -356,6 +386,7 @@ extension MapVC {
                     popupView.alpha = 0
                 }) { _ in
                     popupView.removeFromSuperview()
+                    self.currentPopupView = nil
                 }
             } else {
                 // 스와이프 거리가 충분하지 않으면 원래 위치로 복귀

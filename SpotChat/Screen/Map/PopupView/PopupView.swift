@@ -39,7 +39,7 @@ final class PopupView: UIView {
         label.text = "바이오 자리"
         return label
     }()
-    private let DMBtn = {
+    let DMBtn = {
         let btn = UIButton()
         btn.setTitle("DM", for: .normal)
         btn.titleLabel?.font = .boldSystemFont(ofSize: 16)
@@ -119,8 +119,8 @@ final class PopupView: UIView {
     }
     
     func configure(profile: ProfileModel) {
-
-        
+       
+        DMBtn.associatedValue = profile.userID
         
         bioLabel.text = profile.info1 == "" ?  "Not bio yet." : profile.info1
         postCountBtn.setTitle("\(profile.posts.count)\nPosts", for: .normal)

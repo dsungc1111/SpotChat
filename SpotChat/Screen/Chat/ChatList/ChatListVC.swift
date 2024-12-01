@@ -40,13 +40,6 @@ final class ChatListVC: BaseVC {
     lazy var input = chatListVM.input
     lazy var output = chatListVM.transform(input: input)
     
-    
-    override func viewWillAppear(_ animated: Bool) {
-        input.trigger.send(())
-    }
-        
-    
-    
     override func loadView() {
         view = chatListView
     }
@@ -56,6 +49,9 @@ final class ChatListVC: BaseVC {
     }
     override func bind() {
         
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: { [weak self]  in
+            self?.input.trigger.send(())
+        })
         
         output.chattingList
             .receive(on: DispatchQueue.main)

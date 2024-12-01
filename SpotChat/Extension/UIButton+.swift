@@ -6,26 +6,17 @@
 //
 
 import UIKit
-import Combine
-//
-//extension UIControl {
-//    func controlEventPublisher(for event: UIControl.Event) -> AnyPublisher<Void, Never> {
-//        Publishers.ControlEvent(control: self, event: event)
-//            .map { _ in }
-//            .eraseToAnyPublisher()
-//    }
-//}
-//
-//extension UIButton {
-//    var tapPublisher: AnyPublisher<Void, Never> {
-//        controlEventPublisher(for: .touchUpInside)
-//    }
-//}
-//extension UISegmentedControl {
-//    /// A publisher emitting selected segment index changes for this segmented control.
-//    var selectedSegmentIndexPublisher: AnyPublisher<Int, Never> {
-//        Publishers.ControlProperty(control: self, events: .valueChanged, keyPath: \.selectedSegmentIndex)
-//                  .eraseToAnyPublisher()
-//    }
-//}
-//
+
+private var associatedKey: UInt8 = 0
+
+// 번튼에 연관값을 만들어 userid 전달
+extension UIButton {
+    var associatedValue: String? {
+        get {
+            return objc_getAssociatedObject(self, &associatedKey) as? String
+        }
+        set {
+            objc_setAssociatedObject(self, &associatedKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+    }
+}
