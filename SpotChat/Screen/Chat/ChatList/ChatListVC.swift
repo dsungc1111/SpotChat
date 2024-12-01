@@ -37,21 +37,25 @@ final class ChatListVC: BaseVC {
     }()
     
     
+    lazy var input = chatListVM.input
+    lazy var output = chatListVM.transform(input: input)
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
+        input.trigger.send(())
+    }
+        
+    
+    
     override func loadView() {
         view = chatListView
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
     }
-    
     override func bind() {
         
-        let input = chatListVM.input
-        let output = chatListVM.transform(input: input)
-        
-        input.trigger.send(())
         
         output.chattingList
             .receive(on: DispatchQueue.main)

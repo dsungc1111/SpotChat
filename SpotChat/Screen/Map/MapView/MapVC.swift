@@ -15,7 +15,7 @@ final class MapVC: BaseVC {
     
     private let mapView = MapView()
     private let mapVM = MapVM()
-    
+    private var currentPopupView: PopupView?
     
     private var cancellables = Set<AnyCancellable>()
     private let temp = CLLocationCoordinate2D(latitude: 37.79181196691732, longitude: 128.9071798324585)
@@ -72,7 +72,7 @@ final class MapVC: BaseVC {
         mapView.searchBar.textDidChangePublisher
             .subscribe(mapVM.input.searchText)
             .store(in: &cancellables)
-            
+        
         mapView.searchBar.searchButtonClickedPublisher
             .subscribe(mapVM.input.searchBtnClicked)
             .store(in: &cancellables)
@@ -161,15 +161,15 @@ extension MapVC {
         // 거리 옵션 배열
         let distances = [500, 1000, 2000, 3000]
         
-
+        
         distances.forEach { distance in
-               alert.addAction(UIAlertAction(title: "\(distance)m", style: .default, handler: { [weak self] _ in
-                   guard let self else { return }
-                   // 선택한 거리를 ViewModel의 trigger로 전송
-                   mapVM.input.trigger.send("\(distance)")
-                   maxDistance = "\(distance)"
-               }))
-           }
+            alert.addAction(UIAlertAction(title: "\(distance)m", style: .default, handler: { [weak self] _ in
+                guard let self else { return }
+                // 선택한 거리를 ViewModel의 trigger로 전송
+                mapVM.input.trigger.send("\(distance)")
+                maxDistance = "\(distance)"
+            }))
+        }
         
         alert.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
         
@@ -269,8 +269,103 @@ extension MapVC: UICollectionViewDelegate, UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print(indexPath.item, "번 선택!!!!!!!!!")
+        
+        
+        if let userID = userFollower[indexPath.row].userID { showUserProfile(userID: userID) }
+    }
+    
+    func showUserProfile(userID: String) {
+        if let popupView = currentPopupView {
+            // 이미 팝업 뷰가 있으면 내용만 업데이트
+            Task {
+                do {
+                    let profile = try await fetchUserProfile(userID: userID)
+                    popupView.configure(profile: profile)
+                } catch {
+                    print("에러 발생:", error)
+                }
+            }
+        } else {
+            // 팝업 뷰가 없으면 새로 생성
+            let popupView = PopupView()
+            popupView.translatesAutoresizingMaskIntoConstraints = false
+            self.view.addSubview(popupView)
+            
+            popupView.snp.makeConstraints { make in
+                make.center.equalToSuperview()
+                make.width.equalToSuperview().multipliedBy(0.8)
+                make.height.equalTo(200)
+            }
+            
+            // 팝업 애니메이션
+            popupView.alpha = 0
+            UIView.animate(withDuration: 0.3) {
+                popupView.alpha = 1
+            }
+            
+            // 데이터 요청 및 설정
+            Task {
+                do {
+                    let profile = try await fetchUserProfile(userID: userID)
+                    popupView.configure(profile: profile)
+                } catch {
+                    print("에러 발생:", error)
+                }
+            }
+            
+            // 제스처 추가
+            let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handleSwipe(_:)))
+            popupView.addGestureRecognizer(panGesture)
+            
+            currentPopupView = popupView // 팝업 뷰 추적
+        }
+    }
+    
+    private func fetchUserProfile(userID: String) async throws -> ProfileModel {
+        do {
+            return try await NetworkManager2.shared.performRequest(
+                router: .getUserInfo(query: userID),
+                responseType: ProfileModel.self
+            )
+        } catch {
+            throw error
+        }
     }
     
 }
 
+
+
+extension MapVC {
+    
+    @objc private func handleSwipe(_ gesture: UIPanGestureRecognizer) {
+        guard let popupView = gesture.view else { return }
+        
+        let translation = gesture.translation(in: popupView)
+        
+        switch gesture.state {
+        case .changed:
+            // 스와이프한 만큼 팝업을 이동
+            popupView.transform = CGAffineTransform(translationX: 0, y: translation.y)
+            
+        case .ended:
+            if translation.y > 80 {
+                // 스와이프 거리가 80 초과 시, 팝업 제거
+                UIView.animate(withDuration: 0.3, animations: {
+                    popupView.transform = CGAffineTransform(translationX: 0, y: popupView.frame.height)
+                    popupView.alpha = 0
+                }) { _ in
+                    popupView.removeFromSuperview()
+                }
+            } else {
+                // 스와이프 거리가 충분하지 않으면 원래 위치로 복귀
+                UIView.animate(withDuration: 0.3) {
+                    popupView.transform = .identity
+                }
+            }
+            
+        default:
+            break
+        }
+    }
+}

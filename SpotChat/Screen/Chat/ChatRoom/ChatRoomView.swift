@@ -72,7 +72,7 @@ final class ChatRoomView: BaseView {
         return btn
     }()
     
-    private var messageInputContainerHeightConstraint: Constraint?
+    var messageInputContainerHeightConstraint: Constraint?
 
     override func configureHierarchy() {
         

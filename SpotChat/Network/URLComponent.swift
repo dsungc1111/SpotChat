@@ -24,6 +24,7 @@ enum Router {
     case refreshToken
     case editProfile(query: EditUserQuery)
     case searchUser(query: String)
+    case getUserInfo(query: String)
     
     //MARK: POST ROUTER
     case newPost(query: PostQuery)
@@ -49,7 +50,7 @@ extension Router: TargetType {
         switch self {
         case .emailValidation, .signin, .appleLogin, .kakaoLogin, .login, .newPost, .newPostImage, .openChattingRoom, .sendChat, .sendFiles:
             return "POST"
-        case .refreshToken, .geolocationBasedSearch, .myProfile, .findUserPost, .searchUser, .getChattingList, .getChatContent:
+        case .refreshToken, .geolocationBasedSearch, .myProfile, .findUserPost, .searchUser, .getChattingList, .getChatContent, .getUserInfo:
             return "GET"
         case .editProfile:
             return "PUT"
@@ -92,6 +93,8 @@ extension Router: TargetType {
             return "chats/\(query)"
         case .sendFiles(let query, _):
             return "chats/\(query)"
+        case .getUserInfo(let query):
+            return "users/\(query)/profile"
         }
     }
     
@@ -111,7 +114,7 @@ extension Router: TargetType {
                 APIKey.HTTPHeaderName.productID.rawValue : APIKey.HTTPHeaderName.productIDContent.rawValue
             ]
             // 키, 컨텐츠타입 - 제이슨, 프로덕트아이디, 액세[스토큰
-        case .newPost, .openChattingRoom, .getChattingList, .sendChat, .getChatContent:
+        case .newPost, .openChattingRoom, .getChattingList, .sendChat, .getChatContent, .getUserInfo:
             return [
                 APIKey.HTTPHeaderName.sesacKey.rawValue : APIKey.developerKey,
                 APIKey.HTTPHeaderName.contentType.rawValue : APIKey.HTTPHeaderName.json.rawValue,
@@ -198,6 +201,14 @@ extension Router: TargetType {
             
             return param
             
+        case .getUserInfo(let userId):
+            
+            let param = [
+                URLQueryItem(name: "user_id", value: userId)
+            ]
+            
+            return param
+            
         default:
             return nil
         }
@@ -268,23 +279,18 @@ extension Router: TargetType {
     
     // Multipart Data Encoding
     private func encodeMultipartData(_ postImage: PostImageQuery) -> Data {
-        guard let imageData = postImage.imageData else {
-            print("🔴 No image data provided")
-            return Data()
-        }
-        print("이미지 있아ㅓ요")
         var body = Data()
+        
+        
         body.append("--\(postImage.boundary)\r\n".data(using: .utf8)!)
-        body.append("Content-Disposition: form-data; name=\"files\"; filename=\"\(UUID().uuidString).jpeg\"\r\n".data(using: .utf8)!)
+        body.append("Content-Disposition: form-data; name=\"files\"; filename=\"image.jpeg\"\r\n".data(using: .utf8)!)
         body.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
-        body.append(imageData)
+        body.append(postImage.imageData ?? body)
         body.append("\r\n".data(using: .utf8)!)
         body.append("--\(postImage.boundary)--\r\n".data(using: .utf8)!)
         
         return body
     }
-    
-    
     private func editUserProfile(_ editProfile: EditUserQuery) -> Data {
         var body = Data()
         
@@ -300,6 +306,7 @@ extension Router: TargetType {
         
         // `profile` (이미지)
         if let profileData = editProfile.profile {
+            
             body.append("--\(editProfile.boundary)\r\n".data(using: .utf8)!)
             body.append("Content-Disposition: form-data; name=\"profile\"; filename=\"profile.png\"\r\n".data(using: .utf8)!)
             body.append("Content-Type: image/png\r\n\r\n".data(using: .utf8)!)

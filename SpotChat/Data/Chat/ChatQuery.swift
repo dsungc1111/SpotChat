@@ -13,5 +13,5 @@ struct ChatQuery: Encodable {
 }
 struct SendChatQuery: Encodable {
     let content: String
-    let files: [String]
+    var files: [String]
 }

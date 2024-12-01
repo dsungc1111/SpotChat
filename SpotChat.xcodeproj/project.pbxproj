@@ -79,6 +79,8 @@
 		8B7F3BBD2CD45FA300B6D34C /* TabBarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7F3BBC2CD45FA300B6D34C /* TabBarVC.swift */; };
 		8B8266132CF8A242004E4C1A /* ChatRoomDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8266122CF8A242004E4C1A /* ChatRoomDataSource.swift */; };
 		8B923F912CF9817300C4A016 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B923F902CF9817300C4A016 /* ImageCollectionViewCell.swift */; };
+		8B923F932CFC42A000C4A016 /* PopupVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B923F922CFC42A000C4A016 /* PopupVC.swift */; };
+		8B923F972CFC447700C4A016 /* PopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B923F962CFC447700C4A016 /* PopupView.swift */; };
 		8B9F773E2CE0D903009887D4 /* CombineCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 8B9F773D2CE0D903009887D4 /* CombineCocoa */; };
 		8B9F77432CE0DE37009887D4 /* PostBindManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9F77422CE0DE37009887D4 /* PostBindManager.swift */; };
 		8B9F77452CE0E70A009887D4 /* PostImagePickerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B9F77442CE0E70A009887D4 /* PostImagePickerManager.swift */; };
@@ -213,6 +215,8 @@
 		8B7F3BBC2CD45FA300B6D34C /* TabBarVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarVC.swift; sourceTree = "<group>"; };
 		8B8266122CF8A242004E4C1A /* ChatRoomDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomDataSource.swift; sourceTree = "<group>"; };
 		8B923F902CF9817300C4A016 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
+		8B923F922CFC42A000C4A016 /* PopupVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupVC.swift; sourceTree = "<group>"; };
+		8B923F962CFC447700C4A016 /* PopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupView.swift; sourceTree = "<group>"; };
 		8B9F77422CE0DE37009887D4 /* PostBindManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostBindManager.swift; sourceTree = "<group>"; };
 		8B9F77442CE0E70A009887D4 /* PostImagePickerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostImagePickerManager.swift; sourceTree = "<group>"; };
 		8BDC030F2CE5CCC200B118A0 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
@@ -574,13 +578,31 @@
 		8B7F3BBE2CD4608200B6D34C /* Map */ = {
 			isa = PBXGroup;
 			children = (
+				8B923F952CFC445400C4A016 /* MapView */,
+				8B923F942CFC443C00C4A016 /* PopupView */,
 				8BF8D2752CF30CF20046786F /* SearchResult */,
 				8B3970202CE4BBD400069824 /* MapCollectionView */,
+			);
+			path = Map;
+			sourceTree = "<group>";
+		};
+		8B923F942CFC443C00C4A016 /* PopupView */ = {
+			isa = PBXGroup;
+			children = (
+				8B923F922CFC42A000C4A016 /* PopupVC.swift */,
+				8B923F962CFC447700C4A016 /* PopupView.swift */,
+			);
+			path = PopupView;
+			sourceTree = "<group>";
+		};
+		8B923F952CFC445400C4A016 /* MapView */ = {
+			isa = PBXGroup;
+			children = (
 				8BDC9F882CD4683800E94702 /* MapView.swift */,
 				8B7F3B992CD1130600B6D34C /* MapVC.swift */,
 				8BF8D2712CF2E9BA0046786F /* MapVM.swift */,
 			);
-			path = Map;
+			path = MapView;
 			sourceTree = "<group>";
 		};
 		8BDC9F822CD460C400E94702 /* Chat */ = {
@@ -875,6 +897,7 @@
 				8BF8D26A2CF02EBF0046786F /* FollowVC.swift in Sources */,
 				8B7F3B8B2CD0CF4D00B6D34C /* SignUpView.swift in Sources */,
 				8B5F31662CF45CD00059BAC3 /* ChatListView.swift in Sources */,
+				8B923F932CFC42A000C4A016 /* PopupVC.swift in Sources */,
 				8B5F31682CF46B1D0059BAC3 /* ChatListVM.swift in Sources */,
 				8BF8D2742CF306AB0046786F /* CustomAnnotation.swift in Sources */,
 				8B923F912CF9817300C4A016 /* ImageCollectionViewCell.swift in Sources */,
@@ -887,6 +910,7 @@
 				8B2A75422CD8BBAC000C6162 /* PostView.swift in Sources */,
 				8BECD88C2CF95588007CECD8 /* ImageCollectionView.swift in Sources */,
 				8BDC03122CE5D28000B118A0 /* SettingVM.swift in Sources */,
+				8B923F972CFC447700C4A016 /* PopupView.swift in Sources */,
 				8B7F3B9A2CD1130600B6D34C /* MapVC.swift in Sources */,
 				8BF8D2722CF2E9BA0046786F /* MapVM.swift in Sources */,
 				8BF8D2632CEF54780046786F /* EditUserView.swift in Sources */,

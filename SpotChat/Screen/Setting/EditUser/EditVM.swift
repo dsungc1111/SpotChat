@@ -41,7 +41,7 @@ final class EditVM: BaseVMProtocol {
         
         input.editBtnTapped
             .map { _ in
-                var editUserInfoQuery = EditUserQuery(
+                let editUserInfoQuery = EditUserQuery(
                     nick: input.nicknameString.value,
                     profile: input.selectedImage.value,
                     info1: input.bioString.value
@@ -70,9 +70,9 @@ final class EditVM: BaseVMProtocol {
             let result = try await NetworkManager2.shared.performRequest(router: .editProfile(query: editUserInfoQuery), responseType: ProfileModel.self)
             
             
-            print(result)
-        } catch {
-            print("dfd")
+            print("결과결과결과!!!!!!!!!!!!!!!!!!", result)
+        } catch let error {
+            print("dfd", error)
         }
         
     }

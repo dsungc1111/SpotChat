@@ -101,13 +101,28 @@ final class ChatRoomVC: BaseVC, UITableViewDelegate {
                                               files: [],
                                               sender: list.first?.lastChat?.sender ?? Sender(userID: "", nick: "", profileImage: "")
                 )
-                input.sendMessage.send(sendModel)
+                
+                // 이미지 리스트 초기화
                 uploadImageList = []
                 dataSourceProvider.updateDataSource(with: uploadImageList)
                 
-                chatRoomView.messageTextView.text = ""
+                // 텍스트뷰 초기화
+                chatRoomView.messageTextView.text = "메시지 입력"
+                chatRoomView.messageTextView.textColor = .lightGray
+                chatRoomView.messageTextView.isScrollEnabled = false
+                
+                // 메시지 입력 컨테이너 높이 초기화
+                chatRoomView.messageInputContainerHeightConstraint?.update(offset: 50)
+                
+                // 전송 버튼 상태 초기화
                 chatRoomView.sendButton.setTitleColor(.lightGray, for: .normal)
                 chatRoomView.sendButton.isEnabled = false
+                
+                UIView.animate(withDuration: 0.3) {
+                    self.chatRoomView.layoutIfNeeded()
+                }
+                input.sendMessage.send(sendModel)
+                
             }
             .store(in: &cancellables)
         

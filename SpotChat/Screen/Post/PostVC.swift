@@ -62,7 +62,7 @@ final class PostVC: BaseVC {
             guard let self else { return }
             dataSourceProvider.updateDataSource(with: images)
             let imageData = images.compactMap { $0.jpegData(compressionQuality: 0.7) }
-            postVM.input.postImageQuery.send(PostImageQuery(imageData: imageData.first))
+            postVM.input.postImageQuery.send(PostImageQuery(imageData: imageData.first ?? Data()))
         }
     }
 }

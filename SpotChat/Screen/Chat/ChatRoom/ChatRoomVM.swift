@@ -33,7 +33,7 @@ final class ChatRoomVM: BaseVMProtocol {
         
         self.socketManager = socketManager
         
-        socketManager.connect()
+//        socketManager.connect()
     }
     
     func transform(input: Input) -> Output {
@@ -47,8 +47,6 @@ final class ChatRoomVM: BaseVMProtocol {
                 Task {
                     let result = try await NetworkManager2.shared.performRequest(router: .getChatContent(roomID, nil), responseType: GetChattingContentModel.self)
                     
-                    
-                    
                     chatList.send(result.data)
                 }
             }
@@ -57,22 +55,28 @@ final class ChatRoomVM: BaseVMProtocol {
         input.sendMessage
             .sink { [weak self] message in
                 guard let self else { return }
-                
+                print(input.imageDataList.value.count)
                 Task {
                     do {
+                        if input.imageDataList.value.count != 0 {
+                            let postImageQuery = PostImageQuery(imageData: input.imageDataList.value[0])
+                            print("🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎 = ", postImageQuery)
+                            //
+                            let fileUpload = try await NetworkManager2.shared.performRequest(router: .sendFiles(message.roomID, postImageQuery), responseType: PostImageModel.self)
+                            //                        //
+                            print("🟣🟣🟣🟣🟣🟣🟣🟣🟣🟣🟣🟣🟣🟣🟣🟣🟣🟣🟣🟣🟣🟣🟣🟣🟣", fileUpload)
+                            
+                            var sendChatModel = SendChatQuery(content: message.content ?? "" , files: [])
+                            sendChatModel.files = ["uploads/chats/free-sticker-thinking-13725813_1732887697721.png"]
+                            print("👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹", sendChatModel)
+                        } else {
+                            print("🥎🥎🥎🥎🥎🥎🥎🥎🥎🥎🥎🥎이미지가 없수다!!!!!ㅋ.ㅋ")
+                        }
                         
-//                        let postImageQuery = PostImageQuery(imageData: input.imageDataList.value.first)
-//                        print("🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎 = ", postImageQuery)
-//                        
-//                        let fileUpload = try await NetworkManager2.shared.performRequest(router: .sendFiles(message.roomID, postImageQuery), responseType: PostImageModel.self)
-//                        //
-//                        print("👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹", fileUpload)
                         
-                        let sendChatModel = SendChatQuery(content: message.content ?? "" , files: [])
-//                        print("👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹👹", sendChatModel)
-                        let result = try await NetworkManager2.shared.performRequest(router: .sendChat(message.roomID, sendChatModel), responseType: LastChat.self)
-                        self.socketManager.sendMessage(message)
-                        print("⚫️⚫️⚫️⚫️⚫️⚫️ 메시지 전송 성공: \(result)")
+//                        let result = try await NetworkManager2.shared.performRequest(router: .sendChat(message.roomID, sendChatModel), responseType: LastChat.self)
+//                        self.socketManager.sendMessage(message)
+//                        print("⚫️⚫️⚫️⚫️⚫️⚫️ 메시지 전송 성공: \(result)")
                     } catch let error {
                         print("🔴🔴🔴🔴🔴🔴 메시지 전송 실패: \(error)")
                     }

@@ -81,9 +81,30 @@ final class ChatMessageCell: BaseTableViewCell {
         if message.lastChat.first?.files.isEmpty ?? true {
             uploadedImage.isHidden = true
             uploadedImageHeightConstraint?.update(offset: 0)
+            
+            
+            
         } else {
             uploadedImage.isHidden = false
             uploadedImageHeightConstraint?.update(offset: 60)
+            
+            
+            
+            
+            if  let (url, modifier) = NetworkManager2.shared.fetchProfileImage(imageString: "uploads/chats/free-sticker-thinking-13725813_1732887697721.png") {
+                
+                uploadedImage.kf.setImage(
+                    with: url,
+                    options: [
+                        .requestModifier(modifier),
+                        .cacheOriginalImage
+                    ]
+                )
+            } else {
+                uploadedImage.image = UIImage(systemName: "person")
+            }
+            
+            
         }
         
         if messageLabel.isHidden && uploadedImage.isHidden {

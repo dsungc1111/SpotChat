@@ -32,15 +32,14 @@ struct AppleLoginModel: Codable {
 
 
 struct TokenModel: Codable {
-    
     let accessToken: String
     let refreshToken: String
 }
 
 
 struct ProfileModel: Codable {
-    let userID, email, nick, profileImage: String?
-    let phoneNum, gender, birthDay, info1: String
+    let userID, email, nick, profileImage, phoneNum: String?
+    let gender, birthDay, info1: String?
     let info2, info3, info4, info5: String
     let followers, following: [Follow]
     let posts: [String]

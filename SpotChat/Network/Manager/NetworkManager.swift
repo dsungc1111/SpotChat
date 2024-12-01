@@ -22,6 +22,7 @@ final class NetworkManager {
         }
         
         let session = URLSession.shared
+        
         let task = session.dataTask(with: request) { data, response, error in
             if let error = error {
                 completion(.failure(error))
@@ -91,16 +92,16 @@ final class NetworkManager2 {
     private init() {}
     
     func performRequest<T: Decodable>(router: Router, responseType: T.Type, retrying: Bool = false) async throws -> T {
-        
+        print("👍👍👍👍👍👍👍👍👍👍👍👍👍네트워크 시도!!!!!@!!")
         guard let request = router.makeRequest() else {
+            print("url이상하구요")
             throw URLError(.badURL)
         }
-        
         let (data, response) = try await URLSession.shared.data(for: request)
-        
         guard let httpResponse = response as? HTTPURLResponse else {
             throw URLError(.badServerResponse)
         }
+        
         
         print("🔫🔫🔫🔫🔫응답 상태 코드: \(httpResponse.statusCode)🔫🔫🔫🔫🔫\(request)🔫🔫🔫🔫🔫🔫🔫🔫🔫🔫🔫🔫")
         
@@ -125,9 +126,7 @@ final class NetworkManager2 {
             
         case 419:
             
-            guard !retrying else {
-                throw URLError(.userAuthenticationRequired)
-            }
+            guard !retrying else {  throw URLError(.userAuthenticationRequired) }
             
             do {
                 // 리프레시 토큰으로 새로운 액세스 토큰 요청
@@ -138,7 +137,6 @@ final class NetworkManager2 {
                 UserDefaultsManager.refreshToken = refreshedToken.refreshToken
                 
                 print("🥶🥶🥶🥶🥶🥶토큰 갱신 후 액세스 토큰:", UserDefaultsManager.accessToken)
-                print("🥶🥶🥶🥶🥶🥶토큰 갱신 후 리프레시 토큰:", UserDefaultsManager.refreshToken)
                 
                 // 갱신된 토큰으로 원래 요청을 재시도
                 return try await self.performRequest(router: router, responseType: responseType, retrying: true)
@@ -167,7 +165,7 @@ final class NetworkManager2 {
             print("유효하지 않은 URL")
             return nil
         }
-        
+        print("이미지 가져왔!", url)
         let header: [String : String] = [
             APIKey.HTTPHeaderName.authorization.rawValue: UserDefaultsManager.accessToken,
             APIKey.HTTPHeaderName.sesacKey.rawValue: APIKey.developerKey,
