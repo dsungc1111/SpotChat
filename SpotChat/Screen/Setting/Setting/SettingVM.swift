@@ -35,14 +35,17 @@ final class SettingVM: BaseVMProtocol {
                         myInfoList.send(profileModel)
                         
                         // 사용자 게시물 이미지 불러오기
-                        let query = GetPostQuery(next: nil, limit: nil, category: nil)
+                        let query = GetPostQuery(next: nil, limit: "100", category: nil)
                         let postData = try await NetworkManager2.shared.performRequest(router: .findUserPost(userID, query), responseType: PostDataModel.self)
-                        print(UserDefaultsManager.userId)
+                        
                         var imageDataList: [String] = []
                         
                         for post in postData.data {
                             for path in post.files {
-                                imageDataList.append(path)
+                                print("🔻🔻🔻🔻🔻🔻🔻🔻🔻", path)
+                                if !path.isEmpty {
+                                    imageDataList.append(path)
+                                }
                             }
                         }
                         

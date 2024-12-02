@@ -98,7 +98,7 @@ final class ChatRoomVM: BaseVMProtocol {
         if !imageDataList.isEmpty {
             print("🍎🍎🍎 이미지 데이터 처리 시작")
             
-            let postImageQuery = PostImageQuery(imageData: imageDataList[0])
+            let postImageQuery = PostImageQuery(imageData: imageDataList)
             print("🍎🍎🍎 PostImageQuery 생성 완료: \(postImageQuery)")
             
             let fileUpload = try await NetworkManager2.shared.performRequest(

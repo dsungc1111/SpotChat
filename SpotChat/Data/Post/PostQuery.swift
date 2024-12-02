@@ -18,7 +18,7 @@ struct GetPostQuery: Encodable {
 // 포스트할 이미지 쿼리
 struct PostImageQuery: Encodable {
     let boundary = UUID().uuidString
-    let imageData: Data?
+    let imageData: [Data]
 }
 
 // 포스트할 내용

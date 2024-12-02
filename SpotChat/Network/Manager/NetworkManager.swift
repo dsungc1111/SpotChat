@@ -102,8 +102,10 @@ final class NetworkManager2 {
             throw URLError(.badServerResponse)
         }
         
-        
+      
         print("🔫🔫🔫🔫🔫응답 상태 코드: \(httpResponse.statusCode)🔫🔫🔫🔫🔫\(request)🔫🔫🔫🔫🔫🔫🔫🔫🔫🔫🔫🔫")
+        print(request.httpBody)
+        
         
         switch httpResponse.statusCode {
         case 200..<300:

@@ -12,7 +12,7 @@ final class PostVM: BaseVMProtocol {
     
   
     struct Input {
-        let postImageQuery = CurrentValueSubject<PostImageQuery, Never>(PostImageQuery(imageData: Data()))
+        let postImageQuery = CurrentValueSubject<PostImageQuery, Never>(PostImageQuery(imageData: [Data()]))
         let categoryText = CurrentValueSubject<String, Never>("")
         let titleText = CurrentValueSubject<String, Never>("")
         let hashTagText = CurrentValueSubject<String, Never>("")

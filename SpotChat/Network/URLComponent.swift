@@ -270,28 +270,31 @@ extension Router: TargetType {
         request.allHTTPHeaderFields = header
         request.httpBody = httpBody
         
-        
         if let boundary = boundary {
+            print("🔫🔫🔫🔫🔫🔫🔫🔫🔫🔫🔫🔫🔫🔫바운더리 있으")
             request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
         }
         return request
     }
     
-    // Multipart Data Encoding
     private func encodeMultipartData(_ postImage: PostImageQuery) -> Data {
         var body = Data()
         
+        for (index, imageData) in postImage.imageData.enumerated() {
+            let fileName = "image_\(index).jpeg" // 파일 이름에 인덱스 추가
+            
+            body.append("--\(postImage.boundary)\r\n".data(using: .utf8)!)
+            body.append("Content-Disposition: form-data; name=\"files\"; filename=\"\(fileName)\"\r\n".data(using: .utf8)!)
+            body.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
+            body.append(imageData)
+            body.append("\r\n".data(using: .utf8)!)
+        }
         
-        body.append("--\(postImage.boundary)\r\n".data(using: .utf8)!)
-        body.append("Content-Disposition: form-data; name=\"files\"; filename=\"image.jpeg\"\r\n".data(using: .utf8)!)
-        body.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
-        body.append(postImage.imageData ?? body)
-        body.append("\r\n".data(using: .utf8)!)
         body.append("--\(postImage.boundary)--\r\n".data(using: .utf8)!)
-        
-        print(" ☑️☑️☑️☑️☑️☑️☑️☑️☑️☑️☑️☑️ body = ", body)
         return body
     }
+    
+    
     
     private func editUserProfile(_ editProfile: EditUserQuery) -> Data {
         var body = Data()
