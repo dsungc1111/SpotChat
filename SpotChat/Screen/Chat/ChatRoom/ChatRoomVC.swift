@@ -58,6 +58,7 @@ final class ChatRoomVC: BaseVC, UITableViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureTableView()
+        print(UserDefaultsManager.accessToken)
     }
     
     override func bind() {
@@ -107,7 +108,7 @@ final class ChatRoomVC: BaseVC, UITableViewDelegate {
                 dataSourceProvider.updateDataSource(with: uploadImageList)
                 
                 // 텍스트뷰 초기화
-                chatRoomView.messageTextView.text = "메시지 입력"
+                chatRoomView.messageTextView.text = ""
                 chatRoomView.messageTextView.textColor = .lightGray
                 chatRoomView.messageTextView.isScrollEnabled = false
                 
@@ -245,7 +246,6 @@ extension ChatRoomVC: UITextViewDelegate {
     
     func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text.isEmpty {
-            textView.text = "메시지를 입력"
             textView.textColor = .lightGray
         }
     }

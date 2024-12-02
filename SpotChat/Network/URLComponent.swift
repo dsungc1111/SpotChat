@@ -289,8 +289,10 @@ extension Router: TargetType {
         body.append("\r\n".data(using: .utf8)!)
         body.append("--\(postImage.boundary)--\r\n".data(using: .utf8)!)
         
+        print(" ☑️☑️☑️☑️☑️☑️☑️☑️☑️☑️☑️☑️ body = ", body)
         return body
     }
+    
     private func editUserProfile(_ editProfile: EditUserQuery) -> Data {
         var body = Data()
         

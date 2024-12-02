@@ -338,11 +338,6 @@ extension MapVC: UICollectionViewDelegate, UICollectionViewDataSource {
                         
                     }
                     
-                    
-                    
-                    
-                    
-                    
                 }
                 .store(in: &cancellables)
             
@@ -368,7 +363,7 @@ extension MapVC: UICollectionViewDelegate, UICollectionViewDataSource {
 }
 
 
-
+// MARK: UIPanGestureRecognizer 를 활용하여 프로필 deinit
 extension MapVC {
     
     @objc private func handleSwipe(_ gesture: UIPanGestureRecognizer) {

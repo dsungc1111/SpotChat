@@ -59,7 +59,8 @@ final class ChatMessageCell: BaseTableViewCell {
         }
         
         messageLabel.snp.makeConstraints { make in
-            make.top.horizontalEdges.equalToSuperview().inset(8)
+            make.horizontalEdges.equalToSuperview().inset(8)
+            make.top.equalTo(contentView.safeAreaLayoutGuide).inset(12)
         }
         
         uploadedImage.snp.makeConstraints { make in
@@ -69,6 +70,17 @@ final class ChatMessageCell: BaseTableViewCell {
             make.bottom.equalToSuperview().inset(8).priority(.low)
         }
     }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+
+        // 셀의 상태 초기화
+        messageLabel.text = nil
+        uploadedImage.image = nil
+        uploadedImage.isHidden = true
+        uploadedImageHeightConstraint?.update(offset: 0)
+    }
+    
     func configureCell(message: Message) {
         if let content = message.lastChat.first?.content, !content.isEmpty {
             messageLabel.text = content
@@ -79,40 +91,22 @@ final class ChatMessageCell: BaseTableViewCell {
         }
         
         if message.lastChat.first?.files.isEmpty ?? true {
+            // 이미지가 없으면 높이 0으로 설정하고 숨김
             uploadedImage.isHidden = true
             uploadedImageHeightConstraint?.update(offset: 0)
-            
-            
-            
         } else {
+            // 이미지가 있으면 보이도록 설정
             uploadedImage.isHidden = false
             uploadedImageHeightConstraint?.update(offset: 60)
-            
-            
-            
-            
-            if  let (url, modifier) = NetworkManager2.shared.fetchProfileImage(imageString: "uploads/chats/free-sticker-thinking-13725813_1732887697721.png") {
-                
-                uploadedImage.kf.setImage(
-                    with: url,
-                    options: [
-                        .requestModifier(modifier),
-                        .cacheOriginalImage
-                    ]
-                )
-            } else {
-                uploadedImage.image = UIImage(systemName: "person")
-            }
-            
-            
         }
         
         if messageLabel.isHidden && uploadedImage.isHidden {
+            // 텍스트와 이미지가 모두 없으면 버블 숨김
             messageBubble.isHidden = true
         } else {
             messageBubble.isHidden = false
         }
-        
+
         if message.isSentByUser {
             messageBubble.backgroundColor = UIColor.systemBlue
             messageLabel.textColor = .white

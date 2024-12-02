@@ -57,6 +57,12 @@ class PostDataSourceProvider: PostDataSourceProviderProtocol {
     }
     
     func updateDataSource(with images: [UIImage]) {
+        // 이미지 리스트가 비어 있으면 데이터 소스 초기화
+        if images.isEmpty {
+            applyInitialSnapshot() // 기존 데이터를 초기화
+            return
+        }
+
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
         snapshot.appendItems(images)
@@ -65,7 +71,6 @@ class PostDataSourceProvider: PostDataSourceProviderProtocol {
     }
     
     func deleteImage(at index: Int) {
-        
         imageList.remove(at: index)
         updateDataSource(with: imageList)
     }
