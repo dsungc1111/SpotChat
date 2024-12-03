@@ -47,25 +47,25 @@ final class ChatMessageCell: BaseTableViewCell {
     
     override func configureLayout() {
         
-        
         messageBubble.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(12)
-            make.height.greaterThanOrEqualTo(36)
-            make.width.lessThanOrEqualToSuperview().multipliedBy(0.75)
+            make.top.equalTo(contentView.safeAreaLayoutGuide)
+            make.height.greaterThanOrEqualTo(28)
+            make.width.lessThanOrEqualToSuperview().multipliedBy(0.6)
             make.bottom.equalToSuperview().inset(8).priority(.low)
+            
             leadingConstraint = make.leading.equalToSuperview().inset(10).constraint
             trailingConstraint = make.trailing.equalToSuperview().inset(10).constraint
         }
         
         messageLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(8)
-            make.leading.trailing.equalToSuperview().inset(8)
+            make.top.equalTo(messageBubble.snp.top).inset(8)
+            make.leading.trailing.equalToSuperview().inset(12)
             make.bottom.equalTo(imageContainerStackView.snp.top).offset(-8) // 이미지 컨테이너 위에 배치
         }
         
         imageContainerStackView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(8)
-            make.bottom.equalToSuperview().inset(8)
+            make.bottom.equalToSuperview().inset(16)
         }
     }
     
@@ -90,16 +90,14 @@ final class ChatMessageCell: BaseTableViewCell {
         // 이미지 설정
         if let files = message.lastChat.first?.files, !files.isEmpty {
             imageContainerStackView.isHidden = false
-            // 기존 스택뷰 초기화
             imageContainerStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
             
-            let targetSize = CGSize(width: 70, height: 70) // 필요한 크기 지정
+            let targetSize = CGSize(width: 70, height: 70)
             let processor = DownsamplingImageProcessor(size: targetSize)
             
-            
-            //MARK: 이미지 4개
+            // 이미지 개수에 따른 스택뷰 구성
             if files.count == 4 {
-                // 4개일 경우 위아래 2개씩 배치
+                // 이미지가 4개일 경우 위아래 2개씩
                 for rowIndex in 0..<2 {
                     let horizontalStackView = UIStackView()
                     horizontalStackView.axis = .horizontal
@@ -114,14 +112,13 @@ final class ChatMessageCell: BaseTableViewCell {
                     }
                     imageContainerStackView.addArrangedSubview(horizontalStackView)
                 }
-            } else if files.count == 5  { //MARK: 이미지 5개 - 위 3, 아래 2
-                
+            } else if files.count == 5 {
+                // 이미지가 5개일 경우 위 3개, 아래 2개
                 let topStackView = UIStackView()
                 topStackView.axis = .horizontal
                 topStackView.spacing = 8
                 topStackView.distribution = .fillEqually
                 
-                // 상단 스택뷰
                 for fileIndex in 0..<3 {
                     let imageView = createImageView(urlString: files[fileIndex], processor: processor)
                     topStackView.addArrangedSubview(imageView)
@@ -132,22 +129,15 @@ final class ChatMessageCell: BaseTableViewCell {
                 bottomStackView.spacing = 8
                 bottomStackView.distribution = .fillEqually
                 
-                
-                // 하단 스택뷰
                 for fileIndex in 3..<5 {
                     let imageView = createImageView(urlString: files[fileIndex], processor: processor)
-                    imageView.snp.remakeConstraints { make in
-                        make.width.equalTo(110)
-                        make.height.equalTo(70)
-                    }
                     bottomStackView.addArrangedSubview(imageView)
                 }
                 
                 imageContainerStackView.addArrangedSubview(topStackView)
                 imageContainerStackView.addArrangedSubview(bottomStackView)
-                
-            } else { //MARK: 이미지 3장 이상
-                
+            } else {
+                // 이미지 6장
                 let rowCount = Int(ceil(Double(files.count) / 3.0))
                 for rowIndex in 0..<rowCount {
                     let horizontalStackView = UIStackView()
@@ -161,38 +151,34 @@ final class ChatMessageCell: BaseTableViewCell {
                         let imageView = createImageView(urlString: files[fileIndex], processor: processor)
                         horizontalStackView.addArrangedSubview(imageView)
                     }
-                    
                     imageContainerStackView.addArrangedSubview(horizontalStackView)
                 }
+                
+                messageLabel.snp.removeConstraints()
+                messageLabel.snp.makeConstraints { make in
+                    make.top.equalTo(messageBubble.snp.top).inset(8)
+                    make.leading.trailing.equalToSuperview().inset(12)
+                    make.bottom.equalTo(imageContainerStackView.snp.top).offset(-8)
+                }
+                
             }
-            
-            messageLabel.snp.makeConstraints { make in
-                make.top.equalToSuperview()
-                make.leading.trailing.equalToSuperview().inset(8)
-                make.bottom.equalTo(imageContainerStackView.snp.top).offset(-8) // 이미지 컨테이너 위에 배치
-            }
-            
         } else {
-            imageContainerStackView.isHidden = true
             
             messageLabel.snp.remakeConstraints { make in
-                make.top.equalToSuperview()
-                make.height.equalTo(36)
-                make.leading.trailing.equalToSuperview().inset(8)
+                make.top.equalTo(messageBubble.snp.top).inset(8)
+                make.leading.trailing.equalToSuperview().inset(12)
+                make.bottom.equalToSuperview().inset(8)
             }
+            imageContainerStackView.isHidden = true
         }
         
-        if messageLabel.isHidden && imageContainerStackView.isHidden {
-            // 텍스트와 이미지가 모두 없으면 버블 숨김
-            messageBubble.isHidden = true
-        } else {
-            messageBubble.isHidden = false
-        }
+        // 텍스트와 이미지가 모두 없으면 버블 숨김
+        messageBubble.isHidden = messageLabel.isHidden && imageContainerStackView.isHidden ? true : false
         
         // 메시지 방향 설정
         if message.isSentByUser {
-            messageBubble.backgroundColor = UIColor.systemBlue
-            messageLabel.textColor = .white
+            messageBubble.backgroundColor = AppColorSet.skyblue
+            messageLabel.textColor = .black
             leadingConstraint?.deactivate()
             trailingConstraint?.activate()
         } else {
@@ -208,6 +194,7 @@ final class ChatMessageCell: BaseTableViewCell {
     
     
     private func createImageView(urlString: String, processor: DownsamplingImageProcessor) -> UIImageView {
+        
         let imageView = UIImageView()
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 6
@@ -231,7 +218,6 @@ final class ChatMessageCell: BaseTableViewCell {
         } else {
             imageView.image = UIImage(systemName: "person")
         }
-        
         return imageView
     }
 }

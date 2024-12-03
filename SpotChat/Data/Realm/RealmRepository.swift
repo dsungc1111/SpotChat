@@ -91,26 +91,24 @@ final class RealmRepository {
     }
     
     // 최신날짜 전달
-    func fetchCreatedDate(roomID: String) -> String {
-        
+    func fetchRecentDate(for userID: String) -> String {
         do {
             let realm = try Realm()
             
+            // ChatMessage에서 sender.userID를 기준으로 필터링
+            let filteredMessages = realm.objects(ChatMessage.self)
+                .filter("sender.userID == %@", userID)
             
-            let chatMessage = realm.objects(ChatMessage.self)
-            
-            if chatMessage.count != 0 {
-                return chatMessage.sorted(byKeyPath: "createdAt", ascending: false)[0].createdAt
+            // 필터링된 메시지가 있으면 가장 최근 날짜 반환
+            if let mostRecentMessage = filteredMessages.sorted(byKeyPath: "createdAt", ascending: false).first {
+                return mostRecentMessage.createdAt
             } else {
-                return ""
+                return "" // 필터 결과가 없는 경우 빈 문자열 반환
             }
-
-            
-        } catch let error{
-            print("패치 에러", error)
+        } catch {
+            print("패치 에러:", error)
             return ""
         }
-        
     }
     
     // 저장된 채팅 정보 20개 + @(안 읽었던 게 있다면) 전달

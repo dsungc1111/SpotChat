@@ -32,16 +32,17 @@ final class TabBarVC: UITabBarController {
                             dataSourceProvider: PostDataSourceProvider(collectionView: postView.collectionView, cellSize: CGSize(width: 80, height: 80)))
         let settingVC = SettingVC()
         
-        chatVC.tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: "message"), selectedImage: UIImage(systemName: "message.fill"))
+        chatVC.tabBarItem = UITabBarItem(title: nil, image: UIImage(systemName: "message"), selectedImage: UIImage(systemName: "message.fill"))
+        
         chatVC.tabBarItem.tag = 0
         
-        mapVC.tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: "map"), selectedImage: UIImage(systemName: "map.fill"))
+        mapVC.tabBarItem = UITabBarItem(title: nil, image: UIImage(systemName: "map"), selectedImage: UIImage(systemName: "map.fill"))
         mapVC.tabBarItem.tag = 1
         
-        postVC.tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: "pencil.tip.crop.circle"), selectedImage: UIImage(systemName: "pencil.tip.crop.circle.fill"))
+        postVC.tabBarItem = UITabBarItem(title: nil, image: UIImage(systemName: "pencil.tip.crop.circle"), selectedImage: UIImage(systemName: "pencil.tip.crop.circle.fill"))
         postVC.tabBarItem.tag = 2
         
-        settingVC.tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: "person"), selectedImage: UIImage(systemName: "person.fill"))
+        settingVC.tabBarItem = UITabBarItem(title: nil, image: UIImage(systemName: "person"), selectedImage: UIImage(systemName: "person.fill"))
         settingVC.tabBarItem.tag = 3
         
         setViewControllers([chatVC, mapVC, postVC, settingVC], animated: true)
@@ -52,7 +53,7 @@ final class TabBarVC: UITabBarController {
         self.selectedIndex = 1
     }
     
-
+    
     
     @objc
     private func moveToOnBoarding() {

@@ -12,5 +12,6 @@ enum AppColorSet {
     
     static let backgroundColor = UIColor(hexCode: "#2C2929")
     static let keyColor = UIColor(hexCode: "#F4EC78", alpha: 1)
+    static let skyblue = UIColor(hexCode: "#b2dafe", alpha: 1)
     
 }

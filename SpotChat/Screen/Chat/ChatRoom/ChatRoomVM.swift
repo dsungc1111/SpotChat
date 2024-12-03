@@ -45,7 +45,7 @@ final class ChatRoomVM: BaseVMProtocol {
                     guard let self else { return }
                     
                     // 저장된 내역 중 최신 시간 가져와서
-                    let createdAt =  self.realmRepository.fetchCreatedDate(roomID: roomID)
+                    let createdAt =  self.realmRepository.fetchRecentDate(for: roomID)
                     // 그 이후의 내역 서버에서 전달 받고
                     let result = try await NetworkManager2.shared.performRequest(router: .getChatContent(roomID, createdAt), responseType: GetChattingContentModel.self)
                     // 저장
