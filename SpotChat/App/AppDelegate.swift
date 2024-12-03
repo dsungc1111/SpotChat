@@ -9,7 +9,7 @@ import UIKit
 import AuthenticationServices
 import KakaoSDKCommon
 import KakaoSDKAuth
-//import KakaoMapsSDK
+import RealmSwift
 
 
 @main
@@ -20,6 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return AuthController.handleOpenUrl(url: url)
         }
         
+        
         return false
     }
     
@@ -27,9 +28,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let nativeAppKey = Bundle.main.infoDictionary?["KAKAO_NATIVE_APP_KEY"] ?? APIKey.kakaoKEY
        
-        print("네이티브 앱키", nativeAppKey)
         KakaoSDK.initSDK(appKey: nativeAppKey as! String)
 //        SDKInitializer.InitSDK(appKey: nativeAppKey as! String)
+        
+        
+        let config = Realm.Configuration(schemaVersion: 0) { migration, oldSchemaVersion in
+            
+            if oldSchemaVersion < 0 {
+                    
+            }
+        }
+        
+        Realm.Configuration.defaultConfiguration = config
         
         return true
     }

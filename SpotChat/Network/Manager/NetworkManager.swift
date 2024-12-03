@@ -92,7 +92,6 @@ final class NetworkManager2 {
     private init() {}
     
     func performRequest<T: Decodable>(router: Router, responseType: T.Type, retrying: Bool = false) async throws -> T {
-        print("👍👍👍👍👍👍👍👍👍👍👍👍👍네트워크 시도!!!!!@!!")
         guard let request = router.makeRequest() else {
             print("url이상하구요")
             throw URLError(.badURL)
@@ -101,10 +100,7 @@ final class NetworkManager2 {
         guard let httpResponse = response as? HTTPURLResponse else {
             throw URLError(.badServerResponse)
         }
-        
-      
         print("🔫🔫🔫🔫🔫응답 상태 코드: \(httpResponse.statusCode)🔫🔫🔫🔫🔫\(request)🔫🔫🔫🔫🔫🔫🔫🔫🔫🔫🔫🔫")
-        print(request.httpBody)
         
         
         switch httpResponse.statusCode {
@@ -114,7 +110,6 @@ final class NetworkManager2 {
                 return decodedResponse
             } catch {
                 print("👻👻👻👻👻👻실패", error)
-                print("👻👻👻👻👻👻", request)
                 throw error
             }
         

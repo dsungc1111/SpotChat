@@ -10,7 +10,7 @@ import Combine
 import CombineCocoa
 
 struct Message {
-    let lastChat: [LastChat]
+    let lastChat: [ChatMessage]
     let isSentByUser: Bool
 }
 
@@ -58,7 +58,6 @@ final class ChatRoomVC: BaseVC, UITableViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureTableView()
-        print(UserDefaultsManager.accessToken)
     }
     
     override func bind() {
@@ -71,24 +70,18 @@ final class ChatRoomVC: BaseVC, UITableViewDelegate {
         output.chatList
             .sink { [weak self] chatList in
                 guard let self else { return }
+                
+                // chatList는 [ChatMessage]이므로 map을 바로 호출
                 let newMessages = chatList.map {
-                    Message(lastChat: [$0], isSentByUser: $0.sender.userID == UserDefaultsManager.userId)
+                    Message(lastChat: [$0], isSentByUser: $0.sender?.userID == UserDefaultsManager.userId)
                 }
+                
                 messages.append(contentsOf: newMessages)
             }
             .store(in: &cancellables)
         
-        output.socketChatList
-            .sink { [weak self] chatList in
-                guard let self else { return }
-                let socketChat = LastChat(chatID: chatList.chatID, roomID: chatList.roomID, content: chatList.content, sender: chatList.sender, files: chatList.files)
-                let newMessages = Message(lastChat: [socketChat], isSentByUser: chatList.sender.userID == UserDefaultsManager.userId)
-                
-                messages.append(newMessages)
-            }
-            .store(in: &cancellables)
         
-        
+        // 전송 버튼
         chatRoomView.sendButton.tapPublisher
             .sink { [weak self] _ in
                 guard let self else { return }
@@ -127,6 +120,7 @@ final class ChatRoomVC: BaseVC, UITableViewDelegate {
             }
             .store(in: &cancellables)
         
+        // 이미지 픽
         imagePicker.finishImagePick = { [weak self] images in
             guard let self else { return }
             dataSourceProvider.updateDataSource(with: images)
@@ -134,7 +128,7 @@ final class ChatRoomVC: BaseVC, UITableViewDelegate {
             let hasImages = !images.isEmpty
             chatRoomView.updateMessageInputContainer(forTextView: self.chatRoomView.messageTextView, hasImages: hasImages)
             
-            let imageDataList = images.compactMap { $0.jpegData(compressionQuality: 0.8)}
+            let imageDataList = images.compactMap { $0.jpegData(compressionQuality: 0.1)}
             input.imageDataList.send(imageDataList)
             
             if uploadImageList.count != 0 {
@@ -158,9 +152,6 @@ final class ChatRoomVC: BaseVC, UITableViewDelegate {
             .store(in: &cancellables)
         
         chatRoomView.titleLabel.text = "채팅방"
-        
-        
-
     }
 
     

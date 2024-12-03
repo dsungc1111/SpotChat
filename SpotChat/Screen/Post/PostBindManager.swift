@@ -61,6 +61,5 @@ final class PostBindingManager: PostBindManagerProtocol {
             }
             .store(in: &cancellables)
         
-        
     }
 }

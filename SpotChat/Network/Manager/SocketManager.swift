@@ -11,7 +11,7 @@ import SocketIO
 import Foundation
 
 protocol SocketProvider {
-    var socketSubject: PassthroughSubject<SocketDMModel, Never> { get }
+    var socketSubject: PassthroughSubject<Void, Never> { get }
     
     func connect()
     func disconnect()
@@ -22,43 +22,42 @@ final class SocketNetworkManager: SocketProvider {
     
     private var manager: SocketManager
     private var socket: SocketIOClient
+    private let realmRepository = RealmRepository()
+    
 //    private var messages: [Message] = []
     
-    var socketSubject = PassthroughSubject<SocketDMModel, Never>()
+    var socketSubject = PassthroughSubject<Void, Never>()
     
     init(roomID: String) {
         guard let url = URL(string: APIKey.socketBaseURL) else {
             fatalError("Invalid Socket URL")
         }
-        print("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴\(url)")
-        print("🟤🟤🟤🟤🟤🟤🟤🟤🟤🟤🟤🟤🟤🟤\(roomID)")
+        
         manager = SocketManager(socketURL: url, config: [.log(true), .compress])
         socket = manager.socket(forNamespace: "/chats-\(roomID)")
         
+        realmRepository.fetchRealmURL()
     }
     
     func configureSocketEvent() {
         // 소켓 연결 이벤트
         socket.on(clientEvent: .connect) { data, ack in
-            print("✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅")
             print("✨ Socket 연결!!!!!!")
         }
         // 서버에서 전달된 데이터 출력 이벤트
         socket.on("chat") { [weak self] dataArr, ack in
-            print("✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅")
+
             print("📮 Chat Message Received: \(dataArr)")
             self?.handleIncomingMessage(dataArr)
         }
         
         // 소켓 연결 해제 이벤트
         socket.on(clientEvent: .disconnect) { data, ack in
-            print("✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅")
             print("⛓️‍💥 Socket XXXXXXX")
         }
         
         // 소켓 재연결 이벤트
         socket.on(clientEvent: .reconnect) { data, ack in
-            print("✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅")
             print("🔄 Socket Reconnecting")
         }
     }
@@ -69,8 +68,8 @@ final class SocketNetworkManager: SocketProvider {
             let jsonData = try JSONSerialization.data(withJSONObject: data)
             let decodedData = try JSONDecoder().decode(SocketDMModel.self, from: jsonData)
             print("👇 Decoded Chat Message: \(decodedData)")
-            
-            socketSubject.send(decodedData)
+            socketSubject.send(())
+            realmRepository.saveChatMessage(chat: decodedData)
             
         } catch {
             print("🚨 Failed to decode chat message: \(error)")

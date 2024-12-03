@@ -92,7 +92,7 @@ extension Router: TargetType {
         case .sendChat(let query, _), .getChatContent(let query, _):
             return "chats/\(query)"
         case .sendFiles(let query, _):
-            return "chats/\(query)"
+            return "chats/\(query)/files"
         case .getUserInfo(let query):
             return "users/\(query)/profile"
         }

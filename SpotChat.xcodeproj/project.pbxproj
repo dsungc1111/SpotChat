@@ -37,7 +37,7 @@
 		8B5F31772CF5F1830059BAC3 /* ChatRoomVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5F31762CF5F1830059BAC3 /* ChatRoomVM.swift */; };
 		8B5F31862CF6DF210059BAC3 /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5F31852CF6DF210059BAC3 /* Date+.swift */; };
 		8B5F31892CF6E49B0059BAC3 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 8B5F31882CF6E49B0059BAC3 /* RealmSwift */; };
-		8B5F318D2CF6E5FD0059BAC3 /* ChatHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5F318C2CF6E5FD0059BAC3 /* ChatHistory.swift */; };
+		8B5F318D2CF6E5FD0059BAC3 /* ChatRoomModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5F318C2CF6E5FD0059BAC3 /* ChatRoomModel.swift */; };
 		8B5F318F2CF6F08F0059BAC3 /* RealmRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5F318E2CF6F08F0059BAC3 /* RealmRepository.swift */; };
 		8B5F31902CF6F5290059BAC3 /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 8B5F31882CF6E49B0059BAC3 /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		8B7424D32CCA5A9600E198C3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7424D22CCA5A9600E198C3 /* AppDelegate.swift */; };
@@ -173,7 +173,7 @@
 		8B5F31742CF5D0470059BAC3 /* SocketModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketModel.swift; sourceTree = "<group>"; };
 		8B5F31762CF5F1830059BAC3 /* ChatRoomVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomVM.swift; sourceTree = "<group>"; };
 		8B5F31852CF6DF210059BAC3 /* Date+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+.swift"; sourceTree = "<group>"; };
-		8B5F318C2CF6E5FD0059BAC3 /* ChatHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatHistory.swift; sourceTree = "<group>"; };
+		8B5F318C2CF6E5FD0059BAC3 /* ChatRoomModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomModel.swift; sourceTree = "<group>"; };
 		8B5F318E2CF6F08F0059BAC3 /* RealmRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmRepository.swift; sourceTree = "<group>"; };
 		8B7424CF2CCA5A9600E198C3 /* SpotChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpotChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B7424D22CCA5A9600E198C3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -377,7 +377,7 @@
 		8B5F318A2CF6E4AE0059BAC3 /* Realm */ = {
 			isa = PBXGroup;
 			children = (
-				8B5F318C2CF6E5FD0059BAC3 /* ChatHistory.swift */,
+				8B5F318C2CF6E5FD0059BAC3 /* ChatRoomModel.swift */,
 				8B5F318E2CF6F08F0059BAC3 /* RealmRepository.swift */,
 			);
 			path = Realm;
@@ -864,7 +864,7 @@
 				8B7F3B842CD0CD8A00B6D34C /* BaseVC.swift in Sources */,
 				8B5F31862CF6DF210059BAC3 /* Date+.swift in Sources */,
 				8BDC9F902CD476F200E94702 /* StoryCollectionViewCell.swift in Sources */,
-				8B5F318D2CF6E5FD0059BAC3 /* ChatHistory.swift in Sources */,
+				8B5F318D2CF6E5FD0059BAC3 /* ChatRoomModel.swift in Sources */,
 				8BF8D27E2CF334AC0046786F /* ChatModel.swift in Sources */,
 				8B5F31772CF5F1830059BAC3 /* ChatRoomVM.swift in Sources */,
 				8BF8D2672CEFFD7C0046786F /* EditVM.swift in Sources */,

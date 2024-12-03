@@ -29,7 +29,18 @@ extension Date {
         
         return "Invalid Date"
     }
-
+    
+    static func parseDate(from isoDateString: String) -> Date? {
+        // ISO 포맷 시도
+        if let date = isoFormatter.date(from: isoDateString) {
+            return date
+        }
+        
+        // Fallback 포맷 시도
+        let fallbackFormatter = DateFormatter()
+        fallbackFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        return fallbackFormatter.date(from: isoDateString)
+    }
     
     private static func formattedString(for date: Date) -> String {
         let calendar = Calendar.current
@@ -50,5 +61,15 @@ extension Date {
             fullDateFormatter.dateFormat = "yyyy.M.d"
             return fullDateFormatter.string(from: date)
         }
+    }
+    
+    static func isoString(from date: Date) -> String {
+        return isoFormatter.string(from: date)
+    }
+    
+    static func formattedDate(for date: Date, format: String) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = format
+        return formatter.string(from: date)
     }
 }

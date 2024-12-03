@@ -54,3 +54,7 @@ struct Sender: Codable, Hashable {
 struct GetChattingContentModel: Decodable {
     let data: [LastChat]
 }
+
+struct ErrorModel: Decodable {
+    let message: String
+}

@@ -12,6 +12,7 @@ final class ChatRoomVM: BaseVMProtocol {
     
     var cancellables = Set<AnyCancellable>()
     
+    private let realmRepository = RealmRepository()
     
     struct Input {
         let trigger = PassthroughSubject<String, Never>()
@@ -20,56 +21,78 @@ final class ChatRoomVM: BaseVMProtocol {
     }
     
     struct Output {
-        let chatList: PassthroughSubject<[LastChat], Never>
+        let chatList: CurrentValueSubject<[ChatMessage], Never>
         let socketChatList: PassthroughSubject<SocketDMModel, Never>
     }
     
     @Published
     var input = Input()
     
-    let socketManager: SocketProvider
+    private let socketManager: SocketProvider
     
-    init( socketManager: SocketProvider) {
-        
-        self.socketManager = socketManager
-        
-//        socketManager.connect()
-    }
+    init( socketManager: SocketProvider) { self.socketManager = socketManager }
     
     func transform(input: Input) -> Output {
         
-        
-        let chatList = PassthroughSubject<[LastChat], Never>()
+        let chatList = CurrentValueSubject<[ChatMessage], Never>([])
         let socketChatList = PassthroughSubject<SocketDMModel, Never>()
         
         input.trigger
-            .sink { roomID in
-                Task {
-                    let result = try await NetworkManager2.shared.performRequest(router: .getChatContent(roomID, nil), responseType: GetChattingContentModel.self)
+            .sink { [weak self] roomID in
+                guard let self else { return }
+                
+                Task { [weak self] in
+                    guard let self else { return }
                     
-                    chatList.send(result.data)
+                    // 저장된 내역 중 최신 시간 가져와서
+                    let createdAt =  self.realmRepository.fetchCreatedDate(roomID: roomID)
+                    // 그 이후의 내역 서버에서 전달 받고
+                    let result = try await NetworkManager2.shared.performRequest(router: .getChatContent(roomID, createdAt), responseType: GetChattingContentModel.self)
+                    // 저장
+                    if !result.data.isEmpty {
+                        realmRepository.saveUnreadChat(chat: result.data)
+                    }
+                    // 데이터 20 + @ 개 가져오기
+                    let savedChat = realmRepository.fetchSavedChat(unread: result.data.count)
+                    chatList.send(savedChat)
+                    // 데이터 ui 로드 후 소켓 연결
+                    socketManager.connect()
                 }
             }
             .store(in: &cancellables)
         
+        socketManager.socketSubject
+            .sink { [weak self] _ in
+                guard let self else { return }
+                
+                var updatedChatList = chatList.value
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: {
+                    let newChatList = self.realmRepository.fetchLatestChat()[0]
+                    updatedChatList.append(newChatList)
+                    chatList.send([newChatList])
+                })
+            }
+            .store(in: &cancellables)
+        
+        
         input.sendMessage
             .sink { [weak self] message in
                 guard let self else { return }
-
+                
                 Task { [weak self] in
                     guard let self else { return }
                     do {
                         // 이미지 데이터 여부에 따라 모델 생성
                         let sendChatModel = try await createSendChatModel(message: message, imageDataList: input.imageDataList.value)
-
-//                        // 메시지 전송
-//                        let result = try await NetworkManager2.shared.performRequest(
-//                            router: .sendChat(message.roomID, sendChatModel),
-//                            responseType: LastChat.self
-//                        )
-
-//                        socketManager.sendMessage(message)
-//                        print("⚫️⚫️⚫️⚫️⚫️⚫️ 메시지 전송 성공: \(result)")
+                        
+                        // 메시지 전송
+                        let result = try await NetworkManager2.shared.performRequest(
+                            router: .sendChat(message.roomID, sendChatModel),
+                            responseType: LastChat.self
+                        )
+                        
+                        socketManager.sendMessage(message)
+                        print("⚫️⚫️⚫️⚫️⚫️⚫️ 메시지 전송 성공: \(result)")
                     } catch {
                         print("🔴🔴🔴🔴🔴🔴 메시지 전송 실패: \(error)")
                     }
@@ -77,24 +100,13 @@ final class ChatRoomVM: BaseVMProtocol {
             }
             .store(in: &cancellables)
         
-        
-        
-        
-        socketManager.socketSubject
-            .sink { chatting in
-                print("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴얘가 지금 받고있는거야?")
-                socketChatList.send(chatting)
-            }
-            .store(in: &cancellables)
-        
-        
         return Output(chatList: chatList, socketChatList: socketChatList)
     }
     
     
     private func createSendChatModel(message: SocketDMModel, imageDataList: [Data]) async throws -> SendChatQuery {
         var sendChatModel = SendChatQuery(content: message.content ?? "", files: [])
-
+        
         if !imageDataList.isEmpty {
             print("🍎🍎🍎 이미지 데이터 처리 시작")
             
@@ -111,7 +123,7 @@ final class ChatRoomVM: BaseVMProtocol {
         } else {
             print("🥎🥎🥎 이미지가 없으므로 빈 파일 목록으로 처리")
         }
-
+        
         print("👹👹👹 SendChatQuery 생성 완료: \(sendChatModel)")
         return sendChatModel
     }
