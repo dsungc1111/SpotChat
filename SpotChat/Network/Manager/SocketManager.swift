@@ -11,7 +11,7 @@ import SocketIO
 import Foundation
 
 protocol SocketProvider {
-    var socketSubject: PassthroughSubject<Void, Never> { get }
+    var socketSubject: PassthroughSubject<SocketDMModel, Never> { get }
     
     func connect()
     func disconnect()
@@ -22,11 +22,11 @@ final class SocketNetworkManager: SocketProvider {
     
     private var manager: SocketManager
     private var socket: SocketIOClient
-    private let realmRepository = RealmRepository()
+//    private let realmRepository = RealmRepository()
     
 //    private var messages: [Message] = []
     
-    var socketSubject = PassthroughSubject<Void, Never>()
+    var socketSubject = PassthroughSubject<SocketDMModel, Never>()
     
     init(roomID: String) {
         guard let url = URL(string: APIKey.socketBaseURL) else {
@@ -36,7 +36,7 @@ final class SocketNetworkManager: SocketProvider {
         manager = SocketManager(socketURL: url, config: [.log(true), .compress])
         socket = manager.socket(forNamespace: "/chats-\(roomID)")
         
-        realmRepository.fetchRealmURL()
+//        realmRepository.fetchRealmURL()
     }
     
     func configureSocketEvent() {
@@ -68,8 +68,8 @@ final class SocketNetworkManager: SocketProvider {
             let jsonData = try JSONSerialization.data(withJSONObject: data)
             let decodedData = try JSONDecoder().decode(SocketDMModel.self, from: jsonData)
             print("👇 Decoded Chat Message: \(decodedData)")
-            socketSubject.send(())
-            realmRepository.saveChatMessage(chat: decodedData)
+            socketSubject.send(decodedData)
+//            realmRepository.saveChatMessage(chat: decodedData)
             
         } catch {
             print("🚨 Failed to decode chat message: \(error)")

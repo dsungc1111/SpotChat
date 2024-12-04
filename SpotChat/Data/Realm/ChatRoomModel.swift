@@ -9,6 +9,12 @@ import Foundation
 import RealmSwift
 
 
+final class ChatRoom: Object {
+    @Persisted(primaryKey: true) var roomID: String
+    @Persisted var userList: List<UserInfo>
+    @Persisted var chatList: List<ChatMessage>
+}
+
 final class UserInfo: Object {
     @Persisted(primaryKey: true) var userID: String
     @Persisted var nickname: String

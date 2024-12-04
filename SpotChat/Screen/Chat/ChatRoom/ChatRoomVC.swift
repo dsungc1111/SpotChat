@@ -14,7 +14,7 @@ struct Message {
     let isSentByUser: Bool
 }
 
-final class ChatRoomVC: BaseVC, UITableViewDelegate {
+final class ChatRoomVC: BaseVC {
     
     private var chatRoomView = ChatRoomView()
     private var cancellables = Set<AnyCancellable>()
@@ -249,5 +249,17 @@ extension ChatRoomVC: UICollectionViewDelegate {
         dataSourceProvider.deleteImage(at: indexPath.row)
         let hasImages = !dataSourceProvider.imageList.isEmpty
         chatRoomView.updateMessageInputContainer(forTextView: chatRoomView.messageTextView, hasImages: hasImages)
+    }
+}
+
+extension ChatRoomVC: UITableViewDelegate {
+    
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        
+        
+        
+        
+        chatRoomVM.fetchMoreChatsIfNeeded(for: list.first?.roomID ?? "", currentIndex: indexPath.row)
     }
 }

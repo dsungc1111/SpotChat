@@ -8,143 +8,248 @@
 import Foundation
 import RealmSwift
 
-
 final class RealmRepository {
     
-    
     func fetchRealmURL() {
-        
-        print( Realm.Configuration.defaultConfiguration.fileURL ?? "")
-        
-        
+        print(Realm.Configuration.defaultConfiguration.fileURL ?? "")
     }
     
-    // 소켓으로 받아온 채팅 저장
-    func saveChatMessage(chat: SocketDMModel) {
+    /// ChatRoom 확인 및 생성
+    func fetchOrCreateChatRoom(roomID: String) -> ChatRoom? {
         do {
-            
             let realm = try Realm()
+            var chatRoom = realm.object(ofType: ChatRoom.self, forPrimaryKey: roomID)
             
-            // 유저아이디가 프라이머리키인 userinfo 정보
-            var sender = realm.object(ofType: UserInfo.self, forPrimaryKey: chat.sender.userID)
-            print("🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥sender ==>>")
-            // 없다면?
-            if sender == nil {
-                sender = UserInfo(value: [
-                    "userID" : chat.sender.userID,
-                    "nickname" : chat.sender.nick,
-                    "profileImage" : chat.sender.profileImage ?? ""
-                ])
+            if chatRoom == nil {
+                chatRoom = ChatRoom(value: ["roomID": roomID])
                 try realm.write {
-                    realm.add(sender!)
+                    realm.add(chatRoom!)
                 }
             }
             
-            let chatMessage = ChatMessage()
-            chatMessage.chatID = chat.chatID
-            chatMessage.createdAt = chat.createdAt
-            chatMessage.sender = sender
-            chatMessage.files.append(objectsIn: chat.files)
-            chatMessage.content = chat.content ?? ""
-            
-            try realm.write {
-                realm.add(chatMessage)
-            }
-            
-            print("👽 저장 완료")
-            
-            
+            return chatRoom
         } catch let error {
-            print("소켓에서 받아온 채팅 저장", error)
+            print("챗룸 확인 혹은 생성 실패:", error)
+            return nil
         }
-        
     }
     
-    // 최신 시간 이후 안 읽은 채팅 저장
+    /// 읽지 않은 채팅 저장
     func saveUnreadChat(chat: [LastChat]) {
-        if chat.count != 0 {
-            do {
-                let realm = try Realm()
-                
-                
-                // 사용자 정보 가져오기
-                let sender = realm.object(ofType: UserInfo.self, forPrimaryKey: chat[0].sender.userID)
-                
-                let myInfo = UserInfo()
-                
-                myInfo.nickname = UserDefaultsManager.userNickname
-                myInfo.profileImage = UserDefaultsManager.profileImage
-                myInfo.userID = UserDefaultsManager.userId
-                
-                // 메시지 생성
-                let chatMessage = ChatMessage()
-                chatMessage.sender = sender
-                chatMessage.content = chat[0].content ?? ""
-                chatMessage.createdAt = Date.formattedDate(for: Date(), format: "yyyy-MM-dd HH:mm:ss")
-                chatMessage.files.append(objectsIn: chat[0].files)
-                
-                
-            } catch let error {
-                print("최신 날짜 이후 채팅 저장 실패", error)
-            }
-        }
-    }
-    
-    // 최신날짜 전달
-    func fetchRecentDate(for userID: String) -> String {
+        guard !chat.isEmpty else { return }
         do {
             let realm = try Realm()
+            let roomID = chat[0].roomID
             
-            // ChatMessage에서 sender.userID를 기준으로 필터링
-            let filteredMessages = realm.objects(ChatMessage.self)
-                .filter("sender.userID == %@", userID)
-            
-            // 필터링된 메시지가 있으면 가장 최근 날짜 반환
-            if let mostRecentMessage = filteredMessages.sorted(byKeyPath: "createdAt", ascending: false).first {
-                return mostRecentMessage.createdAt
-            } else {
-                return "" // 필터 결과가 없는 경우 빈 문자열 반환
+            // ChatRoom 처리
+            var chatRoom = realm.object(ofType: ChatRoom.self, forPrimaryKey: roomID)
+            if chatRoom == nil {
+                chatRoom = ChatRoom(value: ["roomID": roomID])
+                try realm.write {
+                    realm.add(chatRoom!)
+                }
             }
-        } catch {
-            print("패치 에러:", error)
+            
+            for item in chat {
+                // Sender 처리
+                var sender = realm.object(ofType: UserInfo.self, forPrimaryKey: item.sender.userID)
+                if sender == nil {
+                    sender = UserInfo(value: [
+                        "userID": item.sender.userID,
+                        "nickname": item.sender.nick,
+                        "profileImage": item.sender.profileImage ?? ""
+                    ])
+                    try realm.write {
+                        realm.add(sender!, update: .modified) // 중복 확인 후 업데이트
+                    }
+                } else {
+                    try realm.write {
+                        sender?.nickname = item.sender.nick
+                        sender?.profileImage = item.sender.profileImage
+                    }
+                }
+                
+                // ChatMessage 처리
+                if let existingMessage = realm.object(ofType: ChatMessage.self, forPrimaryKey: item.chatID) {
+                    // 이미 존재하는 메시지 업데이트
+                    try realm.write {
+                        existingMessage.content = item.content ?? ""
+                        existingMessage.createdAt = ""
+                        existingMessage.sender = sender
+                        existingMessage.files.removeAll()
+                        existingMessage.files.append(objectsIn: item.files)
+                    }
+                } else {
+                    // 새 메시지 추가
+                    let chatMessage = ChatMessage(value: [
+                        "chatID": item.chatID, // Primary Key
+                        "createdAt": "",
+                        "sender": sender!,
+                        "content": item.content ?? "",
+                        "files": item.files
+                    ])
+                    try realm.write {
+                        realm.add(chatMessage)
+                    }
+                }
+                
+                // ChatRoom에 메시지 추가 (중복 방지)
+                try realm.write {
+                    if !chatRoom!.chatList.contains(where: { $0.chatID == item.chatID }) {
+                        let chatMessage = realm.object(ofType: ChatMessage.self, forPrimaryKey: item.chatID)
+                        if let chatMessage = chatMessage {
+                            chatRoom!.chatList.append(chatMessage)
+                        }
+                    }
+                }
+            }
+        } catch let error {
+            print("최신 날짜 이후 채팅 저장 실패:", error)
+        }
+    }
+    
+    /// 최신 메시지의 createdAt 반환
+    func fetchRecentDate(for roomID: String) -> String {
+        do {
+            let realm = try Realm()
+            let chatRoom = realm.object(ofType: ChatRoom.self, forPrimaryKey: roomID)
+            
+            if let lastMessage = chatRoom?.chatList.sorted(byKeyPath: "createdAt", ascending: false).first {
+                return lastMessage.createdAt
+            } else {
+                return ""
+            }
+        } catch let error {
+            print("최신 날짜 패치 실패:", error)
             return ""
         }
     }
     
-    // 저장된 채팅 정보 20개 + @(안 읽었던 게 있다면) 전달
-    func fetchSavedChat(unread: Int) -> [ChatMessage] {
-        
+    /// 저장된 메시지 20개 + 서버에서 전달받은 메시지 개수만큼 로드
+    func fetchSavedChat(unread: Int, roomID: String) -> [ChatMessage] {
         do {
             let realm = try Realm()
             
-            // 최신 데이터 20개씩 가져다 씀
-            let savedChat = realm.objects(ChatMessage.self)
+            guard let chatRoom = realm.object(ofType: ChatRoom.self, forPrimaryKey: roomID) else {
+                print("해당 RoomID에 대한 ChatRoom이 없습니다.")
+                return []
+            }
+            
+            let savedMessages = chatRoom.chatList
                 .sorted(byKeyPath: "createdAt", ascending: true)
                 .freeze()
-                .prefix(20)
-            print("👉", savedChat)
-            return Array(savedChat)
+                .suffix(20 + unread)
             
+            print("🟣",savedMessages)
+            
+            return Array(savedMessages)
         } catch let error {
-            print("저장된 정보 로드 에러", error)
+            print("저장된 정보 로드 실패:", error)
             return []
         }
+    }
+    
+    /// 소켓 메시지 저장
+    func saveChatMessage(chat: SocketDMModel) {
+        
+            do {
+                let realm = try Realm()
+                
+                // Sender 정보 확인 및 저장
+                var sender = realm.object(ofType: UserInfo.self, forPrimaryKey: chat.sender.userID)
+                if sender == nil {
+                    sender = UserInfo(value: [
+                        "userID": chat.sender.userID,
+                        "nickname": chat.sender.nick,
+                        "profileImage": chat.sender.profileImage ?? ""
+                    ])
+                    try realm.write {
+                        realm.add(sender!)
+                    }
+                }
+                
+                // ChatMessage 저장
+                try realm.write {
+                    let chatMessage = ChatMessage(value: [
+                        "chatID": chat.chatID, // Primary Key
+                        "createdAt": chat.createdAt,
+                        "sender": sender!,
+                        "content": chat.content ?? "",
+                        "files": chat.files
+                    ])
+                    realm.add(chatMessage, update: .modified)
+                }
+                
+                // ChatRoom 확인 및 연결
+                var chatRoom = realm.object(ofType: ChatRoom.self, forPrimaryKey: chat.roomID)
+                if chatRoom == nil {
+                    chatRoom = ChatRoom(value: ["roomID": chat.roomID])
+                    try realm.write {
+                        realm.add(chatRoom!)
+                    }
+                }
+                
+                // ChatRoom 업데이트
+                try realm.write {
+                    if !chatRoom!.userList.contains(sender!) {
+                        chatRoom!.userList.append(sender!)
+                    }
+                    if !chatRoom!.chatList.contains(where: { $0.chatID == chat.chatID }) {
+                        let chatMessage = realm.object(ofType: ChatMessage.self, forPrimaryKey: chat.chatID)
+                        if let chatMessage = chatMessage {
+                            chatRoom!.chatList.append(chatMessage)
+                        }
+                    }
+                }
+                
+                // ChatRoom과 메시지를 freeze하여 UI에서 안전하게 사용
+                let frozenChatRoom = chatRoom?.freeze()
+                let frozenChatMessages = frozenChatRoom?.chatList.freeze()
+                
+                print("🔵 UI 업데이트:", frozenChatMessages ?? [])
+                
+                
+                print("👽 저장 완료")
+            } catch let error {
+                print("소켓 메시지 저장 실패:", error)
+            }
         
     }
     
-    // 소켓에 저장한 내용 UI 바인드용 메서드 > 마지막 배열 하나 가져오면되지 않을까
+    /// 최신 메시지 로드
     func fetchLatestChat() -> [ChatMessage] {
-        
         do {
             let realm = try Realm()
-            
-            return Array(realm.objects(ChatMessage.self).sorted(byKeyPath: "createdAt", ascending: false))
-            
+            print("00")
+            let a = Array(realm.objects(ChatMessage.self).sorted(byKeyPath: "createdAt", ascending: false).freeze())
+            print("🐷", a[0])
+            return a
         } catch {
-            print("최신 내용 패치 실패")
+            print("최신 메시지 로드 실패")
             return []
         }
-        
     }
     
+    
+    
+    // for 페이지네이션
+    func fetchChats(roomID: String, offset: Int, limit: Int) -> [ChatMessage] {
+          do {
+              let realm = try Realm()
+              guard let chatRoom = realm.object(ofType: ChatRoom.self, forPrimaryKey: roomID) else {
+                  print("ChatRoom not found for ID: \(roomID)")
+                  return []
+              }
+              
+              let chats = chatRoom.chatList
+                  .sorted(byKeyPath: "createdAt", ascending: false)
+                  .dropFirst(offset)
+                  .prefix(limit)
+              
+              return Array(chats)
+          } catch {
+              print("Failed to fetch chats: \(error)")
+              return []
+          }
+      }
 }
