@@ -99,6 +99,7 @@ final class RealmRepository {
                         let chatMessage = realm.object(ofType: ChatMessage.self, forPrimaryKey: item.chatID)
                         if let chatMessage = chatMessage {
                             chatRoom!.chatList.append(chatMessage)
+                            print("챗룸에 저장")
                         }
                     }
                 }
@@ -139,8 +140,6 @@ final class RealmRepository {
                 .sorted(byKeyPath: "createdAt", ascending: true)
                 .freeze()
                 .suffix(20 + unread)
-            
-            print("🟣",savedMessages)
             
             return Array(savedMessages)
         } catch let error {

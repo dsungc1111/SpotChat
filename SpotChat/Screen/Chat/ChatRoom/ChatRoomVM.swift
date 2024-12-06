@@ -42,15 +42,16 @@ final class ChatRoomVM: BaseVMProtocol {
         let chatList = CurrentValueSubject<[ChatMessage], Never>([])
         let socketChatList = PassthroughSubject<SocketDMModel, Never>()
         
+        // 트리거
         input.trigger
             .sink { [weak self] roomID in
                 guard let self else { return }
-                print("ㅅㅂ1")
                 handleTrigger(roomID: roomID, chatList: chatList)
-                print("ㅅㅂ2")
+                print("chatroom = ", roomID)
             }
             .store(in: &cancellables)
         
+        // 소켓 메시지 받아올 때
         socketManager.socketSubject
             .sink { [weak self] socketMessage in
                 guard let self else { return }
@@ -58,6 +59,7 @@ final class ChatRoomVM: BaseVMProtocol {
             }
             .store(in: &cancellables)
         
+        // 전송 버튼
         input.sendMessage
             .sink { [weak self] message in
                 guard let self else { return }
@@ -67,9 +69,6 @@ final class ChatRoomVM: BaseVMProtocol {
         
         return Output(chatList: chatList, socketChatList: socketChatList)
     }
-    
-    
-    
 }
 
 
@@ -79,11 +78,11 @@ extension ChatRoomVM {
         
         guard !isLoading else { return } // 이미 로딩 중이라면 요청 차단
         guard currentIndex < chatList.value.count - 2 else {
-            print("도달 못함")
+//            print("도달 못함")
             return
         } // 임계값 도달 시만 요청
         
-        print("맻기야!!!!!", currentIndex)
+//        print("맻기야!!!!!", currentIndex)
         isLoading = true
         DispatchQueue.global().async { [weak self] in
             guard let self else { return }
@@ -103,21 +102,6 @@ extension ChatRoomVM {
     
     
     private func handleTrigger(roomID: String, chatList: CurrentValueSubject<[ChatMessage], Never>) {
-        
-        synchronizeDataForRoom(roomID: roomID) { [weak self] in
-            guard let self else { return }
-            
-            // Realm에서 저장된 메시지 20개 + 서버에서 추가로 가져온 메시지 개수만큼 가져옴
-            let savedChat = self.realmRepository.fetchSavedChat(unread: 0, roomID: roomID) // unread 계산 필요 시 적용
-            chatList.send(savedChat)
-            
-            // 소켓 연결
-            self.socketManager.connect()
-        }
-    }
-    
-    
-    private func synchronizeDataForRoom(roomID: String, completion: @escaping () -> Void) {
         Task {
             // Realm에서 마지막 메시지의 createdAt 값을 가져옴
             let lastCreatedAt = realmRepository.fetchRecentDate(for: roomID)
@@ -135,10 +119,16 @@ extension ChatRoomVM {
                 }
                 
                 print("🔵 동기화 완료: \(result.data.count)개의 메시지가 저장됨")
-                completion()
+                
+                let savedChat = self.realmRepository.fetchSavedChat(unread: result.data.count, roomID: roomID) // unread 계산 필요 시 적용
+                chatList.send(savedChat)
+                
+                // 소켓 연결
+                self.socketManager.connect()
+                
+                
             } catch {
                 print("🔴 데이터 동기화 실패: \(error)")
-                completion() // 실패하더라도 UI 업데이트를 위해 completion 호출
             }
         }
     }

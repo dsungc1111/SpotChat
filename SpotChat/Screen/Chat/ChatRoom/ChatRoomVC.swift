@@ -19,6 +19,7 @@ final class ChatRoomVC: BaseVC {
     private var chatRoomView = ChatRoomView()
     private var cancellables = Set<AnyCancellable>()
     private var imagePicker = PostImagePickerManager()
+    
     private lazy var dataSourceProvider = PostDataSourceProvider(collectionView: chatRoomView.imageContainer, cellSize: CGSize(width: 40, height: 40))
     
     private var uploadImageList: [UIImage] = []
@@ -37,6 +38,8 @@ final class ChatRoomVC: BaseVC {
     private var dataSource: ChatRoomDataSource!
     
     var list: [OpenChatModel] = []
+    
+    var navigationTitle: String = ""
     
     
     private lazy var chatRoomVM = ChatRoomVM(socketManager: SocketNetworkManager(roomID: list.first?.roomID ?? ""))
@@ -151,9 +154,15 @@ final class ChatRoomVC: BaseVC {
             }
             .store(in: &cancellables)
         
-        chatRoomView.titleLabel.text = "채팅방"
+        for other in list[0].participants {
+            if other.userID != UserDefaultsManager.userId {
+                navigationTitle = other.nick
+            }
+        }
+        
+        chatRoomView.titleLabel.text = navigationTitle
     }
-
+    
     
     private func configureTableView() {
         dataSource = ChatRoomDataSource(messages: messages)
@@ -253,13 +262,7 @@ extension ChatRoomVC: UICollectionViewDelegate {
 }
 
 extension ChatRoomVC: UITableViewDelegate {
-    
-    
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        
-        
-        
-        
         chatRoomVM.fetchMoreChatsIfNeeded(for: list.first?.roomID ?? "", currentIndex: indexPath.row)
     }
 }

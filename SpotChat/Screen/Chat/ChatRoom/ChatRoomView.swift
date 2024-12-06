@@ -143,6 +143,7 @@ final class ChatRoomView: BaseView {
     
     
     func updateMessageInputContainer(forTextView textView: UITextView, hasImages: Bool) {
+        
         let size = CGSize(width: textView.frame.width, height: CGFloat.greatestFiniteMagnitude)
         let estimatedSize = textView.sizeThatFits(size)
         

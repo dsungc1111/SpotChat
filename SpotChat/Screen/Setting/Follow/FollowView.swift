@@ -89,15 +89,3 @@ extension FollowView {
     }
     
 }
-
-/*
- 네비게이션바 타이틀: UserDefaultsManager.UserNick
- 
- 세그먼트 컨트롤러 (몇명인지) follow / (몇명인지) following
- 
- 검색바
- 
- 테이블뷰 사용해서 리스트업
- 프로필이미지 + 닉네임
- 
- */

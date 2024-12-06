@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 struct SocketDMModel: Codable {
     let chatID: String
     let roomID: String

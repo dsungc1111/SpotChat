@@ -23,8 +23,8 @@ final class StoryCollectionViewCell: BaseCollectionViewCell {
         gradientLayer.colors = [UIColor(hexCode: "F4EC78").cgColor, UIColor(hexCode: "6AF4F7").cgColor]
         gradientLayer.startPoint = CGPoint(x: 0, y: 0.5)
         gradientLayer.endPoint = CGPoint(x: 1, y: 0.5)
-        gradientLayer.frame = CGRect(x: 0, y: 0, width: 60, height: 60)
-        gradientLayer.cornerRadius = 30
+        gradientLayer.frame = CGRect(x: -1, y: -1, width: 62, height: 62)
+        gradientLayer.cornerRadius = 31
         
         let shapeLayer = CAShapeLayer()
         shapeLayer.lineWidth = 3 // 보더의 두께를 설정
@@ -42,7 +42,9 @@ final class StoryCollectionViewCell: BaseCollectionViewCell {
     private let nicknameLabel = {
         let label = UILabel()
         label.text = "닉네임칸"
+        label.font = .systemFont(ofSize: 12)
         label.textColor = .white
+        label.textAlignment = .center
         return label
     }()
     
