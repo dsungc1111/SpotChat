@@ -161,7 +161,6 @@ extension MapVC {
         // 거리 옵션 배열
         let distances = [500, 1000, 2000, 3000]
         
-        
         distances.forEach { distance in
             alert.addAction(UIAlertAction(title: "\(distance)m", style: .default, handler: { [weak self] _ in
                 guard let self else { return }
@@ -188,18 +187,24 @@ extension MapVC: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         guard let customAnnotation = annotation as? CustomAnnotation else { return nil }
         
-        let identifier = "CustomAnnotationView"
-        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKMarkerAnnotationView
+        let identifier = "CustomImageAnnotationView"
+        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
         
         if annotationView == nil {
-            annotationView = MKMarkerAnnotationView(annotation: customAnnotation, reuseIdentifier: identifier)
-            annotationView?.canShowCallout = true
-            annotationView?.subtitleVisibility = .adaptive
+            // 새로운 MKAnnotationView 생성
+            annotationView = MKAnnotationView(annotation: customAnnotation, reuseIdentifier: identifier)
+            annotationView?.canShowCallout = true // 클릭 시 말풍선 표시
+            annotationView?.image = UIImage(systemName: "train.side.front.car") // 원하는 이미지 설정
+            annotationView?.frame.size = CGSize(width: 40, height: 40) // 아이콘 크기 조절
+            
+            // 말풍선에 추가 액세서리 설정 가능
+            let infoButton = UIButton(type: .detailDisclosure)
+            annotationView?.rightCalloutAccessoryView = infoButton
         } else {
             annotationView?.annotation = customAnnotation
         }
         
-        annotationView?.markerTintColor = AppColorSet.keyColor
+//        annotationView?.markerTintColor = AppColorSet.keyColor
         return annotationView
     }
     
@@ -211,6 +216,7 @@ extension MapVC: MKMapViewDelegate {
         
         let latitude = annotation.coordinate.latitude
         let longitude = annotation.coordinate.longitude
+        
         let geolocationQuery = GeolocationQuery(longitude: "\(longitude)", latitude: "\(latitude)", maxDistance: "0")
         
         Task {
@@ -363,7 +369,7 @@ extension MapVC: UICollectionViewDelegate, UICollectionViewDataSource {
 }
 
 
-// MARK: UIPanGestureRecognizer 를 활용하여 프로필 deinit
+// MARK: UIPanGestureRecognizer 를 활용하여 프로필 deinitㅊ
 extension MapVC {
     
     @objc private func handleSwipe(_ gesture: UIPanGestureRecognizer) {

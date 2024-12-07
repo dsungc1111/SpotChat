@@ -102,7 +102,6 @@ final class NetworkManager2 {
         }
         print("🔫🔫🔫🔫🔫응답 상태 코드: \(httpResponse.statusCode)🔫🔫🔫🔫🔫\(request)🔫🔫🔫🔫🔫🔫🔫🔫🔫🔫🔫🔫")
         
-        
         switch httpResponse.statusCode {
         case 200..<300:
             do {

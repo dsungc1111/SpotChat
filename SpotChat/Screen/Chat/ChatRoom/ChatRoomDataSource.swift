@@ -5,7 +5,6 @@
 //  Created by 최대성 on 11/28/24.
 //
 
-
 import UIKit
 
 final class ChatRoomDataSource: NSObject, UITableViewDataSource {
@@ -20,6 +19,7 @@ final class ChatRoomDataSource: NSObject, UITableViewDataSource {
         self.messages = message
         tableView.reloadData()
     }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return messages.count
     }

@@ -60,11 +60,9 @@ final class StoryCollectionViewCell: BaseCollectionViewCell {
         nicknameLabel.snp.makeConstraints { make in
             make.top.equalTo(storyCircleBtn.snp.bottom).offset(10)
             make.centerX.equalTo(safeAreaLayoutGuide)
-            
         }
     }
     func configureCell(following: Follow) {
-        
         
         
         storyCircleBtn.setImage(following.profileImage == nil ? UIImage(systemName: "person") : UIImage(systemName: "star"), for: .normal)

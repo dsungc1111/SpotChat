@@ -18,7 +18,7 @@ protocol PostDataSourceProviderProtocol {
     func deleteImage(at index: Int)
 }
 
-class PostDataSourceProvider: PostDataSourceProviderProtocol {
+final class PostDataSourceProvider: PostDataSourceProviderProtocol {
     
     
     typealias Snapshot = NSDiffableDataSourceSnapshot<Section, UIImage>
@@ -38,6 +38,8 @@ class PostDataSourceProvider: PostDataSourceProviderProtocol {
         configureDataSource()
     }
     
+    
+    // 셀 구성
     func configureDataSource() {
         dataSource = UICollectionViewDiffableDataSource<Section, UIImage>(collectionView: collectionView) { [weak self] collectionView, indexPath, image in
             guard let self else { return UICollectionViewCell() }
@@ -50,12 +52,14 @@ class PostDataSourceProvider: PostDataSourceProviderProtocol {
         applyInitialSnapshot()
     }
     
+    // 컬렉션 뷰 적용
     func applyInitialSnapshot() {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
         dataSource.apply(snapshot, animatingDifferences: false)
     }
     
+    // 데이터소스 업데이트
     func updateDataSource(with images: [UIImage]) {
         // 이미지 리스트가 비어 있으면 데이터 소스 초기화
         if images.isEmpty {
@@ -70,6 +74,7 @@ class PostDataSourceProvider: PostDataSourceProviderProtocol {
         dataSource.apply(snapshot, animatingDifferences: true)
     }
     
+    // 데이터 삭제
     func deleteImage(at index: Int) {
         imageList.remove(at: index)
         updateDataSource(with: imageList)

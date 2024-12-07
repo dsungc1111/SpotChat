@@ -20,7 +20,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return AuthController.handleOpenUrl(url: url)
         }
         
-        
         return false
     }
     

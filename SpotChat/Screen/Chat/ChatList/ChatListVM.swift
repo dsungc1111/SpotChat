@@ -10,8 +10,6 @@ import Combine
 
 final class ChatListVM: BaseVMProtocol {
     
-    
-    
     struct Input {
         let trigger = PassthroughSubject<Void, Never>()
     }
