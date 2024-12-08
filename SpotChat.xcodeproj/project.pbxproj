@@ -78,6 +78,7 @@
 		8B7F3BB92CD3AF0D00B6D34C /* KakaoAuthVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7F3BB82CD3AF0D00B6D34C /* KakaoAuthVM.swift */; };
 		8B7F3BBD2CD45FA300B6D34C /* TabBarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7F3BBC2CD45FA300B6D34C /* TabBarVC.swift */; };
 		8B8266132CF8A242004E4C1A /* ChatRoomDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8266122CF8A242004E4C1A /* ChatRoomDataSource.swift */; };
+		8B8677572D05521E005991A1 /* KeyBoardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8677562D05521E005991A1 /* KeyBoardManager.swift */; };
 		8B923F912CF9817300C4A016 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B923F902CF9817300C4A016 /* ImageCollectionViewCell.swift */; };
 		8B923F972CFC447700C4A016 /* PopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B923F962CFC447700C4A016 /* PopupView.swift */; };
 		8B9F773E2CE0D903009887D4 /* CombineCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 8B9F773D2CE0D903009887D4 /* CombineCocoa */; };
@@ -89,7 +90,6 @@
 		8BDC9F872CD4612E00E94702 /* SettingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDC9F862CD4612E00E94702 /* SettingVC.swift */; };
 		8BDC9F892CD4683900E94702 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDC9F882CD4683800E94702 /* MapView.swift */; };
 		8BDC9F8B2CD46CE100E94702 /* AppColorSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDC9F8A2CD46CE100E94702 /* AppColorSet.swift */; };
-		8BDC9F8E2CD4719700E94702 /* IQKeyboardManagerSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 8BDC9F8D2CD4719700E94702 /* IQKeyboardManagerSwift */; };
 		8BDC9F902CD476F200E94702 /* StoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDC9F8F2CD476F200E94702 /* StoryCollectionViewCell.swift */; };
 		8BDC9F922CD4771600E94702 /* BaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDC9F912CD4771600E94702 /* BaseCollectionViewCell.swift */; };
 		8BDC9F952CD4CD8C00E94702 /* SignInVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BDC9F942CD4CD8C00E94702 /* SignInVC.swift */; };
@@ -213,6 +213,7 @@
 		8B7F3BBA2CD3B8A800B6D34C /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		8B7F3BBC2CD45FA300B6D34C /* TabBarVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarVC.swift; sourceTree = "<group>"; };
 		8B8266122CF8A242004E4C1A /* ChatRoomDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomDataSource.swift; sourceTree = "<group>"; };
+		8B8677562D05521E005991A1 /* KeyBoardManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyBoardManager.swift; sourceTree = "<group>"; };
 		8B923F902CF9817300C4A016 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		8B923F962CFC447700C4A016 /* PopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupView.swift; sourceTree = "<group>"; };
 		8B9F77422CE0DE37009887D4 /* PostBindManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostBindManager.swift; sourceTree = "<group>"; };
@@ -258,7 +259,6 @@
 				8B34373C2CD76CED003B3104 /* CoreLocation.framework in Frameworks */,
 				8B34373A2CD76CDE003B3104 /* SystemConfiguration.framework in Frameworks */,
 				8B3437382CD76CD3003B3104 /* OpenGLES.framework in Frameworks */,
-				8BDC9F8E2CD4719700E94702 /* IQKeyboardManagerSwift in Frameworks */,
 				8B7F3BB62CD3967900B6D34C /* KakaoSDKCommon in Frameworks */,
 				8B7F3B562CCE0DED00B6D34C /* SnapKit in Frameworks */,
 				8B7F3BB42CD3967900B6D34C /* KakaoSDKCertCore in Frameworks */,
@@ -469,6 +469,7 @@
 				8B7424D22CCA5A9600E198C3 /* AppDelegate.swift */,
 				8B7424D42CCA5A9600E198C3 /* SceneDelegate.swift */,
 				8BDC9F8A2CD46CE100E94702 /* AppColorSet.swift */,
+				8B8677562D05521E005991A1 /* KeyBoardManager.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -704,7 +705,6 @@
 				8B7F3BB12CD3967900B6D34C /* KakaoSDKCert */,
 				8B7F3BB32CD3967900B6D34C /* KakaoSDKCertCore */,
 				8B7F3BB52CD3967900B6D34C /* KakaoSDKCommon */,
-				8BDC9F8D2CD4719700E94702 /* IQKeyboardManagerSwift */,
 				8B9F773D2CE0D903009887D4 /* CombineCocoa */,
 				8BEB7BB72CE7327E0079D068 /* Kingfisher */,
 				8B5F31632CF45ACB0059BAC3 /* SocketIO */,
@@ -785,7 +785,6 @@
 			packageReferences = (
 				8B7F3B542CCE0DED00B6D34C /* XCRemoteSwiftPackageReference "SnapKit" */,
 				8B7F3BAC2CD3967900B6D34C /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
-				8BDC9F8C2CD4719700E94702 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */,
 				8B9F773C2CE0D903009887D4 /* XCRemoteSwiftPackageReference "CombineCocoa" */,
 				8BEB7BB62CE7327E0079D068 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				8B5F31622CF45ACB0059BAC3 /* XCRemoteSwiftPackageReference "socket.io-client-swift" */,
@@ -894,6 +893,7 @@
 				8BF8D26A2CF02EBF0046786F /* FollowVC.swift in Sources */,
 				8B7F3B8B2CD0CF4D00B6D34C /* SignUpView.swift in Sources */,
 				8B5F31662CF45CD00059BAC3 /* ChatListView.swift in Sources */,
+				8B8677572D05521E005991A1 /* KeyBoardManager.swift in Sources */,
 				8B5F31682CF46B1D0059BAC3 /* ChatListVM.swift in Sources */,
 				8BF8D2742CF306AB0046786F /* CustomAnnotation.swift in Sources */,
 				8B923F912CF9817300C4A016 /* ImageCollectionViewCell.swift in Sources */,
@@ -1305,14 +1305,6 @@
 				minimumVersion = 0.4.1;
 			};
 		};
-		8BDC9F8C2CD4719700E94702 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/hackiftekhar/IQKeyboardManager.git";
-			requirement = {
-				kind = upToNextMinorVersion;
-				minimumVersion = 7.1.0;
-			};
-		};
 		8BEB7BB62CE7327E0079D068 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
@@ -1368,11 +1360,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 8B9F773C2CE0D903009887D4 /* XCRemoteSwiftPackageReference "CombineCocoa" */;
 			productName = CombineCocoa;
-		};
-		8BDC9F8D2CD4719700E94702 /* IQKeyboardManagerSwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 8BDC9F8C2CD4719700E94702 /* XCRemoteSwiftPackageReference "IQKeyboardManager" */;
-			productName = IQKeyboardManagerSwift;
 		};
 		8BEB7BB72CE7327E0079D068 /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -55,7 +55,11 @@ final class ChatListVC: BaseVC {
         let input = chatListVM.input
         let output = chatListVM.transform(input: input)
         
-        input.trigger.send(())
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+            input.trigger.send(())
+        })
+        
+        
         
     
         output.chattingList
