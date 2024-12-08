@@ -51,6 +51,14 @@
 
 # 👉  상세 기능 구현 설명
 
+### - 공통 기능 설계
+
+- 객체간의 결합도를 낮추고 유지보수의 용이성을 위해 DIP를 적용해, 여러개의 ViewModel이 구체적인 구현(RealmRepository)에 의존하지 않고, 추상화(DataBaseRepository)에 의존하도록 구현
+
+![poster](./model.png)
+
+<br>
+
 ### 공통 기능 설계
 
 
@@ -74,24 +82,24 @@
    - View <-> DataSource
 
 3. ViewModel
-   - VC에서 발생한 사용자 액션을 받아 비즈니스 로직을 처리한 후, Output으로 전달
+  - VC에서 발생한 사용자 액션을 받아 비즈니스 로직을 처리한 후, Output으로 전달
    - Input: 사용자의 텍스트 입력, 버튼 클릭 등의 이벤트 처리
    - Repository 및 네트워크 계층과 통신하여 데이터를 가져오거나 갱신.
    - Output: 데이터 상태 변화를 감지하고 View에 업데이트할 정보 전달
 
 
 4. Repository or Network
-   - 데이터의 영속성 및 네트워크 통신 담당
+  - 데이터의 영속성 및 네트워크 통신 담당
    - ViewModel의 요청을 받아 데이터를 조회, 저장, 삭제 등의 작업을 수행 후 ViewModel로 전달
 
 
 5. ImagePickerManager
-   - 이미지 선택 및 관리 전담
+  - 이미지 선택 및 관리 전담
    - 사용자가 이미지 선택 버튼을 눌렀을 때 갤러리를 열어 이미지 선택 가능할 수 있도록 처리
    - 선택된 이미지를 bindManager로 전달(이미지의 경우에만 bindManager에서 data형식으로 변환 후, ViewModel로 이동)
 
 6. DataSourceProvider
-   - 컬렉션뷰 / 테이블뷰와의 연결 담당
+  - 컬렉션뷰 / 테이블뷰와의 연결 담당
    - 데이터 변화에 따라 셀 UI 업데이트
 
 <br>
