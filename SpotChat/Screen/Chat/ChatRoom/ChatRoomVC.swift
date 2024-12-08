@@ -41,27 +41,21 @@ final class ChatRoomVC: BaseVC {
     
     var navigationTitle: String = ""
     
-    
     private lazy var chatRoomVM = ChatRoomVM(socketManager: SocketNetworkManager(roomID: list.first?.roomID ?? ""))
     
     override func loadView() {
         view = chatRoomView
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        setupKeyboardObservers()
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        NotificationCenter.default.removeObserver(self)
+    override func viewDidDisappear(_ animated: Bool) {
+        KeyboardManager.shared.removeObservers()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureTableView()
+        setupKeyboardManager()
     }
+    
     
     override func bind() {
         
@@ -184,38 +178,34 @@ final class ChatRoomVC: BaseVC {
 // MARK: - 키보드 대응
 extension ChatRoomVC {
     
-    private func setupKeyboardObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+    private func setupKeyboardManager() {
+        KeyboardManager.shared.configure(
+            observingView: view,
+            keyboardWillShow: { [weak self] keyboardHeight in
+                guard let self else { return }
+                updateMessageInputPosition(for: keyboardHeight)
+            },
+            keyboardWillHide: { [weak self] in
+                guard let self else { return }
+                resetMessageInputPosition()
+            },
+            dismissOnTap: true
+        )
     }
     
-    @objc private func keyboardWillShow(notification: Notification) {
-        
-        // 현재 동작하고 있는 이벤트에서 키보드의 frame을 받아옴
-        guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
-        
-        let keyboardHeight = keyboardFrame.height
-        //현재 기기의 안전 영역(Safe Area) 하단에 있는 공간 크기
-        let safeAreaBottomInset = view.safeAreaInsets.bottom
-        
-        let adjustedHeight = keyboardHeight - safeAreaBottomInset
-        
-        // 입력창 컨테이너 이동
+    private func updateMessageInputPosition(for keyboardHeight: CGFloat) {
         chatRoomView.messageInputContainer.snp.updateConstraints { make in
-            make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-adjustedHeight)
+            make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-keyboardHeight)
         }
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
         }
-        scrollToBottom()
     }
     
-    @objc private func keyboardWillHide(notification: Notification) {
-        
+    private func resetMessageInputPosition() {
         chatRoomView.messageInputContainer.snp.updateConstraints { make in
             make.bottom.equalTo(view.safeAreaLayoutGuide)
         }
-        
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
         }
@@ -250,8 +240,6 @@ extension ChatRoomVC: UITextViewDelegate {
         }
     }
 }
-
-
 
 extension ChatRoomVC: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

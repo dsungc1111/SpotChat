@@ -113,9 +113,11 @@ final class RealmRepository {
     func fetchRecentDate(for roomID: String) -> String {
         do {
             let realm = try Realm()
-            let chatRoom = realm.object(ofType: ChatRoom.self, forPrimaryKey: roomID)
-            
-            if let lastMessage = chatRoom?.chatList.sorted(byKeyPath: "createdAt", ascending: false).first {
+            guard let chatRoom = realm.object(ofType: ChatRoom.self, forPrimaryKey: roomID) else {
+                print("해당 RoomID에 대한 ChatRoom이 없습니다.")
+                return ""
+            }
+            if let lastMessage = chatRoom.chatList.sorted(byKeyPath: "createdAt", ascending: false).first {
                 return lastMessage.createdAt
             } else {
                 return ""
@@ -219,10 +221,7 @@ final class RealmRepository {
     func fetchLatestChat() -> [ChatMessage] {
         do {
             let realm = try Realm()
-            print("00")
-            let a = Array(realm.objects(ChatMessage.self).sorted(byKeyPath: "createdAt", ascending: false).freeze())
-            print("🐷", a[0])
-            return a
+            return Array(realm.objects(ChatMessage.self).sorted(byKeyPath: "createdAt", ascending: false).freeze())
         } catch {
             print("최신 메시지 로드 실패")
             return []
