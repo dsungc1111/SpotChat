@@ -51,14 +51,6 @@
 
 # 👉  상세 기능 구현 설명
 
-### - 공통 기능 설계
-
-- 객체간의 결합도를 낮추고 유지보수의 용이성을 위해 DIP를 적용해, 여러개의 ViewModel이 구체적인 구현(RealmRepository)에 의존하지 않고, 추상화(DataBaseRepository)에 의존하도록 구현
-
-![poster](./model.png)
-
-<br>
-
 ### 공통 기능 설계
 
 
