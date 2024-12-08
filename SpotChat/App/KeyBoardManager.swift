@@ -64,7 +64,9 @@ final class KeyboardManager {
         return frame.height
     }
     
+
     // 탭 제스처 (키보드 숨김 처리)
+
     private func addTapGesture(to view: UIView?) {
         guard let view = view else { return }
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
