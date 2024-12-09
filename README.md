@@ -5,7 +5,7 @@
 
 
 <br> <br> 
-    ![poster](./Moring.png) 
+   
 <br> <br> 
 
 # 🙋‍♀️ 프로젝트 주요 기능 
@@ -129,6 +129,12 @@
 
 ### 소셜 로그인 연동
  - OAuth 기반의 인증을 통해 카카오 및 애플 로그인을 연동하여, 사용자에게 간편한 로그인 경험을 제공하며, 외부 인증 서버를 활용해 보안성을 강화하고 애플리케이션에서 민감한 사용자 인증 정보를 직접 처리하지 않도록 설계
+ <img src = "https://github.com/user-attachments/assets/7be0f9f5-1004-4f7f-a7d3-70997e050a88" width="200" height="450">
+ <img src = "https://github.com/user-attachments/assets/7a4a912e-a62a-4bea-b136-4138b4e34189" width="200" height="450">
+ <img src = "https://github.com/user-attachments/assets/fbc3f5ac-2eb4-43a5-abd6-40c6a001759b" width="200" height="450">
+
+
+
 
 <br>
 
