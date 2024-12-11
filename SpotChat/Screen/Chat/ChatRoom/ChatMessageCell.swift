@@ -11,17 +11,25 @@ import Kingfisher
 
 final class ChatMessageCell: BaseTableViewCell {
     
-    private let messageBubble: UIView = {
+    private let messageBubble = {
         let view = UIView()
         view.layer.cornerRadius = 12
         view.clipsToBounds = true
         return view
     }()
     
-    private let messageLabel: UILabel = {
+    private let messageLabel = {
         let label = UILabel()
         label.numberOfLines = 0
         label.font = .systemFont(ofSize: 12)
+        return label
+    }()
+    
+    private let timeLabel = {
+        let label = UILabel()
+        label.text = "시가닝요"
+        label.font = .systemFont(ofSize: 8)
+        label.textColor = .white
         return label
     }()
     
@@ -39,38 +47,40 @@ final class ChatMessageCell: BaseTableViewCell {
     override func configureHierarchy() {
         selectionStyle = .none
         backgroundColor = .clear
-        
+
         contentView.addSubview(messageBubble)
         messageBubble.addSubview(messageLabel)
         messageBubble.addSubview(imageContainerStackView)
+        contentView.addSubview(timeLabel)
     }
     
     override func configureLayout() {
         messageBubble.snp.makeConstraints { make in
-            make.top.equalTo(contentView.safeAreaLayoutGuide).inset(8)
+            make.top.equalToSuperview().inset(8)
             make.width.lessThanOrEqualToSuperview().multipliedBy(0.6)
             make.bottom.equalToSuperview().inset(8).priority(.low)
             
             leadingConstraint = make.leading.equalToSuperview().inset(10).constraint
             trailingConstraint = make.trailing.equalToSuperview().inset(10).constraint
         }
-        
         messageLabel.snp.makeConstraints { make in
             make.top.equalTo(messageBubble.snp.top).inset(8)
             make.leading.trailing.equalToSuperview().inset(12)
             make.bottom.equalTo(imageContainerStackView.snp.top).offset(-8)
         }
-        
         imageContainerStackView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(8)
             make.bottom.equalToSuperview().inset(16)
+        }
+        timeLabel.snp.makeConstraints { make in
+            make.bottom.equalTo(messageBubble.snp.bottom)
+            make.leading.equalTo(messageBubble.snp.trailing).offset(4).priority(.medium)
+            make.trailing.equalTo(messageBubble.snp.leading).offset(-4).priority(.medium)
         }
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        
-        // 초기화
         messageLabel.text = nil
         messageLabel.isHidden = false
         imageContainerStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
@@ -81,7 +91,9 @@ final class ChatMessageCell: BaseTableViewCell {
         // 텍스트 설정
         if let content = message.lastChat.first?.content, !content.isEmpty {
             messageLabel.text = content
+            timeLabel.text = Date.formatDate(from: message.lastChat[0].createdAt)
             messageLabel.isHidden = false
+            
         } else {
             messageLabel.text = nil
             messageLabel.isHidden = true
@@ -135,11 +147,22 @@ final class ChatMessageCell: BaseTableViewCell {
             messageLabel.textColor = .black
             leadingConstraint?.deactivate()
             trailingConstraint?.activate()
+            
+            timeLabel.snp.remakeConstraints { make in
+                make.trailing.equalTo(messageBubble.snp.leading).offset(-4)
+                make.bottom.equalTo(messageBubble.snp.bottom).inset(4)
+                
+            }
         } else {
             messageBubble.backgroundColor = AppColorSet.keyColor
             messageLabel.textColor = .black
             trailingConstraint?.deactivate()
             leadingConstraint?.activate()
+            
+            timeLabel.snp.remakeConstraints { make in
+                make.leading.equalTo(messageBubble.snp.trailing).offset(4)
+                make.bottom.equalTo(messageBubble.snp.bottom).inset(4)
+            }
         }
         
         contentView.setNeedsLayout()
@@ -162,7 +185,7 @@ final class ChatMessageCell: BaseTableViewCell {
                     .requestModifier(modifier),
                     .processor(processor),
                     .scaleFactor(UIScreen.main.scale),
-                    .cacheOriginalImage,
+                    .cacheMemoryOnly, // 메모리 캐시만 사용
                     .transition(.fade(0.2))
                 ]
             )

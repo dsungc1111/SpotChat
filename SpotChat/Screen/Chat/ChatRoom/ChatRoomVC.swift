@@ -20,7 +20,7 @@ final class ChatRoomVC: BaseVC {
     private var cancellables = Set<AnyCancellable>()
     private var imagePicker = PostImagePickerManager()
     
-    private lazy var dataSourceProvider = PostDataSourceProvider(collectionView: chatRoomView.imageContainer, cellSize: CGSize(width: 40, height: 40))
+    private lazy var dataSourceManager = PostDataSourceProvider(collectionView: chatRoomView.imageContainer, cellSize: CGSize(width: 40, height: 40))
     
     private var uploadImageList: [UIImage] = []
     
@@ -46,6 +46,7 @@ final class ChatRoomVC: BaseVC {
     override func loadView() {
         view = chatRoomView
     }
+    
     override func viewDidDisappear(_ animated: Bool) {
         KeyboardManager.shared.removeObservers()
     }
@@ -95,7 +96,7 @@ final class ChatRoomVC: BaseVC {
                 
                 // 이미지 리스트 초기화
                 uploadImageList = []
-                dataSourceProvider.updateDataSource(with: uploadImageList)
+                dataSourceManager.updateDataSource(with: uploadImageList)
                 
                 // 텍스트뷰 초기화
                 chatRoomView.messageTextView.text = ""
@@ -120,7 +121,7 @@ final class ChatRoomVC: BaseVC {
         // 이미지 픽
         imagePicker.finishImagePick = { [weak self] images in
             guard let self else { return }
-            dataSourceProvider.updateDataSource(with: images)
+            dataSourceManager.updateDataSource(with: images)
             uploadImageList = images
             let hasImages = !images.isEmpty
             chatRoomView.updateMessageInputContainer(forTextView: self.chatRoomView.messageTextView, hasImages: hasImages)
@@ -165,14 +166,6 @@ final class ChatRoomVC: BaseVC {
         chatRoomView.chatTableView.dataSource = dataSource
         chatRoomView.imageContainer.delegate = self
     }
-    
-    // 메시지가 있을 때만
-    private func scrollToBottom() {
-        guard !messages.isEmpty else { return }
-        let lastRowIndex = max(messages.count - 1, 0)
-        let indexPath = IndexPath(row: lastRowIndex, section: 0)
-        chatRoomView.chatTableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
-    }
 }
 
 // MARK: - 키보드 대응
@@ -181,6 +174,7 @@ extension ChatRoomVC {
     private func setupKeyboardManager() {
         KeyboardManager.shared.configure(
             observingView: view,
+            excludedViews: [chatRoomView.sendButton, chatRoomView.imageAddBtn], // 제외할 뷰 추가
             keyboardWillShow: { [weak self] keyboardHeight in
                 guard let self else { return }
                 updateMessageInputPosition(for: keyboardHeight)
@@ -200,6 +194,7 @@ extension ChatRoomVC {
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
         }
+        scrollToBottom()
     }
     
     private func resetMessageInputPosition() {
@@ -209,6 +204,14 @@ extension ChatRoomVC {
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
         }
+    }
+    
+    // 메시지가 있을 때만
+    private func scrollToBottom() {
+        guard !messages.isEmpty else { return }
+        let lastRowIndex = max(messages.count - 1, 0)
+        let indexPath = IndexPath(row: lastRowIndex, section: 0)
+        chatRoomView.chatTableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
     }
 }
 
@@ -230,7 +233,7 @@ extension ChatRoomVC: UITextViewDelegate {
             chatRoomView.sendButton.setTitleColor(.lightGray, for: .normal)
             chatRoomView.sendButton.isEnabled = false
         }
-        let hasImages = !dataSourceProvider.imageList.isEmpty
+        let hasImages = !dataSourceManager.imageList.isEmpty
         chatRoomView.updateMessageInputContainer(forTextView: textView, hasImages: hasImages)
     }
     
@@ -243,8 +246,8 @@ extension ChatRoomVC: UITextViewDelegate {
 
 extension ChatRoomVC: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        dataSourceProvider.deleteImage(at: indexPath.row)
-        let hasImages = !dataSourceProvider.imageList.isEmpty
+        dataSourceManager.deleteImage(at: indexPath.row)
+        let hasImages = !dataSourceManager.imageList.isEmpty
         chatRoomView.updateMessageInputContainer(forTextView: chatRoomView.messageTextView, hasImages: hasImages)
     }
 }

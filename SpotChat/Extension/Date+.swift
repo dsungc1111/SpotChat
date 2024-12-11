@@ -54,11 +54,11 @@ extension Date {
             return "어제"
         } else if calendar.compare(date, to: now, toGranularity: .year) == .orderedSame {
             let monthDayFormatter = DateFormatter()
-            monthDayFormatter.dateFormat = "M.d"
+            monthDayFormatter.dateFormat = "M월 dd일"
             return monthDayFormatter.string(from: date)
         } else {
             let fullDateFormatter = DateFormatter()
-            fullDateFormatter.dateFormat = "yyyy.M.d"
+            fullDateFormatter.dateFormat = "yyyy.M.dd"
             return fullDateFormatter.string(from: date)
         }
     }

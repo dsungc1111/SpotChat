@@ -56,13 +56,8 @@ final class PostVC: BaseVC {
         bindManager.bind(view: postView, 
                          viewModel: postVM,
                          vc: self,
-                         imagePicker: imagePickerManager)
+                         imagePicker: imagePickerManager, 
+                         dataSourceManager: dataSourceProvider)
         
-//        imagePickerManager.finishImagePick = { [weak self] images in
-//            guard let self else { return }
-//            dataSourceProvider.updateDataSource(with: images)
-//            let imageData = images.compactMap { $0.jpegData(compressionQuality: 0.3) }
-//            postVM.input.postImageQuery.send(PostImageQuery(imageData: imageData))
-//        }
     }
 }

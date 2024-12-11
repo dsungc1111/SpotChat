@@ -137,9 +137,13 @@ final class SettingView: BaseView {
     func configureView(info: ProfileModel) {
         bioLabel.text = info.info1
         
-        postCountBtn.setTitle("\(info.posts.count)\nPosts", for: .normal)
-        followersCountBtn.setTitle("\(info.followers.count)\nFollowers", for: .normal)
-        followingCountBtn.setTitle("\(info.following.count)\nFollowing", for: .normal)
+//        postCountBtn.setTitle("\(info.posts.count)\nPosts", for: .normal)
+//        followersCountBtn.setTitle("\(info.followers.count)\nFollowers", for: .normal)
+//        followingCountBtn.setTitle("\(info.following.count)\nFollowing", for: .normal)
+        
+        postCountBtn.setTitle("24\nPosts", for: .normal)
+        followersCountBtn.setTitle("16\nFollowers", for: .normal)
+        followingCountBtn.setTitle("12\nFollowing", for: .normal)
         
         
         usernameLabel.text = (info.nick ?? "" ).isEmpty ? "아무개" : info.nick

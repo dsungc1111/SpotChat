@@ -18,12 +18,18 @@ final class DetailCollectionViewCell: BaseCollectionViewCell {
         btn.backgroundColor = .systemGray
         
         let gradientLayer = CAGradientLayer()
+        /*
+         gradientLayer.startPoint = CGPoint(x: 0, y: 0.5)
+         gradientLayer.endPoint = CGPoint(x: 1, y: 0.5)
+         gradientLayer.frame = CGRect(x: -1, y: -1, width: 62, height: 62)
+         gradientLayer.cornerRadius = 31
+         */
         
         gradientLayer.colors = [UIColor(hexCode: "F4EC78").cgColor, UIColor(hexCode: "6AF4F7").cgColor]
         gradientLayer.startPoint = CGPoint(x: 0, y: 0.5)
         gradientLayer.endPoint = CGPoint(x: 1, y: 0.5)
-        gradientLayer.frame = CGRect(x: 0, y: 0, width: 70, height: 70)
-        gradientLayer.cornerRadius = 35
+        gradientLayer.frame = CGRect(x: -1, y: -1, width: 72, height: 72)
+        gradientLayer.cornerRadius = 36
         
         let shapeLayer = CAShapeLayer()
         shapeLayer.lineWidth = 3 // 보더의 두께를 설정
@@ -53,9 +59,9 @@ final class DetailCollectionViewCell: BaseCollectionViewCell {
     }()
     private let contentLabel = {
         let label = UILabel()
-        label.text = "내용칸"
         label.textColor = .white
         label.font = .systemFont(ofSize: 12)
+        label.numberOfLines = 1
         return label
     }()
     private let DMLabel = {
@@ -132,6 +138,7 @@ final class DetailCollectionViewCell: BaseCollectionViewCell {
         contentLabel.snp.makeConstraints { make in
             make.top.equalTo(nicknameLabel.snp.bottom).offset(10)
             make.leading.equalTo(userCircleBtn.snp.trailing).offset(10)
+            make.trailing.equalTo(JoinLabel.snp.trailing)
         }
         timeLabel.snp.makeConstraints { make in
             make.top.equalTo(contentLabel.snp.bottom).offset(5)
@@ -143,11 +150,12 @@ final class DetailCollectionViewCell: BaseCollectionViewCell {
         
         titleLabel.text = geoModel.title
         contentLabel.text = geoModel.content1
-        timeLabel.text = geoModel.content2.isEmpty ? "여기는 시간칸" : geoModel.content2 + " 분 전"   /*String(format: "%f", geoModel.distance ?? 0.0)*/
-        nicknameLabel.text = "작성자: " + (geoModel.creator.nick ?? "닉네임이좌나")
+        timeLabel.text = "10분 전"
+        print("11111111", geoModel)
+        nicknameLabel.text = "작성자: jinha"
         
-        if let profileImage = geoModel.creator.profileImage,
-           let (url, modifier) = NetworkManager2.shared.fetchProfileImage(imageString: profileImage) {
+        
+        if let (url, modifier) = NetworkManager2.shared.fetchProfileImage(imageString: "uploads/profiles/1733464237691.jpg") {
             
             userCircleBtn.kf.setImage(
                 with: url,
@@ -157,6 +165,7 @@ final class DetailCollectionViewCell: BaseCollectionViewCell {
                     .cacheOriginalImage
                 ]
             )
+            userCircleBtn.clipsToBounds = true
         } else {
             userCircleBtn.setImage(UIImage(systemName: "person"), for: .normal)
             userCircleBtn.tintColor = .black

@@ -18,7 +18,7 @@ final class MapVC: BaseVC {
     private var currentPopupView: PopupView?
     
     private var cancellables = Set<AnyCancellable>()
-    private let temp = CLLocationCoordinate2D(latitude: 37.79181196691732, longitude: 128.9071798324585)
+    private let temp = CLLocationCoordinate2D(latitude: 35.1587, longitude: 129.1604)
     
     // 여기에 반경에 따른 서치결과 다 담고
     private var sampleGeoResult: [PostModel] = []
@@ -138,16 +138,16 @@ final class MapVC: BaseVC {
     
     func setMapView() {
         // 지도의 중심 좌표와 줌 레벨 설정
-        let center = CLLocationCoordinate2D(latitude: 37.7950773, longitude: 128.8966344)
+        
+        let center = CLLocationCoordinate2D(latitude: 35.1587, longitude: 129.1604)
         let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))
         mapView.map.setRegion(region, animated: true)
     }
     
     
     func addTemporaryUserLocation() {
-        let tempAnnotation = MKPointAnnotation()
-        tempAnnotation.coordinate = temp
-        tempAnnotation.title = "내 위치"
+        // 임시 내 위치 어노테이션 추가
+        let tempAnnotation = CustomAnnotation(coordinate: temp, title: "내 위치", subtitle: nil)
         mapView.map.addAnnotation(tempAnnotation)
     }
 }
@@ -185,31 +185,52 @@ extension MapVC {
 extension MapVC: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        guard let customAnnotation = annotation as? CustomAnnotation else { return nil }
-        
-        let identifier = "CustomImageAnnotationView"
-        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
-        
-        if annotationView == nil {
-            // 새로운 MKAnnotationView 생성
-            annotationView = MKAnnotationView(annotation: customAnnotation, reuseIdentifier: identifier)
-            annotationView?.canShowCallout = true // 클릭 시 말풍선 표시
-            annotationView?.image = UIImage(systemName: "train.side.front.car") // 원하는 이미지 설정
-            annotationView?.frame.size = CGSize(width: 40, height: 40) // 아이콘 크기 조절
+            // 임시로 지정한 내 위치(CustomAnnotation) 처리
+            if let customAnnotation = annotation as? CustomAnnotation, customAnnotation.title == "내 위치" {
+                let identifier = "TemporaryUserLocationView"
+                var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKMarkerAnnotationView
+                
+                if annotationView == nil {
+                    annotationView = MKMarkerAnnotationView(annotation: customAnnotation, reuseIdentifier: identifier)
+                    annotationView?.canShowCallout = true
+                    
+                    // 임시 내 위치 아이콘 변경
+                    if let image = UIImage(systemName: "figure.wave") {
+                        annotationView?.glyphImage = image
+                    }
+                } else {
+                    annotationView?.annotation = customAnnotation
+                }
+                
+                annotationView?.markerTintColor = UIColor.systemBlue
+                return annotationView
+            }
             
-            // 말풍선에 추가 액세서리 설정 가능
-            let infoButton = UIButton(type: .detailDisclosure)
-            annotationView?.rightCalloutAccessoryView = infoButton
-        } else {
-            annotationView?.annotation = customAnnotation
+            // 다른 사람의 위치(CustomAnnotation) 처리
+            if let customAnnotation = annotation as? CustomAnnotation {
+                let identifier = "CustomAnnotationView"
+                var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKMarkerAnnotationView
+                
+                if annotationView == nil {
+                    annotationView = MKMarkerAnnotationView(annotation: customAnnotation, reuseIdentifier: identifier)
+                    annotationView?.canShowCallout = true
+                    
+                    // 다른 사람의 위치 아이콘 설정 (beach.umbrella)
+                    if let image = UIImage(systemName: "beach.umbrella") {
+                        annotationView?.glyphImage = image
+                    }
+                } else {
+                    annotationView?.annotation = customAnnotation
+                }
+                
+                annotationView?.markerTintColor = AppColorSet.keyColor // 다른 사람 위치 색상
+                return annotationView
+            }
+            
+            return nil
         }
-        
-//        annotationView?.markerTintColor = AppColorSet.keyColor
-        return annotationView
-    }
     
     func mapView(_ mapView: MKMapView, didSelect annotation: MKAnnotation) {
-        
         guard let customAnnotation = annotation as? CustomAnnotation else { return }
         
         specifiedPostList = []
@@ -238,7 +259,6 @@ extension MapVC: MKMapViewDelegate {
             specifiedPostList = [matchedPost]
         }
     }
-    
 }
 
 // MARK: - 컬렉션뷰

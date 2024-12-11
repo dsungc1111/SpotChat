@@ -28,7 +28,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let nativeAppKey = Bundle.main.infoDictionary?["KAKAO_NATIVE_APP_KEY"] ?? APIKey.kakaoKEY
        
         KakaoSDK.initSDK(appKey: nativeAppKey as! String)
-//        SDKInitializer.InitSDK(appKey: nativeAppKey as! String)
         
         
         let config = Realm.Configuration(schemaVersion: 0) { migration, oldSchemaVersion in

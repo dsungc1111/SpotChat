@@ -114,11 +114,13 @@ extension MapVM {
         }
 
         // 위치 기반 데이터 가져오기
-        let geolocationQuery = GeolocationQuery(longitude: "128.90782356262207", latitude: "37.805477856609954", maxDistance: "\(maxDistance)")
+        
+        let geolocationQuery = GeolocationQuery(longitude: "129.1604", latitude: "35.1587", maxDistance: "\(maxDistance)")
 
         do {
             let result = try await NetworkManager2.shared.performRequest(router: .geolocationBasedSearch(query: geolocationQuery), responseType: PostDataModel.self)
             geoResult = result.data
+            print("나오긴해?", geoResult)
         } catch {
             print("Error fetching geolocation data: \(error)")
         }

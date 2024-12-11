@@ -10,16 +10,18 @@ import Combine
 import CombineCocoa
 
 protocol PostBindManagerProtocol: AnyObject {
-    func bind(view: PostView, viewModel: PostVM, vc: PostVC, imagePicker: PostImagePickerManagerProtocol)
+    func bind(view: PostView, viewModel: PostVM, vc: PostVC, imagePicker: PostImagePickerManagerProtocol, dataSourceManager: any PostDataSourceProviderProtocol)
 }
 
 final class PostBindingManager: PostBindManagerProtocol {
+    
   
     private var cancellables = Set<AnyCancellable>()
     
-    func bind(view: PostView, viewModel: PostVM, vc: PostVC , imagePicker: PostImagePickerManagerProtocol) {
+    func bind(view: PostView, viewModel: PostVM, vc: PostVC , imagePicker: PostImagePickerManagerProtocol, dataSourceManager: any PostDataSourceProviderProtocol) {
         
         let input = viewModel.input
+        
         _ = viewModel.transform(input: input)
         
         view.titleTextField.textPublisher
@@ -32,7 +34,6 @@ final class PostBindingManager: PostBindManagerProtocol {
             .subscribe(input.contentText)
             .store(in: &cancellables)
         
-
         view.DMSegmentedControl.selectedSegmentIndexPublisher
             .compactMap{ $0 == 0 ? "true" : "false" }
             .subscribe(input.messagePossible)
@@ -61,11 +62,11 @@ final class PostBindingManager: PostBindManagerProtocol {
             }
             .store(in: &cancellables)
         
-//        imagePicker.finishImagePick = { [weak self] images in
-//            guard let self else { return }
-//            dataSourceProvider.updateDataSource(with: images)
-//            let imageData = images.compactMap { $0.jpegData(compressionQuality: 0.3) }
-//            postVM.input.postImageQuery.send(PostImageQuery(imageData: imageData))
-//        }
+        imagePicker.finishImagePick = { [weak self] images in
+            guard let self else { return }
+            dataSourceManager.updateDataSource(with: images)
+            let imageData = images.compactMap { $0.jpegData(compressionQuality: 0.3) }
+            viewModel.input.postImageQuery.send(PostImageQuery(imageData: imageData))
+        }
     }
 }
