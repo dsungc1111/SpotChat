@@ -1,7 +1,10 @@
 # 🛄 SpotChat 
 - 같은 지역(Spot)을 방문한 여행자들이 실시간으로 소통할 수 있는 채팅 앱
 
-<img width="452" alt="스크린샷 2024-12-12 오전 9 12 33" src="https://github.com/user-attachments/assets/626f1394-7ea0-448d-849c-316beafd005c" />
+<img width="200" height="450" src="https://github.com/user-attachments/assets/2a6215b5-ca50-49a9-98ea-727647b7b6ae" />
+<img width="200" height="450" src="https://github.com/user-attachments/assets/9d43811b-3911-4386-bc35-2b191fb4f96e" />
+<img width="200" height="450" src="https://github.com/user-attachments/assets/7aa36a71-dde8-45f3-9325-a5c89377edf4" />
+<img width="200" height="450" src="https://github.com/user-attachments/assets/4a410f39-a20d-4f16-a2f4-5845f0446e2a" />
 
 <br> <br> 
    
