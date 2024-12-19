@@ -48,7 +48,13 @@ final class PostVC: BaseVC {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        KeyboardManager.shared.configure(observingView: view,
+                                         excludedViews: [
+                                            postView.DMSegmentedControl,
+                                            postView.JoinSegmentedControl
+                                         ]
+                                         ,
+                                         dismissOnTap: true)
     }
     
     override func bind() {
@@ -59,5 +65,13 @@ final class PostVC: BaseVC {
                          imagePicker: imagePickerManager, 
                          dataSourceManager: dataSourceProvider)
         
+       
+        
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        KeyboardManager.shared.removeObservers()
+    }
+    
+    
 }

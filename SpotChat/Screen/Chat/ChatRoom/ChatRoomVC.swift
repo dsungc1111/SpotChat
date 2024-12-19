@@ -174,7 +174,7 @@ extension ChatRoomVC {
     private func setupKeyboardManager() {
         KeyboardManager.shared.configure(
             observingView: view,
-            excludedViews: [chatRoomView.sendButton, chatRoomView.imageAddBtn], // 제외할 뷰 추가
+            excludedViews: [chatRoomView.sendButton, chatRoomView.imageAddBtn], // 제외할 뷰 컴포넌트 추가
             keyboardWillShow: { [weak self] keyboardHeight in
                 guard let self else { return }
                 updateMessageInputPosition(for: keyboardHeight)

@@ -65,7 +65,7 @@ final class KeyboardManager: NSObject, UIGestureRecognizerDelegate {
         guard let view = view else { return }
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         tapGesture.cancelsTouchesInView = false
-        tapGesture.delegate = self // Set delegate for custom behavior
+        tapGesture.delegate = self
         view.addGestureRecognizer(tapGesture)
     }
 
@@ -76,7 +76,7 @@ final class KeyboardManager: NSObject, UIGestureRecognizerDelegate {
     // MARK: - UIGestureRecognizerDelegate
 
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        // If the touch is in an excluded view, ignore the gesture
+        print("터치!!!!!")
         if let touchedView = touch.view, excludedViews.contains(touchedView) {
             return false
         }

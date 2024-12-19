@@ -97,6 +97,7 @@ final class NetworkManager2 {
             throw URLError(.badURL)
         }
         let (data, response) = try await URLSession.shared.data(for: request)
+        
         guard let httpResponse = response as? HTTPURLResponse else {
             throw URLError(.badServerResponse)
         }
@@ -111,7 +112,7 @@ final class NetworkManager2 {
                 print("👻👻👻👻👻👻실패", error)
                 throw error
             }
-        
+            
         case 401, 403, 418:
             print("로그인 화면으로 이동 (401 or 403 or 418 상태)")
             NotificationCenter.default.post(
@@ -154,7 +155,7 @@ final class NetworkManager2 {
     }
     
     
-
+    // 프로필 이미지 요청 메서드
     func fetchProfileImage(imageString: String) -> ( URL, AnyModifier)? {
         
         guard let url = URL(string: APIKey.baseURL + "v1/" + imageString) else {
@@ -175,8 +176,6 @@ final class NetworkManager2 {
             }
             return request1
         }
-        
-        
         return (url, modifier)
     }
 }

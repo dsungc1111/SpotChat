@@ -39,7 +39,6 @@ final class KakaoAuthVM: ObservableObject {
     }
 
     
-    
     // 카카오 앱 로그인
     @MainActor
     func kakaoSignInWithApp() async -> Bool {
