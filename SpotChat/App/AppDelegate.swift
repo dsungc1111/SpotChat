@@ -10,6 +10,7 @@ import AuthenticationServices
 import KakaoSDKCommon
 import KakaoSDKAuth
 import RealmSwift
+import iamport_ios
 
 
 @main
@@ -19,6 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if (AuthApi.isKakaoTalkLoginUrl(url)) {
             return AuthController.handleOpenUrl(url: url)
         }
+        Iamport.shared.receivedURL(url)
         
         return false
     }

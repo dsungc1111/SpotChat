@@ -17,6 +17,8 @@
 		8B2A75522CDA30B2000C6162 /* PostDataSourceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2A75512CDA30B2000C6162 /* PostDataSourceProvider.swift */; };
 		8B2A75542CDEF81F000C6162 /* UITextField+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2A75532CDEF81F000C6162 /* UITextField+.swift */; };
 		8B2A75562CDF0CAD000C6162 /* UIButton+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2A75552CDF0CAD000C6162 /* UIButton+.swift */; };
+		8B31005F2D14561600D2FA8B /* PaymentVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B31005E2D14561600D2FA8B /* PaymentVC.swift */; };
+		8B3100622D14563400D2FA8B /* iamport-ios in Frameworks */ = {isa = PBXBuildFile; productRef = 8B3100612D14563400D2FA8B /* iamport-ios */; };
 		8B3437382CD76CD3003B3104 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3437372CD76CD3003B3104 /* OpenGLES.framework */; };
 		8B34373A2CD76CDE003B3104 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3437392CD76CDE003B3104 /* SystemConfiguration.framework */; };
 		8B34373C2CD76CED003B3104 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B34373B2CD76CED003B3104 /* CoreLocation.framework */; };
@@ -155,6 +157,7 @@
 		8B2A75512CDA30B2000C6162 /* PostDataSourceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDataSourceProvider.swift; sourceTree = "<group>"; };
 		8B2A75532CDEF81F000C6162 /* UITextField+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+.swift"; sourceTree = "<group>"; };
 		8B2A75552CDF0CAD000C6162 /* UIButton+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+.swift"; sourceTree = "<group>"; };
+		8B31005E2D14561600D2FA8B /* PaymentVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentVC.swift; sourceTree = "<group>"; };
 		8B3437372CD76CD3003B3104 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		8B3437392CD76CDE003B3104 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		8B34373B2CD76CED003B3104 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -260,6 +263,7 @@
 				8B34373A2CD76CDE003B3104 /* SystemConfiguration.framework in Frameworks */,
 				8B3437382CD76CD3003B3104 /* OpenGLES.framework in Frameworks */,
 				8B7F3BB62CD3967900B6D34C /* KakaoSDKCommon in Frameworks */,
+				8B3100622D14563400D2FA8B /* iamport-ios in Frameworks */,
 				8B7F3B562CCE0DED00B6D34C /* SnapKit in Frameworks */,
 				8B7F3BB42CD3967900B6D34C /* KakaoSDKCertCore in Frameworks */,
 				8B7F3BAE2CD3967900B6D34C /* KakaoSDK in Frameworks */,
@@ -317,6 +321,14 @@
 				8B2A754D2CDA0021000C6162 /* PostModel.swift */,
 			);
 			path = Post;
+			sourceTree = "<group>";
+		};
+		8B31005D2D1455FD00D2FA8B /* Payment */ = {
+			isa = PBXGroup;
+			children = (
+				8B31005E2D14561600D2FA8B /* PaymentVC.swift */,
+			);
+			path = Payment;
 			sourceTree = "<group>";
 		};
 		8B3437362CD76CD3003B3104 /* Frameworks */ = {
@@ -497,6 +509,7 @@
 				8BDC9F822CD460C400E94702 /* Chat */,
 				8B2A75402CD8BB9E000C6162 /* Post */,
 				8BDC9F852CD4611B00E94702 /* Setting */,
+				8B31005D2D1455FD00D2FA8B /* Payment */,
 			);
 			path = Screen;
 			sourceTree = "<group>";
@@ -709,6 +722,7 @@
 				8BEB7BB72CE7327E0079D068 /* Kingfisher */,
 				8B5F31632CF45ACB0059BAC3 /* SocketIO */,
 				8B5F31882CF6E49B0059BAC3 /* RealmSwift */,
+				8B3100612D14563400D2FA8B /* iamport-ios */,
 			);
 			productName = SpotChat;
 			productReference = 8B7424CF2CCA5A9600E198C3 /* SpotChat.app */;
@@ -789,6 +803,7 @@
 				8BEB7BB62CE7327E0079D068 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				8B5F31622CF45ACB0059BAC3 /* XCRemoteSwiftPackageReference "socket.io-client-swift" */,
 				8B5F31872CF6E49B0059BAC3 /* XCRemoteSwiftPackageReference "realm-swift" */,
+				8B3100602D14563400D2FA8B /* XCRemoteSwiftPackageReference "iamport-ios" */,
 			);
 			productRefGroup = 8B7424D02CCA5A9600E198C3 /* Products */;
 			projectDirPath = "";
@@ -900,6 +915,7 @@
 				8B7F3B642CCF846A00B6D34C /* APIKey.swift in Sources */,
 				8B7F3B892CD0CE6E00B6D34C /* UIColor+.swift in Sources */,
 				8B7F3BA32CD37DE900B6D34C /* AppleLogin.swift in Sources */,
+				8B31005F2D14561600D2FA8B /* PaymentVC.swift in Sources */,
 				8B2A75502CDA06E4000C6162 /* SignInVM.swift in Sources */,
 				8B7F3BB92CD3AF0D00B6D34C /* KakaoAuthVM.swift in Sources */,
 				8BDC03102CE5CCC200B118A0 /* SettingView.swift in Sources */,
@@ -1265,6 +1281,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		8B3100602D14563400D2FA8B /* XCRemoteSwiftPackageReference "iamport-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/iamport/iamport-ios.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.4.7;
+			};
+		};
 		8B5F31622CF45ACB0059BAC3 /* XCRemoteSwiftPackageReference "socket.io-client-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/socketio/socket.io-client-swift.git";
@@ -1316,6 +1340,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		8B3100612D14563400D2FA8B /* iamport-ios */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8B3100602D14563400D2FA8B /* XCRemoteSwiftPackageReference "iamport-ios" */;
+			productName = "iamport-ios";
+		};
 		8B5F31632CF45ACB0059BAC3 /* SocketIO */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 8B5F31622CF45ACB0059BAC3 /* XCRemoteSwiftPackageReference "socket.io-client-swift" */;
