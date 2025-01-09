@@ -93,7 +93,6 @@ final class ChatMessageCell: BaseTableViewCell {
             messageLabel.text = content
             timeLabel.text = Date.formatDate(from: message.lastChat[0].createdAt)
             messageLabel.isHidden = false
-            
         } else {
             messageLabel.text = nil
             messageLabel.isHidden = true
@@ -107,29 +106,110 @@ final class ChatMessageCell: BaseTableViewCell {
             let targetSize = CGSize(width: 70, height: 70)
             let processor = DownsamplingImageProcessor(size: targetSize)
             
-            let rowCount = Int(ceil(Double(files.count) / 3.0)) // 3개씩 행 생성
-            for rowIndex in 0..<rowCount {
+            if files.count == 1 {
+                // 1개 이미지
+                let imageView = createImageView(urlString: files[0], processor: processor)
+                imageContainerStackView.addArrangedSubview(imageView)
+                imageView.snp.makeConstraints { make in
+                    make.width.equalTo(200)
+                    make.height.equalTo(150)
+                }
+                
+            } else if files.count == 2 {
+                // 2개 이미지
                 let horizontalStackView = UIStackView()
                 horizontalStackView.axis = .horizontal
-                horizontalStackView.spacing = 8
+                horizontalStackView.spacing = 4
                 horizontalStackView.distribution = .fillEqually
+
+                for fileIndex in 0..<2 {
+                    let imageView = createImageView(urlString: files[fileIndex], processor: processor)
+                    horizontalStackView.addArrangedSubview(imageView)
+                    imageView.snp.makeConstraints { make in
+                        make.height.equalTo(150)
+                    }
+                }
+                imageContainerStackView.addArrangedSubview(horizontalStackView)
                 
-                let startIndex = rowIndex * 3
-                let endIndex = min(startIndex + 3, files.count)
-                for fileIndex in startIndex..<endIndex {
+            } else if files.count == 3 {
+                // 3개 이미지
+                let horizontalStackView = UIStackView()
+                horizontalStackView.axis = .horizontal
+                horizontalStackView.spacing = 4
+                horizontalStackView.distribution = .fillEqually
+
+                for fileIndex in 0..<3 {
                     let imageView = createImageView(urlString: files[fileIndex], processor: processor)
                     horizontalStackView.addArrangedSubview(imageView)
                 }
                 imageContainerStackView.addArrangedSubview(horizontalStackView)
                 
+            } else if files.count == 4 {
+                // 4개 이미지
+                for rowIndex in 0..<2 {
+                    let horizontalStackView = UIStackView()
+                    horizontalStackView.axis = .horizontal
+                    horizontalStackView.spacing = 4
+                    horizontalStackView.distribution = .fillEqually
+                    
+                    for fileIndex in rowIndex * 2..<(rowIndex * 2 + 2) {
+                        let imageView = createImageView(urlString: files[fileIndex], processor: processor)
+                        horizontalStackView.addArrangedSubview(imageView)
+                    }
+                    imageContainerStackView.addArrangedSubview(horizontalStackView)
+                }
                 
-                messageLabel.snp.remakeConstraints { make in
-                    make.top.equalTo(messageBubble.snp.top).inset(8)
-                    make.leading.trailing.equalToSuperview().inset(12)
-                    make.bottom.equalTo(imageContainerStackView.snp.top).offset(-8)
+            } else if files.count == 5 {
+                // 5개 이미지: 위에 3개, 아래에 2개 배치
+                let topRowStackView = UIStackView()
+                topRowStackView.axis = .horizontal
+                topRowStackView.spacing = 4
+                topRowStackView.distribution = .fillEqually
+
+                // 위쪽 3개
+                for fileIndex in 0..<3 {
+                    let imageView = createImageView(urlString: files[fileIndex], processor: processor)
+                    topRowStackView.addArrangedSubview(imageView)
+                }
+                imageContainerStackView.addArrangedSubview(topRowStackView)
+
+                let bottomRowStackView = UIStackView()
+                bottomRowStackView.axis = .horizontal
+                bottomRowStackView.spacing = 4
+                bottomRowStackView.distribution = .fillEqually // 비율로 공간 분배
+
+                // 아래쪽 2개 이미지: 여백 포함
+                for fileIndex in 3..<5 {
+                    let containerView = UIView() // 개별 이미지 컨테이너 추가
+                    let imageView = createImageView(urlString: files[fileIndex], processor: processor)
+                    containerView.addSubview(imageView)
+                    imageView.snp.makeConstraints { make in
+                        make.verticalEdges.equalToSuperview() // 내부 여백 추가
+                        make.horizontalEdges.equalToSuperview()
+                    }
+                    bottomRowStackView.addArrangedSubview(containerView)
+                    containerView.snp.makeConstraints { make in
+                        make.width.equalTo(150) // 고정 너비
+                        make.height.equalTo(80) // 고정 높이
+                    }
+                }
+
+                // 아래쪽 레이아웃을 부모 뷰에 맞춤
+                imageContainerStackView.addArrangedSubview(bottomRowStackView)
+                bottomRowStackView.snp.makeConstraints { make in
+                    make.leading.trailing.equalToSuperview() // 왼쪽/오른쪽 여백 설정
+//                    make.height.equalTo(70) // 고정 높이 설정
                 }
             }
+            
+            // 레이아웃 조정
+            messageLabel.snp.remakeConstraints { make in
+                make.top.equalTo(messageBubble.snp.top).inset(8)
+                make.leading.trailing.equalToSuperview().inset(12)
+                make.bottom.equalTo(imageContainerStackView.snp.top).offset(-8)
+            }
         } else {
+            // 이미지가 없는 경우
             messageLabel.snp.remakeConstraints { make in
                 make.top.equalTo(messageBubble.snp.top).inset(8)
                 make.leading.trailing.equalToSuperview().inset(12)
@@ -151,7 +231,6 @@ final class ChatMessageCell: BaseTableViewCell {
             timeLabel.snp.remakeConstraints { make in
                 make.trailing.equalTo(messageBubble.snp.leading).offset(-4)
                 make.bottom.equalTo(messageBubble.snp.bottom).inset(4)
-                
             }
         } else {
             messageBubble.backgroundColor = AppColorSet.keyColor
@@ -168,7 +247,7 @@ final class ChatMessageCell: BaseTableViewCell {
         contentView.setNeedsLayout()
         contentView.layoutIfNeeded()
     }
-    
+
     private func createImageView(urlString: String, processor: DownsamplingImageProcessor) -> UIImageView {
         let imageView = UIImageView()
         imageView.clipsToBounds = true

@@ -23,7 +23,7 @@ final class PaymentVC: BaseVC {
     
     
     override func viewDidLoad() {
-        <#code#>
+        print("hi~")
     }
     
 }

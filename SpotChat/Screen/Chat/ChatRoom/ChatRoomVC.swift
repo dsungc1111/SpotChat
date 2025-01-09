@@ -189,7 +189,7 @@ extension ChatRoomVC {
     
     private func updateMessageInputPosition(for keyboardHeight: CGFloat) {
         chatRoomView.messageInputContainer.snp.updateConstraints { make in
-            make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-keyboardHeight)
+            make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-keyboardHeight + 20)
         }
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
